@@ -1,26 +1,34 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="slr2-page-settings-grid">
+    <the-left-menu></the-left-menu>
+    <the-main-content></the-main-content>
+    <the-buttons></the-buttons>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TheLeftMenu from './components/TheLeftMenu.vue';
+import TheMainContent from './components/TheMainContent.vue';
+import TheButtons from './components/TheButtons.vue';
 
 export default {
-  name: 'App',
+  name: 'seller2PageSettings',
   components: {
-    HelloWorld
-  }
-}
+    TheLeftMenu,
+    TheMainContent,
+    TheButtons,
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+#seller2PageSettings {
+}
+.slr2-page-settings-grid {
+  display: grid;
+  grid-template-columns: 1fr 2.5fr;
+  gap: var(--slr2-gap-big);
+  font-family: var(--ui-font-family-open-sans);
+  color: var(--slr2-color);
 }
 </style>

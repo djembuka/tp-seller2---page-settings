@@ -1,7 +1,13 @@
 <template>
   <div class="slr2-page-settings__buttons">
-    <button-cancel :name="Отмена" :theme="link"></button-cancel>
-    <button-save :name="Сохранить" :theme="def"></button-save>
+    <component
+      v-for="button in this.$store.state.buttons"
+      :key="button.buttonCode"
+      :is="`button${button.buttonCode
+        .substring(0, 1)
+        .toUpperCase()}${button.buttonCode.substring(1).toLowerCase()}`"
+      :button="button"
+    ></component>
   </div>
 </template>
 

@@ -1,12 +1,22 @@
 <template>
   <div class="slr2-page-settings__left-menu">
-    <div class="slr2-page-settings__left-menu__item">Главная страница</div>
-    <div class="slr2-page-settings__left-menu__item">Шапка</div>
-    <div class="slr2-page-settings__left-menu__item">Верхнее меню</div>
-    <div class="slr2-page-settings__left-menu__item">Корзина</div>
-    <div class="slr2-page-settings__left-menu__item">Каталог</div>
+    <left-menu-item
+      v-for="page in this.$store.state.pages"
+      :page="page"
+      :key="page.pageId"
+    ></left-menu-item>
   </div>
 </template>
+
+<script>
+import LeftMenuItem from './LeftMenuItem.vue';
+
+export default {
+  components: {
+    LeftMenuItem,
+  },
+};
+</script>
 
 <style>
 .slr2-page-settings__left-menu {
@@ -16,16 +26,5 @@
   padding: 20px;
   font-weight: bold;
   font-size: var(--ui-font-size-md);
-}
-.slr2-page-settings__left-menu__item {
-  height: 40px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  -webkit-transition: opacity 0.3s ease;
-  transition: opacity 0.3s ease;
-}
-.slr2-page-settings__left-menu__item:hover {
-  opacity: 0.7;
 }
 </style>

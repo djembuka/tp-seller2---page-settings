@@ -1,6 +1,21 @@
 <template>
-  <div class="slr2-page-settings__button-save">Сохранить</div>
+  <div class="slr2-page-settings__button-save" @click.prevent="click">
+    Сохранить
+  </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    click() {
+      const event = new CustomEvent('seller2PageSettingsSave', {
+        detail: this.$store.state.pages,
+      });
+      document.getElementById('seller2PageSettings').dispatchEvent(event);
+    },
+  },
+};
+</script>
 
 <style>
 .slr2-page-settings__button-save {

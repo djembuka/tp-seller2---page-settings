@@ -1,6 +1,18 @@
 <template>
-  <div class="slr2-page-settings__button-cancel">Отмена</div>
+  <div class="slr2-page-settings__button-cancel" @click.prevent="click">
+    Отмена
+  </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    click() {
+      this.$store.commit('resetPages');
+    },
+  },
+};
+</script>
 
 <style>
 .slr2-page-settings__button-cancel {

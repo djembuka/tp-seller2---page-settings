@@ -1,7 +1,7 @@
 <template>
   <div class="slr2-page-settings-grid">
     <the-left-menu></the-left-menu>
-    <the-main-content></the-main-content>
+    <the-main-content :page="this.$store.getters.activePage"></the-main-content>
     <the-buttons></the-buttons>
   </div>
 </template>
@@ -18,11 +18,16 @@ export default {
     TheMainContent,
     TheButtons,
   },
+  created() {
+    this.$store.commit('setPageActive', { pageIndex: 0 });
+    this.$store.commit('sortBlocks');
+  },
 };
 </script>
 
 <style>
-#seller2PageSettings {
+#seller2PageSettings * {
+  box-sizing: border-box;
 }
 .slr2-page-settings-grid {
   display: grid;

@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@material/top-app-bar": "^14.0.0",
     "core-js": "^3.8.3",
     "sortablejs": "^1.15.0",
     "vue": "^3.2.13",

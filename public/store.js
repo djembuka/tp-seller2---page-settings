@@ -113,12 +113,7 @@ window.seller2PageSettingsStore = {
       buttonName: 'Сохранить',
     },
   ],
-};
-
-document.getElementById('seller2PageSettings').addEventListener(
-  'seller2PageSettingsSave',
-  (e) => {
-    console.log(e.detail);
+  onSave(result) {
+    console.log(result);
   },
-  false
-);
+};

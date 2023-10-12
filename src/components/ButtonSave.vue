@@ -8,10 +8,8 @@
 export default {
   methods: {
     click() {
-      const event = new CustomEvent('seller2PageSettingsSave', {
-        detail: this.$store.state.pages,
-      });
-      document.getElementById('seller2PageSettings').dispatchEvent(event);
+      this.$store.state.onSave(this.$store.state.pages);
+      this.$store.commit('createMemory');
     },
   },
 };

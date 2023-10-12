@@ -9,6 +9,12 @@ export default {
   methods: {
     click() {
       this.$store.commit('resetPages');
+      this.$store.commit('sortBlocks');
+      //force blocks render
+      const event = new CustomEvent('seller2ForceBlocksRender');
+      document
+        .getElementById('seller2PageSettingsSortableContainer')
+        .dispatchEvent(event);
     },
   },
 };

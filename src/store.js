@@ -26,16 +26,33 @@ const Store = {
       });
     },
     resetPages(state) {
-      state.pages = window.seller2PageSettingsStore.pages;
+      state.pages.forEach((page) => {
+        page.pageStructure.blocks.forEach((block) => {
+          block.sort = state.memory[page.pageId][block.blockId];
+        });
+      });
     },
-    setSort(state, { pageId, blockId, sort }) {
-      const page = state.pages.find((p) => p.pageId === pageId);
+    setSort(state, { blockId, sort }) {
+      let page = state.pages.find((page) => page.active);
+      page = page || state.pages[0];
       const block = page.pageStructure.blocks.find(
         (b) => b.blockId === blockId
       );
-      block.sort = sort;
-
-      console.log(state.pages);
+      if (block) {
+        block.sort = sort;
+      }
+    },
+    changeBlocksRender(state, payload) {
+      state.blocksRender = payload;
+    },
+    createMemory(state) {
+      state.memory = {};
+      state.pages.forEach((page) => {
+        state.memory[page.pageId] = {};
+        page.pageStructure.blocks.forEach((block) => {
+          state.memory[page.pageId][block.blockId] = block.sort;
+        });
+      });
     },
   },
   getters: {

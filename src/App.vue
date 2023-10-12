@@ -19,6 +19,7 @@ export default {
     TheButtons,
   },
   created() {
+    this.$store.commit('createMemory');
     this.$store.commit('setPageActive', { pageIndex: 0 });
     this.$store.commit('sortBlocks');
   },

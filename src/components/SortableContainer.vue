@@ -47,6 +47,7 @@ export default {
                 sort: (index + 1) * 10,
               });
             });
+          commit('sortBlocks');
         },
       });
     },

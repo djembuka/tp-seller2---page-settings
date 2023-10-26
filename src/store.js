@@ -1,6 +1,7 @@
 const Store = {
   state: {
     ...window.seller2PageSettingsStore,
+    step: 'step1', //step1 - catalog of pages, step2 - block and its templates, step3 - block's template settings
   },
   mutations: {
     setPageActive(state, { pageIndex, pageId }) {
@@ -14,7 +15,7 @@ const Store = {
     },
     sortBlocks(state) {
       state.pages.forEach((page) => {
-        page.pageStructure.blocks.sort((a, b) => {
+        page.pageBlocks.sort((a, b) => {
           if (a.sort < b.sort) {
             return -1;
           } else if (a.sort > b.sort) {
@@ -27,7 +28,7 @@ const Store = {
     },
     resetPages(state) {
       state.pages.forEach((page) => {
-        page.pageStructure.blocks.forEach((block) => {
+        page.pageBlocks.forEach((block) => {
           block.sort = state.memory[page.pageId][block.blockId];
         });
       });
@@ -35,9 +36,7 @@ const Store = {
     setSort(state, { blockId, sort }) {
       let page = state.pages.find((page) => page.active);
       page = page || state.pages[0];
-      const block = page.pageStructure.blocks.find(
-        (b) => b.blockId === blockId
-      );
+      const block = page.pageBlocks.find((b) => b.blockId === blockId);
       if (block) {
         block.sort = sort;
       }
@@ -49,16 +48,42 @@ const Store = {
       state.memory = {};
       state.pages.forEach((page) => {
         state.memory[page.pageId] = {};
-        page.pageStructure.blocks.forEach((block) => {
+        page.pageBlocks.forEach((block) => {
           state.memory[page.pageId][block.blockId] = block.sort;
         });
       });
+    },
+    changeStep(state, step) {
+      state.step = step;
+    },
+    setBlockIsEdited(state, { blockId, isEdited }) {
+      let block = Object.values(state.scaffold).find(
+        (staticBlock) => staticBlock.blockId === blockId
+      );
+      if (!block) {
+        block = Object.values(state.pages).forEach((page) => {
+          page.pageBlocks.find((block) => block.blockId === blockId);
+        });
+      }
+
+      block.isEdited = isEdited;
     },
   },
   getters: {
     activePage(state) {
       const activePage = state.pages.find((page) => page.active);
       return activePage || state.pages[0];
+    },
+    isEditedBlock(state) {
+      let block = Object.values(state.scaffold).find(
+        (staticBlock) => staticBlock.isEdited
+      );
+      if (!block) {
+        block = Object.values(state.pages).forEach((page) => {
+          page.pageBlocks.find((block) => block.isEdited);
+        });
+      }
+      return block;
     },
   },
 };

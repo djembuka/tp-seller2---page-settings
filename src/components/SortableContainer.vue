@@ -3,7 +3,7 @@
     <div v-if="render">
       <div class="slr2-page-settings__sortable" ref="sortable">
         <block-sortable
-          v-for="block in page.pageStructure.blocks"
+          v-for="block in this.$store.getters.activePage.pageBlocks"
           :block="block"
           :key="block.blockId"
         ></block-sortable>
@@ -22,7 +22,6 @@ export default {
       render: true,
     };
   },
-  props: ['page'],
   methods: {
     async forceRender() {
       this.render = false;

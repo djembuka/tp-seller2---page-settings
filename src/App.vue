@@ -1,7 +1,7 @@
 <template>
   <div class="slr2-page-settings-grid">
     <the-left-menu></the-left-menu>
-    <the-main-content :page="this.$store.getters.activePage"></the-main-content>
+    <the-main-content></the-main-content>
     <the-buttons></the-buttons>
   </div>
 </template>

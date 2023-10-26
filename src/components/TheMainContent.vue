@@ -1,23 +1,27 @@
 <template>
   <div class="slr2-page-settings__content">
-    <block-static :block="page.pageStructure.header"></block-static>
-    <sortable-container :page="page"></sortable-container>
-    <block-static :block="page.pageStructure.footer"></block-static>
+    <component :is="currentStepComponent"></component>
   </div>
 </template>
 
 <script>
-import BlockStatic from './BlockStatic.vue';
-import SortableContainer from './SortableContainer.vue';
+import Step1Content from './Step1Content.vue';
+import Step2Content from './Step2Content.vue';
+import Step3Content from './Step3Content.vue';
 
 export default {
   data() {
     return {};
   },
-  props: ['page'],
+  computed: {
+    currentStepComponent() {
+      return `${this.$store.state.step}Content`;
+    },
+  },
   components: {
-    BlockStatic,
-    SortableContainer,
+    Step1Content,
+    Step2Content,
+    Step3Content,
   },
 };
 </script>
@@ -36,35 +40,39 @@ export default {
   padding: var(--slr2-padding) var(--slr2-padding) var(--slr2-gap);
   position: relative;
   border-radius: 8px;
-  -webkit-transition: box-shadow .3s ease;
-  transition: box-shadow .3s ease;
+  -webkit-transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease;
 }
 .slr2-page-settings__block:hover {
-    box-shadow: 0px 3px 6px #353CB11A;
+  box-shadow: 0px 3px 6px #353cb11a;
 }
 .slr2-page-settings__block__icon {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    z-index: 10;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 10;
 }
 .slr2-page-settings__block__title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
 }
 .slr2-page-settings__block__description {
-    font-size: 14px;
-    margin-bottom: 16px;
+  font-size: 14px;
+  margin-bottom: 16px;
 }
 .slr2-page-settings__block__edit span {
-    font-size: 12px;
-    color: #353CB1;
-    cursor: pointer;
-  -webkit-transition: opacity .3s ease;
-  transition: opacity .3s ease;
+  font-size: 12px;
+  color: #353cb1;
+  cursor: pointer;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 .slr2-page-settings__block__edit span:hover {
-    opacity: .7;
+  opacity: 0.7;
 }
 </style>

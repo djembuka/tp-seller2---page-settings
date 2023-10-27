@@ -1,17 +1,17 @@
 <template>
   <block-static :block="$store.state.scaffold.header"></block-static>
-  <sortable-container></sortable-container>
+  <container-sortable></container-sortable>
   <block-static :block="$store.state.scaffold.footer"></block-static>
 </template>
 
 <script>
 import BlockStatic from './BlockStatic.vue';
-import SortableContainer from './SortableContainer.vue';
+import ContainerSortable from './ContainerSortable.vue';
 
 export default {
   components: {
     BlockStatic,
-    SortableContainer,
+    ContainerSortable,
   },
 };
 </script>

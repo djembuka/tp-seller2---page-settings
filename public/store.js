@@ -5,34 +5,41 @@ window.seller2PageSettingsStore = {
       blockCode: 'header1',
       blockData: {
         title: 'Шапка 01',
-        description:
-          'Блок шапка показывается на всех страницах сайта. Вы можете выбрать шаблон этого блока.',
+        description: {
+          step1:
+            'Блок шапка показывается на всех страницах сайта. Вы можете выбрать шаблон этого блока.',
+          step2: 'Выберите вариант шапки вашего сайта.',
+        },
         edit: 'Изменить',
         icon: '/img/lock.svg',
       },
       blockTemplates: [
         {
+          templateId: '991',
           title: 'Шапка 01',
-          img: '/img/templates/header01.svg',
+          img: '/img/header1.png',
           edit: 'Настроить',
           active: true,
         },
         {
+          templateId: '992',
           title:
             'Шапка с логотипом, поиском, верхним меню, телефоном, нижним меню',
-          img: '/img/templates/header01.svg',
+          img: '/img/header1.png',
           edit: 'Настроить',
           active: false,
         },
         {
+          templateId: '993',
           title: 'Шапка 03',
-          img: '/img/templates/header01.svg',
+          img: '/img/header1.png',
           edit: 'Настроить',
           active: false,
         },
         {
+          templateId: '994',
           title: 'Шапка 04',
-          img: '/img/templates/header01.svg',
+          img: '/img/header1.png',
           edit: 'Настроить',
           active: false,
         },

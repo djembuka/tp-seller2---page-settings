@@ -12,7 +12,7 @@
       v-if="block.blockData.description"
       class="slr2-page-settings__block__description"
     >
-      {{ block.blockData.description }}
+      {{ block.blockData.description['step1'] }}
     </div>
     <div v-if="block.blockData.edit" class="slr2-page-settings__block__edit">
       <span @click.prevent="edit">{{ block.blockData.edit }}</span>
@@ -32,12 +32,10 @@ export default {
           isEdited: false,
         });
       }
-      console.log(this.block.blockId);
       this.$store.commit('setBlockIsEdited', {
         blockId: this.block.blockId,
         isEdited: true,
       });
-      console.log(this.$store.getters.isEditedBlock.blockId);
     },
   },
 };

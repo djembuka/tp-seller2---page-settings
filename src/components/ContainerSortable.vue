@@ -1,5 +1,5 @@
 <template>
-  <div id="seller2PageSettingsSortableContainer">
+  <div id="seller2PageSettingsContainerSortable">
     <div v-if="render">
       <div class="slr2-page-settings__sortable" ref="sortable">
         <block-sortable
@@ -58,7 +58,7 @@ export default {
     this.setSortable();
     //event
     document
-      .getElementById('seller2PageSettingsSortableContainer')
+      .getElementById('seller2PageSettingsContainerSortable')
       .addEventListener(
         'seller2ForceBlocksRender',
         () => {

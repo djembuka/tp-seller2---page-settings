@@ -13,7 +13,7 @@ export default {
       //force blocks render
       const event = new CustomEvent('seller2ForceBlocksRender');
       document
-        .getElementById('seller2PageSettingsSortableContainer')
+        .getElementById('seller2PageSettingsContainerSortable')
         .dispatchEvent(event);
     },
   },

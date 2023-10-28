@@ -9,13 +9,13 @@ const Store = {
         if (pageIndex !== undefined) {
           page.active = index === pageIndex ? true : false;
         } else if (pageId !== undefined) {
-          page.active = page.pageId === pageId ? true : false;
+          page.active = page.id === pageId ? true : false;
         }
       });
     },
     sortBlocks(state) {
       state.pages.forEach((page) => {
-        page.pageBlocks.sort((a, b) => {
+        page.blocks.sort((a, b) => {
           if (a.sort < b.sort) {
             return -1;
           } else if (a.sort > b.sort) {
@@ -28,15 +28,15 @@ const Store = {
     },
     resetPages(state) {
       state.pages.forEach((page) => {
-        page.pageBlocks.forEach((block) => {
-          block.sort = state.memory[page.pageId][block.blockId];
+        page.blocks.forEach((block) => {
+          block.sort = state.memory[page.id][block.id];
         });
       });
     },
     setSort(state, { blockId, sort }) {
       let page = state.pages.find((page) => page.active);
       page = page || state.pages[0];
-      const block = page.pageBlocks.find((b) => b.blockId === blockId);
+      const block = page.blocks.find((b) => b.id === blockId);
       if (block) {
         block.sort = sort;
       }
@@ -45,28 +45,72 @@ const Store = {
       state.blocksRender = payload;
     },
     createMemory(state) {
-      state.memory = {};
-      state.pages.forEach((page) => {
-        state.memory[page.pageId] = {};
-        page.pageBlocks.forEach((block) => {
-          state.memory[page.pageId][block.blockId] = block.sort;
+      const pagesMemory = [];
+      const scaffoldMemory = [];
+
+      Object.values(state.scaffold).forEach((block) => {
+        const template = block.templates
+          ? block.templates.find((t) => t.checked)
+          : null;
+        scaffoldMemory.push({
+          blockId: block.id,
+          sort: block.sort,
+          templateId: template ? template.id : null,
         });
       });
+
+      state.pages.forEach((page) => {
+        const blocks = [];
+        page.blocks.forEach((block) => {
+          const template = block.templates
+            ? block.templates.find((t) => t.checked)
+            : null;
+          blocks.push({
+            blockId: block.id,
+            sort: block.sort,
+            templateId: template ? template.id : null,
+          });
+        });
+        pagesMemory.push({
+          pageId: page.id,
+          blocks,
+        });
+      });
+
+      state.memory = { scaffold: scaffoldMemory, pages: pagesMemory };
     },
     changeStep(state, step) {
       state.step = step;
     },
-    setBlockIsEdited(state, { blockId, isEdited }) {
+    setBlockIsEdited(state, { pageId, blockId, isEdited }) {
+      console.log(pageId, blockId, isEdited);
       let block = Object.values(state.scaffold).find(
-        (staticBlock) => staticBlock.blockId === blockId
+        (staticBlock) => staticBlock.id === blockId
       );
       if (!block) {
-        block = Object.values(state.pages).forEach((page) => {
-          page.pageBlocks.find((block) => block.blockId === blockId);
+        Object.values(state.pages).forEach((page) => {
+          if (page.id === pageId) {
+            block = page.blocks.find((block) => block.id === blockId) || block;
+          }
         });
       }
 
       block.isEdited = isEdited;
+    },
+    setTemplateChecked(state, { blockId, templateId }) {
+      let block = Object.values(state.scaffold).find(
+        (staticBlock) => staticBlock.id === blockId
+      );
+      if (!block) {
+        Object.values(state.pages).forEach((page) => {
+          block = page.blocks.find((block) => block.id === blockId) || block;
+        });
+      }
+
+      block.templates.forEach((template) => delete template.checked);
+      block.templates.find(
+        (template) => template.id === templateId
+      ).checked = true;
     },
   },
   getters: {
@@ -79,8 +123,8 @@ const Store = {
         (staticBlock) => staticBlock.isEdited
       );
       if (!block) {
-        block = Object.values(state.pages).forEach((page) => {
-          page.pageBlocks.find((block) => block.isEdited);
+        Object.values(state.pages).forEach((page) => {
+          block = page.blocks.find((block) => block.isEdited) || block;
         });
       }
       return block;

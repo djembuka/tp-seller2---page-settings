@@ -2,27 +2,27 @@
   <div class="slr2-page-settings__templates">
     <div class="slr2-page-settings__templates-block-info">
       <div
-        v-if="block.blockData.icon"
+        v-if="block.data.icon"
         class="slr2-page-settings__block__icon"
-        :style="'background-image: url(' + block.blockData.icon + ');'"
+        :style="'background-image: url(' + block.data.icon + ');'"
       ></div>
       <div
-        v-if="block.blockData.title"
+        v-if="block.data.title"
         class="slr2-page-settings__block__title"
       >
-        {{ block.blockData.title }}
+        {{ block.data.title }}
       </div>
       <div
-        v-if="block.blockData.description"
+        v-if="block.data.description"
         class="slr2-page-settings__block__description"
       >
-        {{ block.blockData.description['step2'] }}
+        {{ block.data.description['step2'] }}
       </div>
     </div>
 
     <block-template
-      v-for="template in block.blockTemplates"
-      :key="template.templateId"
+      v-for="template in block.templates"
+      :key="template.id"
       :template="template"
     ></block-template>
   </div>

@@ -1,10 +1,10 @@
 <template>
   <div
     class="slr2-page-settings__template"
-    :class="{ 'slr2-page-settings__template--checked': checked }"
+    :class="{ 'slr2-page-settings__template--checked': template.checked }"
     @click.prevent="click"
   >
-    <control-radio></control-radio>
+    <control-radio :checked="template.checked"></control-radio>
     <div class="slr2-page-settings__template__title">{{ template.title }}</div>
     <img :src="template.img" class="slr2-page-settings__template__img" />
     <div class="slr2-page-settings__template__edit">
@@ -18,14 +18,16 @@ import ControlRadio from './ControlRadio.vue';
 
 export default {
   data() {
-    return {
-      checked: false,
-    };
+    return {};
   },
   props: ['template'],
   methods: {
     click() {
-      this.checked = true;
+      this.$store.commit('setTemplateChecked', {
+        pageId: this.$store.getters.activePage.id,
+        blockId: this.$store.getters.isEditedBlock.id,
+        templateId: this.template.id,
+      });
     },
   },
   components: {

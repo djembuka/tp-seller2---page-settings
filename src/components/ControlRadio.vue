@@ -1,6 +1,6 @@
 <template>
   <label class="slr2-page-settings__radio">
-    <input class="with-gap" name="group1" type="radio" />
+    <input class="with-gap" name="group1" type="radio" :checked="checked" />
     <span>{{ label || '' }}</span>
   </label>
 </template>
@@ -10,7 +10,7 @@ export default {
   data() {
     return {};
   },
-  props: ['label'],
+  props: ['label', 'checked'],
 };
 </script>
 
@@ -64,7 +64,7 @@ export default {
 
 [type='radio']:not(:checked) + span:before,
 [type='radio']:not(:checked) + span:after {
-  border: 2px solid #5a5a5a;
+  border: 2px solid transparent;
 }
 
 [type='radio']:not(:checked) + span:after {

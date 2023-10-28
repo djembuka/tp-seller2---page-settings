@@ -2,10 +2,10 @@
   <div class="slr2-page-settings__buttons">
     <component
       v-for="button in this.$store.state.buttons"
-      :key="button.buttonCode"
-      :is="`button${button.buttonCode
+      :key="button.code"
+      :is="`button${button.code
         .substring(0, 1)
-        .toUpperCase()}${button.buttonCode.substring(1).toLowerCase()}`"
+        .toUpperCase()}${button.code.substring(1).toLowerCase()}`"
       :button="button"
     ></component>
   </div>

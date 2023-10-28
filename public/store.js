@@ -1,10 +1,10 @@
 window.seller2PageSettingsStore = {
   scaffold: {
     header: {
-      blockId: '456',
-      blockCode: 'header1',
-      blockData: {
-        title: 'Шапка 01',
+      id: '456',
+      code: 'header1',
+      data: {
+        title: 'Шапка',
         description: {
           step1:
             'Блок шапка показывается на всех страницах сайта. Вы можете выбрать шаблон этого блока.',
@@ -13,158 +13,338 @@ window.seller2PageSettingsStore = {
         edit: 'Изменить',
         icon: '/img/lock.svg',
       },
-      blockTemplates: [
+      templates: [
         {
-          templateId: '991',
+          id: '991',
           title: 'Шапка 01',
           img: '/img/header1.png',
           edit: 'Настроить',
-          active: true,
+          checked: true,
         },
         {
-          templateId: '992',
+          id: '992',
           title:
             'Шапка с логотипом, поиском, верхним меню, телефоном, нижним меню',
           img: '/img/header1.png',
           edit: 'Настроить',
-          active: false,
         },
         {
-          templateId: '993',
+          id: '993',
           title: 'Шапка 03',
           img: '/img/header1.png',
           edit: 'Настроить',
-          active: false,
         },
         {
-          templateId: '994',
+          id: '994',
           title: 'Шапка 04',
           img: '/img/header1.png',
           edit: 'Настроить',
-          active: false,
         },
       ],
     },
     footer: {
-      blockId: '458',
-      blockCode: 'footer1',
-      blockData: {
-        title: 'Подвал 01',
-        description:
-          'Блок подвал показывается на всех страницах сайта. Вы можете выбрать шаблон этого блока.',
+      id: '458',
+      code: 'footer1',
+      data: {
+        title: 'Подвал',
+        description: {
+          step1:
+            'Блок подвал показывается на всех страницах сайта. Вы можете выбрать шаблон этого блока.',
+          step2: 'Выберите вариант подвала вашего сайта.',
+        },
         edit: 'Изменить',
         icon: '/img/lock.svg',
       },
+      templates: [
+        {
+          id: '991',
+          title: 'Подвал 01',
+          img: '/img/header1.png',
+          edit: 'Настроить',
+          checked: true,
+        },
+        {
+          id: '992',
+          title:
+            'Подвал с логотипом, поиском, верхним меню, телефоном, нижним меню',
+          img: '/img/header1.png',
+          edit: 'Настроить',
+        },
+        {
+          id: '993',
+          title: 'Подвал 03',
+          img: '/img/header1.png',
+          edit: 'Настроить',
+        },
+        {
+          id: '994',
+          title: 'Подвал 04',
+          img: '/img/header1.png',
+          edit: 'Настроить',
+        },
+      ],
     },
   },
   pages: [
     {
-      pageId: '123',
-      pageName: 'Главная страница',
-      pageBlocks: [
+      id: '123',
+      name: 'Главная страница',
+      blocks: [
         {
-          blockId: '457',
-          blockCode: 'banners',
+          id: '457',
+          code: 'banners',
           sort: 20,
-          blockData: {
-            title: 'Баннеры 01',
-            description: 'Вы можете выбрать шаблон этого блока.',
+          data: {
+            title: 'Баннеры',
+            description: {
+              step1: 'Вы можете выбрать шаблон этого блока.',
+              step2: 'Выберите вариант баннеров вашего сайта.',
+            },
             edit: 'Изменить',
           },
+          templates: [
+            {
+              id: '991',
+              title: 'Баннеры 01',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+              checked: true,
+            },
+            {
+              id: '992',
+              title:
+                'Баннеры с логотипом, поиском, верхним меню, телефоном, нижним меню',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+            },
+          ],
         },
         {
-          blockId: '459',
-          blockCode: 'advantages',
+          id: '459',
+          code: 'advantages',
           sort: 25,
-          blockData: {
-            title: 'Преимущества 01',
-            description: 'Вы можете выбрать шаблон этого блока.',
+          data: {
+            title: 'Преимущества',
+            description: {
+              step1: 'Вы можете выбрать шаблон этого блока.',
+              step2: 'Выберите вариант блока для вашего сайта.',
+            },
             edit: 'Изменить',
           },
+          templates: [
+            {
+              id: '991',
+              title: 'Преимущества 02',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+              checked: true,
+            },
+            {
+              id: '992',
+              title:
+                'Преимущества с логотипом, поиском, верхним меню, телефоном, нижним меню',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+            },
+          ],
         },
         {
-          blockId: '451',
-          blockCode: 'about',
+          id: '451',
+          code: 'about',
           sort: 10,
-          blockData: {
-            title: 'О компании 01',
-            description: 'Вы можете выбрать шаблон этого блока.',
+          data: {
+            title: 'О компании',
+            description: {
+              step1: 'Вы можете выбрать шаблон этого блока.',
+              step2: 'Выберите вариант блока для вашего сайта.',
+            },
             edit: 'Изменить',
           },
+          templates: [
+            {
+              id: '991',
+              title: 'О компании 02',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+              checked: true,
+            },
+            {
+              id: '992',
+              title:
+                'О компании с логотипом, поиском, верхним меню, телефоном, нижним меню',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+            },
+          ],
         },
         {
-          blockId: '452',
-          blockCode: 'brands',
+          id: '452',
+          code: 'brands',
           sort: 5,
-          blockData: {
-            title: 'Бренды 01',
-            description: 'Вы можете выбрать шаблон этого блока.',
+          data: {
+            title: 'Бренды',
+            description: {
+              step1: 'Вы можете выбрать шаблон этого блока.',
+              step2: 'Выберите вариант блока для вашего сайта.',
+            },
             edit: 'Изменить',
           },
+          templates: [
+            {
+              id: '991',
+              title: 'Бренды 02',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+              checked: true,
+            },
+            {
+              id: '992',
+              title:
+                'Бренды с логотипом, поиском, верхним меню, телефоном, нижним меню',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+            },
+          ],
         },
         {
-          blockId: '453',
-          blockCode: 'shops',
+          id: '453',
+          code: 'shops',
           sort: 451,
-          blockData: {
-            title: 'Магазины 01',
-            description: 'Вы можете выбрать шаблон этого блока.',
+          data: {
+            title: 'Магазины',
+            description: {
+              step1: 'Вы можете выбрать шаблон этого блока.',
+              step2: 'Выберите вариант блока для вашего сайта.',
+            },
             edit: 'Изменить',
           },
+          templates: [
+            {
+              id: '991',
+              title: 'Магазины 02',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+              checked: true,
+            },
+            {
+              id: '992',
+              title:
+                'Магазины с логотипом, поиском, верхним меню, телефоном, нижним меню',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+            },
+          ],
         },
       ],
     },
     {
-      pageId: '124',
-      pageName: 'Корзина',
-      pageBlocks: [
+      id: '124',
+      name: 'Корзина',
+      blocks: [
         {
-          blockId: '157',
-          blockCode: 'cart',
+          id: '157',
+          code: 'cart',
           sort: 1,
-          blockData: {
-            title: 'Корзина 01',
-            description: 'Вы можете выбрать шаблон этого блока.',
+          data: {
+            title: 'Корзина',
+            description: {
+              step1: 'Вы можете выбрать шаблон этого блока.',
+              step2: 'Выберите вариант блока для вашего сайта.',
+            },
             edit: 'Изменить',
           },
+          templates: [
+            {
+              id: '991',
+              title: 'Корзина 02',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+              checked: true,
+            },
+            {
+              id: '992',
+              title:
+                'Корзина с логотипом, поиском, верхним меню, телефоном, нижним меню',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+            },
+          ],
         },
       ],
     },
     {
-      pageId: '125',
-      pageName: 'Каталог',
-      pageBlocks: [
+      id: '125',
+      name: 'Каталог',
+      blocks: [
         {
-          blockId: '257',
-          blockCode: 'catalog',
+          id: '257',
+          code: 'catalog',
           sort: 2,
-          blockData: {
-            title: 'Каталог 01',
-            description: 'Вы можете выбрать шаблон этого блока.',
+          data: {
+            title: 'Каталог',
+            description: {
+              step1: 'Вы можете выбрать шаблон этого блока.',
+              step2: 'Выберите вариант блока для вашего сайта.',
+            },
             edit: 'Изменить',
           },
+          templates: [
+            {
+              id: '991',
+              title: 'Каталог 02',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+              checked: true,
+            },
+            {
+              id: '992',
+              title:
+                'Каталог с логотипом, поиском, верхним меню, телефоном, нижним меню',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+            },
+          ],
         },
         {
-          blockId: '258',
-          blockCode: 'filter',
+          id: '258',
+          code: 'filter',
           sort: 1,
-          blockData: {
-            title: 'Фильтр 01',
-            description: 'Вы можете выбрать шаблон этого блока.',
+          data: {
+            title: 'Фильтр',
+            description: {
+              step1: 'Вы можете выбрать шаблон этого блока.',
+              step2: 'Выберите вариант блока для вашего сайта.',
+            },
             edit: 'Изменить',
           },
+          templates: [
+            {
+              id: '991',
+              title: 'Фильтр',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+              checked: true,
+            },
+            {
+              id: '992',
+              title:
+                'Фильтр с логотипом, поиском, верхним меню, телефоном, нижним меню',
+              img: '/img/header1.png',
+              edit: 'Настроить',
+            },
+          ],
         },
       ],
     },
   ],
   buttons: [
     {
-      buttonCode: 'cancel',
-      buttonName: 'Отмена',
+      code: 'cancel',
+      name: 'Отмена',
     },
     {
-      buttonCode: 'save',
-      buttonName: 'Сохранить',
+      code: 'save',
+      name: 'Сохранить',
     },
   ],
   onSave(result) {

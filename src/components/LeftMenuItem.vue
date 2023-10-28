@@ -3,9 +3,9 @@
     class="slr2-page-settings__left-menu__item"
     :class="{ 'slr2-page-settings__left-menu__item--active': page.active }"
     @click.prevent="click"
-    :data-pageid="page.pageId"
+    :data-id="page.id"
   >
-    {{ page.pageName }}
+    {{ page.name }}
   </div>
 </template>
 
@@ -14,7 +14,16 @@ export default {
   props: ['page'],
   methods: {
     click() {
-      this.$store.commit('setPageActive', { pageId: this.page.pageId });
+      if (this.$store.getters.isEditedBlock) {
+        this.$store.commit('setBlockIsEdited', {
+          pageId: this.$store.getters.activePage.id,
+          blockId: this.$store.getters.isEditedBlock.id,
+          isEdited: false,
+        });
+      }
+
+      this.$store.commit('changeStep', 'step1');
+      this.$store.commit('setPageActive', { pageId: this.page.id });
     },
   },
 };

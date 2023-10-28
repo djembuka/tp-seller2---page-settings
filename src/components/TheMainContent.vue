@@ -31,7 +31,7 @@ export default {
   background-color: var(--slr2-background);
   padding: var(--ui-space-inset-xl);
   display: grid;
-  grid-auto-rows: auto;
+  grid-auto-rows: min-content;
   row-gap: var(--slr2-gap);
 }
 .slr2-page-settings__block {

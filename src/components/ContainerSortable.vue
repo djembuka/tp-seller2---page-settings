@@ -3,9 +3,9 @@
     <div v-if="render">
       <div class="slr2-page-settings__sortable" ref="sortable">
         <block-sortable
-          v-for="block in this.$store.getters.activePage.pageBlocks"
+          v-for="block in this.$store.getters.activePage.blocks"
           :block="block"
-          :key="block.blockId"
+          :key="block.id"
         ></block-sortable>
       </div>
     </div>
@@ -40,9 +40,9 @@ export default {
           sortableDiv
             .querySelectorAll('.slr2-page-settings__block')
             .forEach((block, index) => {
-              const blockId = block.getAttribute('data-blockid');
+              const id = block.getAttribute('data-id');
               commit('setSort', {
-                blockId,
+                blockId: id,
                 sort: (index + 1) * 10,
               });
             });

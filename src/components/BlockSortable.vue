@@ -1,24 +1,24 @@
 <template>
   <div
     class="slr2-page-settings__block slr2-page-settings__block--sortable"
-    :data-blockid="block.blockId"
+    :data-id="block.id"
   >
     <div
-      v-if="block.blockData.icon"
+      v-if="block.data.icon"
       class="slr2-page-settings__block__icon"
-      v-html="block.blockData.icon"
+      v-html="block.data.icon"
     ></div>
-    <div v-if="block.blockData.title" class="slr2-page-settings__block__title">
-      {{ block.blockData.title }}
+    <div v-if="block.data.title" class="slr2-page-settings__block__title">
+      {{ block.data.title }}
     </div>
     <div
-      v-if="block.blockData.description"
+      v-if="block.data.description"
       class="slr2-page-settings__block__description"
     >
-      {{ block.blockData.description }}
+      {{ block.data.description['step1'] }}
     </div>
-    <div v-if="block.blockData.edit" class="slr2-page-settings__block__edit">
-      <span @click.prevent="edit">{{ block.blockData.edit }}</span>
+    <div v-if="block.data.edit" class="slr2-page-settings__block__edit">
+      <span @click.prevent="edit">{{ block.data.edit }}</span>
     </div>
   </div>
 </template>
@@ -29,14 +29,9 @@ export default {
   methods: {
     edit() {
       this.$store.commit('changeStep', 'step2');
-      if (this.$store.getters.isEditedBlock) {
-        this.$store.commit('setBlockIsEdited', {
-          blockId: this.$store.getters.isEditedBlock.blockId,
-          isEdited: false,
-        });
-      }
       this.$store.commit('setBlockIsEdited', {
-        blockId: this.block.blockId,
+        pageId: this.$store.getters.activePage.id,
+        blockId: this.block.id,
         isEdited: true,
       });
     },

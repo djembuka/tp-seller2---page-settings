@@ -9,7 +9,7 @@
       v-html="block.data.icon"
     ></div>
     <div v-if="block.data.title" class="slr2-page-settings__block__title">
-      {{ block.data.title }}
+      {{ blockTemplateTitle }}
     </div>
     <div
       v-if="block.data.description"
@@ -26,6 +26,11 @@
 <script>
 export default {
   props: ['block'],
+  computed: {
+    blockTemplateTitle() {
+      return this.block.templates.find((t) => t.checked).title;
+    },
+  },
   methods: {
     edit() {
       this.$store.commit('changeStep', 'step2');

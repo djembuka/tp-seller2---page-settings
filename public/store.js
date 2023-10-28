@@ -320,7 +320,7 @@ window.seller2PageSettingsStore = {
           templates: [
             {
               id: '991',
-              title: 'Фильтр',
+              title: 'Фильтр 01',
               img: '/img/header1.png',
               edit: 'Настроить',
               checked: true,

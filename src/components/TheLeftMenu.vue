@@ -5,13 +5,6 @@
       :page="page"
       :key="page.id"
     ></left-menu-item>
-    <div v-if="$store.getters.activePage">
-      activePage: {{ $store.getters.activePage.name }}
-    </div>
-    <div v-if="$store.getters.isEditedBlock">
-      isEditedBlock: {{ $store.getters.isEditedBlock.data.title }}
-    </div>
-    <pre>{{ $store.state.memory }}</pre>
   </div>
 </template>
 

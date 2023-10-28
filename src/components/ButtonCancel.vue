@@ -11,10 +11,12 @@ export default {
       this.$store.commit('resetPages');
       this.$store.commit('sortBlocks');
       //force blocks render
-      const event = new CustomEvent('seller2ForceBlocksRender');
-      document
-        .getElementById('seller2PageSettingsContainerSortable')
-        .dispatchEvent(event);
+      if (this.$store.state.step === 'step1') {
+        const event = new CustomEvent('seller2ForceBlocksRender');
+        document
+          .getElementById('seller2PageSettingsContainerSortable')
+          .dispatchEvent(event);
+      }
     },
   },
 };

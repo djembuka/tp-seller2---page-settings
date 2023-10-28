@@ -27,9 +27,33 @@ const Store = {
       });
     },
     resetPages(state) {
+      Object.values(state.scaffold).forEach((block) => {
+        const memoryBlock = state.memory.scaffold.find(
+          (b) => b.blockId === block.id
+        );
+        block.sort = memoryBlock.sort;
+        block.templates.forEach((t) => {
+          if (t.id === memoryBlock.templateId) {
+            t.checked = true;
+          } else if (t.checked) {
+            delete t.checked;
+          }
+        });
+      });
       state.pages.forEach((page) => {
+        const memoryPage = state.memory.pages.find((p) => p.pageId === page.id);
         page.blocks.forEach((block) => {
-          block.sort = state.memory[page.id][block.id];
+          const memoryBlock = memoryPage.blocks.find(
+            (b) => b.blockId === block.id
+          );
+          block.sort = memoryBlock.sort;
+          block.templates.forEach((t) => {
+            if (t.id === memoryBlock.templateId) {
+              t.checked = true;
+            } else if (t.checked) {
+              delete t.checked;
+            }
+          });
         });
       });
     },
@@ -83,7 +107,6 @@ const Store = {
       state.step = step;
     },
     setBlockIsEdited(state, { pageId, blockId, isEdited }) {
-      console.log(pageId, blockId, isEdited);
       let block = Object.values(state.scaffold).find(
         (staticBlock) => staticBlock.id === blockId
       );
@@ -96,6 +119,22 @@ const Store = {
       }
 
       block.isEdited = isEdited;
+    },
+    initTemplateChecked(state) {
+      Object.values(state.scaffold).forEach((block) => {
+        const checkedTemplate = block.templates.find((t) => t.checked);
+        if (!checkedTemplate) {
+          block.templates[0].checked = true;
+        }
+      });
+      Object.values(state.pages).forEach((page) => {
+        page.blocks.forEach((block) => {
+          const checkedTemplate = block.templates.find((t) => t.checked);
+          if (!checkedTemplate) {
+            block.templates[0].checked = true;
+          }
+        });
+      });
     },
     setTemplateChecked(state, { blockId, templateId }) {
       let block = Object.values(state.scaffold).find(

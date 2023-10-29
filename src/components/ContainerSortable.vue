@@ -41,9 +41,10 @@ export default {
             .querySelectorAll('.slr2-page-settings__block')
             .forEach((block, index) => {
               const id = block.getAttribute('data-id');
-              commit('setSort', {
+              commit('setBlockProp', {
                 blockId: id,
-                sort: (index + 1) * 10,
+                property: 'sort',
+                value: (index + 1) * 10,
               });
             });
           commit('sortBlocks');

@@ -32,6 +32,7 @@ const Store = {
           (b) => b.blockId === block.id
         );
         block.sort = memoryBlock.sort;
+        block.active = memoryBlock.active;
         block.templates.forEach((t) => {
           if (t.id === memoryBlock.templateId) {
             t.checked = true;
@@ -47,6 +48,7 @@ const Store = {
             (b) => b.blockId === block.id
           );
           block.sort = memoryBlock.sort;
+          block.active = memoryBlock.active;
           block.templates.forEach((t) => {
             if (t.id === memoryBlock.templateId) {
               t.checked = true;
@@ -57,20 +59,20 @@ const Store = {
         });
       });
     },
-    setSort(state, { blockId, sort }) {
+    setBlockProp(state, { blockId, property, value }) {
       let page = state.pages.find((page) => page.active);
       page = page || state.pages[0];
       const block = page.blocks.find((b) => b.id === blockId);
       if (block) {
-        block.sort = sort;
+        block[property] = value;
       }
     },
     changeBlocksRender(state, payload) {
       state.blocksRender = payload;
     },
     createMemory(state) {
-      const pagesMemory = [];
       const scaffoldMemory = [];
+      const pagesMemory = [];
 
       Object.values(state.scaffold).forEach((block) => {
         const template = block.templates
@@ -79,6 +81,7 @@ const Store = {
         scaffoldMemory.push({
           blockId: block.id,
           sort: block.sort,
+          active: block.active,
           templateId: template ? template.id : null,
         });
       });
@@ -92,6 +95,7 @@ const Store = {
           blocks.push({
             blockId: block.id,
             sort: block.sort,
+            active: block.active,
             templateId: template ? template.id : null,
           });
         });

@@ -20,10 +20,13 @@
     <div v-if="block.data.edit" class="slr2-page-settings__block__edit">
       <span @click.prevent="edit">{{ block.data.edit }}</span>
     </div>
+    <control-switcher :block="block"></control-switcher>
   </div>
 </template>
 
 <script>
+import ControlSwitcher from './ControlSwitcher.vue';
+
 export default {
   props: ['block'],
   computed: {
@@ -40,6 +43,9 @@ export default {
         isEdited: true,
       });
     },
+  },
+  components: {
+    ControlSwitcher,
   },
 };
 </script>

@@ -62,7 +62,9 @@ export default {
 }
 .slr2-page-settings__template__title {
   font-size: var(--ui-font-size-md);
+  line-height: 1.1;
   font-weight: bold;
+  margin-right: 50px;
   margin-bottom: var(--slr2-gap-middle);
 }
 .slr2-page-settings__template__img {

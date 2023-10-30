@@ -1,7 +1,7 @@
 <template>
   <div class="slr2-page-settings__left-menu">
     <left-menu-item
-      v-for="page in this.$store.state.pages"
+      v-for="page in this.$store.state.data.pages"
       :page="page"
       :key="page.id"
     ></left-menu-item>

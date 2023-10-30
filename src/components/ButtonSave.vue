@@ -8,8 +8,39 @@
 export default {
   methods: {
     click() {
-      this.$store.state.onSave(this.$store.state.pages);
+      this.save();
       this.$store.commit('createMemory');
+    },
+    async save() {
+      let formData = new FormData(),
+        controller = new AbortController(),
+        response;
+      //result;
+
+      formData.set('action', this.$store.state.onSave.action);
+      formData.set('data', this.$store.state.data);
+
+      setTimeout(() => {
+        if (!response) {
+          controller.abort();
+        }
+      }, 20000);
+
+      response = await fetch(this.$store.state.onSave.url, {
+        method: 'POST',
+        body: formData,
+        signal: controller.signal,
+      });
+
+      //   result = await response.json();
+
+      //   if (result && typeof result === 'object') {
+      //     if (result.errors) {
+      //       console.log(result.errors[0].message);
+      //     }
+      //   } else {
+      //     console.log();
+      //   }
     },
   },
 };

@@ -1,7 +1,7 @@
 <template>
-  <block-static :block="$store.state.scaffold.header"></block-static>
+  <block-static :block="$store.state.data.scaffold.header"></block-static>
   <container-sortable></container-sortable>
-  <block-static :block="$store.state.scaffold.footer"></block-static>
+  <block-static :block="$store.state.data.scaffold.footer"></block-static>
 </template>
 
 <script>

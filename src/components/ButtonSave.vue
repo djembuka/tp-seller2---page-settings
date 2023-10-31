@@ -18,7 +18,7 @@ export default {
       //result;
 
       formData.set('action', this.$store.state.onSave.action);
-      formData.set('data', this.$store.state.data);
+      formData.set('data', JSON.stringify(this.$store.state.data));
 
       setTimeout(() => {
         if (!response) {

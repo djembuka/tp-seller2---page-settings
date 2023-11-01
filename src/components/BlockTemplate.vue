@@ -7,8 +7,11 @@
     <control-radio :checked="template.checked"></control-radio>
     <div class="slr2-page-settings__template__title">{{ template.title }}</div>
     <img :src="template.img" class="slr2-page-settings__template__img" />
-    <div class="slr2-page-settings__template__edit">
-      <span>{{ template.edit }}</span>
+    <div
+      class="slr2-page-settings__template__edit"
+      v-if="template.settings && template.edit"
+    >
+      <span @click="edit">{{ template.edit }}</span>
     </div>
   </div>
 </template>
@@ -28,6 +31,9 @@ export default {
         blockId: this.$store.getters.isEditedBlock.id,
         templateId: this.template.id,
       });
+    },
+    edit() {
+      this.$store.commit('changeStep', 'step3');
     },
   },
   components: {

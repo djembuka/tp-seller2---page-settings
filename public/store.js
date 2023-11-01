@@ -21,6 +21,20 @@ window.seller2PageSettingsStore = {
             img: 'img/header1.png',
             edit: 'Настроить',
             checked: true,
+            settings: [
+              {
+                type: 'text',
+                name: 'BLOCK_NAME',
+                label: 'Название блока',
+                value: '',
+              },
+              {
+                type: 'text',
+                name: 'BLOCK_TITLE',
+                label: 'Заголовок блока',
+                value: '',
+              },
+            ],
           },
           {
             id: '992',
@@ -360,5 +374,9 @@ window.seller2PageSettingsStore = {
   onSave: {
     url: 'response.json',
     action: 'twinpx:seller.api.methods.save',
+  },
+  lang: {
+    settingsTitle: 'Настройки блока',
+    settingsText: 'Отредактируйте свойства блока.',
   },
 };

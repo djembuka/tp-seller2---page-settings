@@ -1,5 +1,62 @@
-<template>Step3</template>
+<template>
+  <div class="slr2-page-settings__settings">
+    <div class="slr2-page-settings__settings-info">
+      <div class="slr2-page-settings__settings__title">
+        {{ $store.state.lang.settingsTitle }}: {{ template.title }}
+      </div>
+      <div
+        class="slr2-page-settings__settings__text"
+        v-html="$store.state.lang.settingsText"
+      ></div>
+    </div>
+
+    <form action="" method="">
+      {{ template.settings }}
+
+      <control-text
+        v-for="(control, index) in template.settings"
+        :key="index * Math.floor(Math.random() * 100000)"
+        :control="control"
+      >
+      </control-text>
+    </form>
+  </div>
+</template>
 
 <script>
-export default {};
+import ControlText from './ControlText.vue';
+
+export default {
+  data() {
+    return {
+      template: this.$store.getters.isEditedBlock.templates.find(
+        (t) => t.checked
+      ),
+    };
+  },
+  methods: {},
+  components: {
+    ControlText,
+  },
+};
 </script>
+
+<style>
+.slr2-page-settings__settings {
+  background-color: #fff;
+  padding: var(--slr2-padding) var(--slr2-padding) 0;
+  position: relative;
+  border-radius: 8px;
+}
+.slr2-page-settings__settings-info {
+  margin-bottom: var(--slr2-gap);
+}
+.slr2-page-settings__settings__title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: var(--slr2-gap-middle);
+}
+.slr2-page-settings__settings__text {
+  font-size: 14px;
+}
+</style>

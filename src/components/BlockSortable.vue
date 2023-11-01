@@ -17,7 +17,10 @@
     >
       {{ block.data.description['step1'] }}
     </div>
-    <div v-if="block.data.edit" class="slr2-page-settings__block__edit">
+    <div
+      v-if="block.templates && block.data.edit"
+      class="slr2-page-settings__block__edit"
+    >
       <span @click.prevent="edit">{{ block.data.edit }}</span>
     </div>
     <control-switcher :block="block"></control-switcher>

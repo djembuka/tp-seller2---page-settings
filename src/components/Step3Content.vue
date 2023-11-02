@@ -1,5 +1,5 @@
 <template>
-  <div class="slr2-page-settings__settings">
+  <div class="slr2-page-settings__settings" v-if="$store.state.render">
     <div class="slr2-page-settings__settings-info">
       <div class="slr2-page-settings__settings__title">
         {{ $store.state.lang.settingsTitle }}: {{ template.title }}
@@ -11,12 +11,12 @@
     </div>
 
     <form action="" method="">
-      {{ template.settings }}
-
       <control-text
         v-for="(control, index) in template.settings"
         :key="index * Math.floor(Math.random() * 100000)"
         :control="control"
+        :controlIndex="index"
+        :templateId="template.id"
       >
       </control-text>
     </form>

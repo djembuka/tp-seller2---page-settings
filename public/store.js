@@ -26,7 +26,8 @@ window.seller2PageSettingsStore = {
                 type: 'text',
                 name: 'BLOCK_NAME',
                 label: 'Название блока',
-                value: '',
+                value: 'sdf',
+                disabled: '/img/lock.svg',
               },
               {
                 type: 'text',

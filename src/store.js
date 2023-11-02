@@ -39,6 +39,12 @@ const Store = {
           } else if (t.checked) {
             delete t.checked;
           }
+
+          if (t.settings && memoryBlock.settings) {
+            t.settings.forEach((s, i) => {
+              s.value = memoryBlock.settings[i];
+            });
+          }
         });
       });
       state.data.pages.forEach((page) => {
@@ -55,9 +61,28 @@ const Store = {
             } else if (t.checked) {
               delete t.checked;
             }
+
+            if (t.settings) {
+              t.settings.forEach((s, i) => {
+                s.value = memoryBlock.settings[i];
+              });
+            }
           });
         });
       });
+
+      if (state.step === 'step3') {
+        
+      }
+
+      
+    async function forceRender() {
+      this.render = false;
+      await this.$nextTick();
+      this.render = true;
+      await this.$nextTick();
+      this.setSortable();
+    },
     },
     setBlockProp(state, { blockId, property, value }) {
       let page = state.data.pages.find((page) => page.active);
@@ -83,6 +108,10 @@ const Store = {
           sort: block.sort,
           active: block.active,
           templateId: template ? template.id : null,
+          settings:
+            template && template.settings
+              ? template.settings.map((c) => c.value)
+              : null,
         });
       });
 
@@ -97,6 +126,10 @@ const Store = {
             sort: block.sort,
             active: block.active,
             templateId: template ? template.id : null,
+            settings:
+              template && template.settings
+                ? template.settings.map((c) => c.value)
+                : null,
           });
         });
         pagesMemory.push({
@@ -105,7 +138,10 @@ const Store = {
         });
       });
 
-      state.memory = { scaffold: scaffoldMemory, pages: pagesMemory };
+      state.memory = {
+        scaffold: scaffoldMemory,
+        pages: pagesMemory,
+      };
     },
     changeStep(state, step) {
       state.step = step;
@@ -154,6 +190,23 @@ const Store = {
       block.templates.find(
         (template) => template.id === templateId
       ).checked = true;
+    },
+    setControlValue(state, { blockId, templateId, controlIndex, value }) {
+      let block = Object.values(state.data.scaffold).find(
+        (staticBlock) => staticBlock.id === blockId
+      );
+      if (!block) {
+        Object.values(state.data.pages).forEach((page) => {
+          block = page.blocks.find((block) => block.id === blockId) || block;
+        });
+      }
+
+      const template = block.templates.find(
+        (template) => template.id === templateId
+      );
+
+      const control = template.settings[controlIndex];
+      control.value = value;
     },
   },
   getters: {

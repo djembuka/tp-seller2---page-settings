@@ -2,6 +2,7 @@ const Store = {
   state: {
     ...window.seller2PageSettingsStore,
     step: 'step1', //step1 - catalog of pages, step2 - block and its templates, step3 - block's template settings
+    render: true,
   },
   mutations: {
     setPageActive(state, { pageIndex, pageId }) {
@@ -70,19 +71,9 @@ const Store = {
           });
         });
       });
-
-      if (state.step === 'step3') {
-        
-      }
-
-      
-    async function forceRender() {
-      this.render = false;
-      await this.$nextTick();
-      this.render = true;
-      await this.$nextTick();
-      this.setSortable();
     },
+    setRender(state, render) {
+      state.render = render;
     },
     setBlockProp(state, { blockId, property, value }) {
       let page = state.data.pages.find((page) => page.active);
@@ -191,7 +182,7 @@ const Store = {
         (template) => template.id === templateId
       ).checked = true;
     },
-    setControlValue(state, { blockId, templateId, controlIndex, value }) {
+    setControlValue(state, { blockId, templateId, controlId, value }) {
       let block = Object.values(state.data.scaffold).find(
         (staticBlock) => staticBlock.id === blockId
       );
@@ -205,7 +196,7 @@ const Store = {
         (template) => template.id === templateId
       );
 
-      const control = template.settings[controlIndex];
+      const control = template.settings.find((s) => s.id === controlId);
       control.value = value;
     },
   },

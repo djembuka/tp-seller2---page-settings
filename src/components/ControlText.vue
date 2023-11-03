@@ -1,5 +1,4 @@
 <template>
-  {{ control.value }}, {{ value }}
   <div
     class="slr2-page-settings__control"
     :class="{
@@ -38,7 +37,7 @@ export default {
       disabled: this.control.disabled,
     };
   },
-  props: ['control', 'controlIndex', 'templateId'],
+  props: ['control', 'templateId'],
   methods: {
     focus() {
       this.active = true;
@@ -50,7 +49,7 @@ export default {
       this.$store.commit('setControlValue', {
         blockId: this.$store.getters.isEditedBlock.id,
         templateId: this.templateId,
-        controlIndex: this.controlIndex,
+        controlId: this.control.id,
         value: this.value,
       });
     },
@@ -60,13 +59,13 @@ export default {
 
 <style>
 .slr2-page-settings__control {
-  margin-bottom: var(--slr2-gap-middle);
   position: relative;
+  margin-bottom: var(--slr2-gap-middle);
 }
 .slr2-page-settings__control--active .slr2-page-settings__label {
-  -webkit-transform: translateY(3px);
-  transform: translateY(3px);
-  font-size: 11px;
+  -webkit-transform: translateY(5px);
+  transform: translateY(5px);
+  font-size: 9px;
   color: #848c95;
 }
 .slr2-page-settings__control__disabled-icon {
@@ -92,6 +91,7 @@ export default {
   -webkit-transform: translateY(14px);
   transform: translateY(14px);
   pointer-events: none;
+  line-height: 1.1;
 }
 .slr2-page-settings__control--invalid .slr2-page-settings__label {
   color: #ff0000;
@@ -132,5 +132,7 @@ export default {
 .slr2-page-settings__control--disabled .slr2-page-settings__control-text {
   color: #00000055;
   pointer-events: none;
+  background-color: #f5f7f855;
+  border: 1px solid #f5f7f855 !important;
 }
 </style>

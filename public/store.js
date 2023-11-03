@@ -23,6 +23,7 @@ window.seller2PageSettingsStore = {
             checked: true,
             settings: [
               {
+                id: 'qwe',
                 type: 'text',
                 name: 'BLOCK_NAME',
                 label: 'Название блока',
@@ -30,10 +31,22 @@ window.seller2PageSettingsStore = {
                 disabled: '/img/lock.svg',
               },
               {
+                id: 'wer',
                 type: 'text',
                 name: 'BLOCK_TITLE',
                 label: 'Заголовок блока',
                 value: '',
+              },
+              {
+                id: 'ert',
+                type: 'file',
+                name: 'BLOCK_TLOGO',
+                label: 'Картинка превью',
+                maxSize: 102400000,
+                default: '<a href>Выберите файл</a> (pdf, до 100МБ)',
+                ext: ['pdf'],
+                value: 'filename.pdf',
+                //disabled: '/img/lock.svg',
               },
             ],
           },

@@ -5,7 +5,6 @@
       :page="page"
       :key="page.id"
     ></left-menu-item>
-    <pre>{{ $store.state.memory }}</pre>
   </div>
 </template>
 

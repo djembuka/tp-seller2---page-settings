@@ -11,20 +11,21 @@
     </div>
 
     <form action="" method="">
-      <control-text
+      <component
         v-for="(control, index) in template.settings"
+        :is="`control-${control.type}`"
         :key="index * Math.floor(Math.random() * 100000)"
         :control="control"
-        :controlIndex="index"
         :templateId="template.id"
       >
-      </control-text>
+      </component>
     </form>
   </div>
 </template>
 
 <script>
 import ControlText from './ControlText.vue';
+import ControlFile from './ControlFile.vue';
 
 export default {
   data() {
@@ -37,6 +38,7 @@ export default {
   methods: {},
   components: {
     ControlText,
+    ControlFile,
   },
 };
 </script>

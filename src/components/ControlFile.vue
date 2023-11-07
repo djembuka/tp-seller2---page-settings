@@ -13,7 +13,6 @@
     />
     <span
       class="slr2-page-settings__control-file__clear"
-      :class="{ 'btn--load-circle': loadCircle }"
       @click.prevent="clearInputFile"
       v-if="isClearable"
     ></span>
@@ -21,7 +20,6 @@
       class="slr2-page-settings__control-file"
       :class="{
         filled: isFilled,
-        deleting: loadCircle,
         clearable: isClearable,
       }"
       ref="controlFile"
@@ -61,7 +59,6 @@ export default {
     return {
       disabled: this.control.disabled,
       loading: false,
-      loadCircle: false,
       isFileLoaded: false,
       isActive: true,
       files: [],
@@ -83,7 +80,7 @@ export default {
       return !!this.invalidString;
     },
     isClearable() {
-      return this.loadCircle || !!this.filename;
+      return !!this.filename;
     },
     isFilled() {
       return !!this.filename;
@@ -126,9 +123,7 @@ export default {
       return this.control.default;
     },
     filename() {
-      return this.control.multy
-        ? this.control.filename[this.controlIndex]
-        : this.control.filename;
+      return this.control.value;
     },
   },
   methods: {
@@ -143,16 +138,14 @@ export default {
       this.files = files;
     },
     clearInputFile() {
-      this.loadCircle = true;
       this.loading = false;
       this.files = [];
       this.$refs.inputFile.value = '';
       //set value
-      this.$store.commit('setFile', {
-        id: this.controlId,
-        property: this.control.property,
-        filename: '',
-        controlIndex: this.controlIndex,
+      this.$store.commit('setControlValue', {
+        blockId: this.$store.getters.isEditedBlock.id,
+        templateId: this.templateId,
+        controlId: this.control.id,
         value: '',
       });
     },
@@ -432,7 +425,7 @@ export default {
 .slr2-page-settings__control-file__clear {
   position: absolute;
   top: calc(50% - 8px);
-  right: 30px;
+  right: 16px;
   width: 16px;
   height: 16px;
   cursor: pointer;

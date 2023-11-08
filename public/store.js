@@ -195,6 +195,7 @@ window.seller2PageSettingsStore = {
       {
         id: '123',
         name: 'Главная страница',
+        icon: 'img/document-normal.svg',
         blocks: [
           {
             id: '457',
@@ -561,6 +562,7 @@ window.seller2PageSettingsStore = {
       {
         id: '124',
         name: 'Корзина',
+        icon: 'img/screenmirroring.svg',
         blocks: [
           {
             id: '157',
@@ -639,6 +641,7 @@ window.seller2PageSettingsStore = {
       {
         id: '125',
         name: 'Каталог',
+        icon: 'img/element-4.svg',
         blocks: [
           {
             id: '257',

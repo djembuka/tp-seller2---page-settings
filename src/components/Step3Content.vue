@@ -1,4 +1,5 @@
 <template>
+  <the-breadcrumbs></the-breadcrumbs>
   <div class="slr2-page-settings__settings" v-if="$store.state.render">
     <div class="slr2-page-settings__settings-info">
       <div class="slr2-page-settings__settings__title">
@@ -26,6 +27,7 @@
 <script>
 import ControlText from './ControlText.vue';
 import ControlFile from './ControlFile.vue';
+import TheBreadcrumbs from './TheBreadcrumbs.vue';
 
 export default {
   data() {
@@ -39,6 +41,7 @@ export default {
   components: {
     ControlText,
     ControlFile,
+    TheBreadcrumbs,
   },
 };
 </script>

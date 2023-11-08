@@ -22,8 +22,6 @@ export default {
 .slr2-page-settings__left-menu {
   grid-row-start: 1;
   grid-row-end: 3;
-  background-color: var(--slr2-background);
-  padding: 20px;
   font-weight: bold;
   font-size: var(--ui-font-size-md);
 }

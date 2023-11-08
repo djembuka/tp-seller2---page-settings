@@ -1,6 +1,6 @@
 <template>
   <div class="slr2-page-settings__button-cancel" @click.prevent="click">
-    Отмена
+    <span>Отмена</span>
   </div>
 </template>
 
@@ -39,12 +39,17 @@ export default {
   justify-content: center;
   align-items: center;
   font-size: var(--ui-font-size-xl);
-  color: #353cb1;
-  -webkit-transition: opacity 0.3s ease;
-  transition: opacity 0.3s ease;
+  font-weight: bold;
+  color: var(--slr2-buttons);
+  background-color: var(--slr2-light);
+  border-radius: 8px;
   cursor: pointer;
 }
-.slr2-page-settings__button-cancel:hover {
+.slr2-page-settings__button-cancel span {
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+.slr2-page-settings__button-cancel:hover span {
   opacity: 0.7;
 }
 .slr2-page-settings__button-cancel--disabled {

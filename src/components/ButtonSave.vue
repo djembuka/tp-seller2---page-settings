@@ -53,8 +53,9 @@ export default {
   justify-content: center;
   align-items: center;
   font-size: var(--ui-font-size-xl);
-  background-color: #353cb1;
+  background-color: var(--slr2-buttons);
   color: #fff;
+  border-radius: 8px;
   -webkit-transition: opacity 0.3s ease;
   transition: opacity 0.3s ease;
   cursor: pointer;

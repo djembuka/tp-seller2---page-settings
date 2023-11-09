@@ -4,8 +4,12 @@
     :class="{ 'slr2-page-settings__template--checked': template.checked }"
     @click.prevent="click"
   >
-    <control-radio :checked="template.checked"></control-radio>
-    <div class="slr2-page-settings__template__title">{{ template.title }}</div>
+    <div class="slr2-page-settings__template__title">
+      <div class="slr2-page-settings__template__title-text">
+        {{ template.title }}
+      </div>
+      <control-radio :checked="template.checked"></control-radio>
+    </div>
     <img :src="template.img" class="slr2-page-settings__template__img" />
     <div
       class="slr2-page-settings__template__edit"
@@ -67,11 +71,16 @@ export default {
   box-shadow: none;
 }
 .slr2-page-settings__template__title {
-  font-size: var(--ui-font-size-md);
-  line-height: 1.1;
-  font-weight: bold;
-  margin-right: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: var(--slr2-gap-middle);
+}
+.slr2-page-settings__template__title-text {
+  font-size: var(--ui-font-size-md);
+  font-weight: bold;
+  line-height: 1.1;
+  margin-right: var(--slr2-gap-middle);
 }
 .slr2-page-settings__template__img {
   display: block;
@@ -89,8 +98,5 @@ export default {
   opacity: 0.7;
 }
 .slr2-page-settings__template .slr2-page-settings__radio {
-  position: absolute;
-  top: 18px;
-  right: 18px;
 }
 </style>

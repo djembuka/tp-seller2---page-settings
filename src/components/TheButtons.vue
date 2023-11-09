@@ -3,9 +3,9 @@
     <component
       v-for="button in this.$store.state.buttons"
       :key="button.code"
-      :is="`button${button.code
-        .substring(0, 1)
-        .toUpperCase()}${button.code.substring(1).toLowerCase()}`"
+      :is="`button${button.code.substring(0, 1).toUpperCase()}${button.code
+        .substring(1)
+        .toLowerCase()}`"
       :button="button"
     ></component>
   </div>
@@ -26,7 +26,7 @@ export default {
 <style>
 .slr2-page-settings__buttons {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3fr 7fr;
   gap: var(--slr2-gap);
 }
 </style>

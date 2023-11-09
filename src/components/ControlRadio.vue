@@ -25,11 +25,10 @@ export default {
 [type='radio']:not(:checked) + span,
 [type='radio']:checked + span {
   position: relative;
-  padding-left: 35px;
+  padding-left: 20px;
   cursor: pointer;
-  display: inline-block;
-  height: 25px;
-  line-height: 25px;
+  display: block;
+  height: 20px;
   font-size: 1rem;
   -webkit-transition: 0.28s ease;
   transition: 0.28s ease;
@@ -45,7 +44,6 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-  margin: 4px;
   width: 16px;
   height: 16px;
   z-index: 0;

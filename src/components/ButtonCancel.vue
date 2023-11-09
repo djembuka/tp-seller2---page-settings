@@ -1,6 +1,6 @@
 <template>
   <div class="slr2-page-settings__button-cancel" @click.prevent="click">
-    <span>Отмена</span>
+    Отмена
   </div>
 </template>
 
@@ -44,12 +44,10 @@ export default {
   background-color: var(--slr2-light);
   border-radius: 8px;
   cursor: pointer;
-}
-.slr2-page-settings__button-cancel span {
   -webkit-transition: opacity 0.3s ease;
   transition: opacity 0.3s ease;
 }
-.slr2-page-settings__button-cancel:hover span {
+.slr2-page-settings__button-cancel:hover {
   opacity: 0.7;
 }
 .slr2-page-settings__button-cancel--disabled {

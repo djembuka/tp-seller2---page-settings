@@ -20,8 +20,6 @@ export default {
 
 <style>
 .slr2-page-settings__left-menu {
-  grid-row-start: 1;
-  grid-row-end: 3;
   font-weight: bold;
   font-size: var(--ui-font-size-md);
 }

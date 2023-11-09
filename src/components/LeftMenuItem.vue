@@ -7,7 +7,7 @@
   >
     <span>
       <img :src="page.icon" class="slr2-page-settings__left-menu__img" alt="" />
-      <span class="slr2-page-settings__left-menu__text">{{ page.name }}</span>
+      {{ page.name }}
     </span>
   </div>
 </template>
@@ -46,22 +46,13 @@ export default {
   border-radius: 8px;
   cursor: pointer;
   color: var(--slr2-buttons);
-  -webkit-transition: background-color 0.3s ease;
-  transition: background-color 0.3s ease;
-}
-.slr2-page-settings__left-menu__text {
-  -webkit-transition: opacity 0.3s ease;
-  transition: opacity 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 .slr2-page-settings__left-menu__item:not(
     .slr2-page-settings__left-menu__item--active
   ):hover {
   background-color: var(--slr2-light);
-}
-.slr2-page-settings__left-menu__item:not(
-    .slr2-page-settings__left-menu__item--active
-  ):hover
-  .slr2-page-settings__left-menu__text {
   opacity: 0.7;
 }
 .slr2-page-settings__left-menu__item--active {

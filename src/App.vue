@@ -2,21 +2,18 @@
   <div class="slr2-page-settings-grid">
     <the-left-menu></the-left-menu>
     <the-main-content></the-main-content>
-    <the-buttons></the-buttons>
   </div>
 </template>
 
 <script>
 import TheLeftMenu from './components/TheLeftMenu.vue';
 import TheMainContent from './components/TheMainContent.vue';
-import TheButtons from './components/TheButtons.vue';
 
 export default {
   name: 'seller2PageSettings',
   components: {
     TheLeftMenu,
     TheMainContent,
-    TheButtons,
   },
   created() {
     this.$store.commit('createMemory');

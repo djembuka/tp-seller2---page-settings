@@ -2,13 +2,15 @@
   <div class="slr2-page-settings__breadcrumbs">
     <div
       class="slr2-page-settings__breadcrumbs__item"
-      @click.prevent="$store.commit('changeStep', 'step1')"
+      v-if="$store.getters.activePage && $store.state.step !== 'step1'"
+      @click.prevent="toStep1"
     >
       {{ $store.getters.activePage.name }}
     </div>
     <div
       class="slr2-page-settings__breadcrumbs__item"
-      @click.prevent="$store.commit('changeStep', 'step2')"
+      v-if="$store.getters.isEditedBlock && $store.state.step !== 'step2'"
+      @click.prevent="toStep2"
     >
       {{ $store.getters.isEditedBlock.data.title }}
     </div>
@@ -17,8 +19,21 @@
 
 <script>
 export default {
-  data() {
-    return {};
+  methods: {
+    toStep1() {
+      if (this.$store.getters.isEditedBlock) {
+        this.$store.commit('setBlockIsEdited', {
+          pageId: this.$store.getters.activePage.id,
+          blockId: this.$store.getters.isEditedBlock.id,
+          isEdited: false,
+        });
+      }
+
+      this.$store.commit('changeStep', 'step1');
+    },
+    toStep2() {
+      this.$store.commit('changeStep', 'step2');
+    },
   },
 };
 </script>

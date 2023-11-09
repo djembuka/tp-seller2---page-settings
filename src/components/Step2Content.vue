@@ -1,4 +1,5 @@
 <template>
+  <the-breadcrumbs></the-breadcrumbs>
   <div class="slr2-page-settings__templates">
     <div class="slr2-page-settings__templates-block-info">
       <div
@@ -6,10 +7,7 @@
         class="slr2-page-settings__block__icon"
         :style="'background-image: url(' + block.data.icon + ');'"
       ></div>
-      <div
-        v-if="block.data.title"
-        class="slr2-page-settings__block__title"
-      >
+      <div v-if="block.data.title" class="slr2-page-settings__block__title">
         {{ block.data.title }}
       </div>
       <div
@@ -30,6 +28,7 @@
 
 <script>
 import BlockTemplate from './BlockTemplate.vue';
+import TheBreadcrumbs from './TheBreadcrumbs.vue';
 
 export default {
   data() {
@@ -40,6 +39,7 @@ export default {
   methods: {},
   components: {
     BlockTemplate,
+    TheBreadcrumbs,
   },
 };
 </script>

@@ -1,7 +1,18 @@
 <template>
-  <block-static :block="$store.state.data.scaffold.header"></block-static>
+  <div
+    v-for="block in this.$store.getters.activePage.blocks.top"
+    :key="block.id"
+  >
+    <block-static :block="block"></block-static>
+  </div>
   <container-sortable></container-sortable>
-  <block-static :block="$store.state.data.scaffold.footer"></block-static>
+
+  <div
+    v-for="block in this.$store.getters.activePage.blocks.bottom"
+    :key="block.id"
+  >
+    <block-static :block="block"></block-static>
+  </div>
 </template>
 
 <script>

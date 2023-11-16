@@ -1,24 +1,21 @@
 <template>
   <div class="slr2-page-settings__block">
     <div
-      v-if="block.data.icon"
+      v-if="block.icon"
       class="slr2-page-settings__block__icon"
-      :style="'background-image: url(' + block.data.icon + ');'"
+      :style="'background-image: url(' + block.icon + ');'"
     ></div>
-    <div v-if="block.data.title" class="slr2-page-settings__block__title">
-      {{ blockTemplateTitle }}
+    <div v-if="block.name" class="slr2-page-settings__block__title">
+      {{ blockVariantTitle }}
     </div>
     <div
-      v-if="block.data.description"
+      v-if="block.description"
       class="slr2-page-settings__block__description"
     >
-      {{ block.data.description['step1'] }}
+      {{ block.description['step1'] }}
     </div>
-    <div
-      v-if="block.templates && block.data.edit"
-      class="slr2-page-settings__block__edit"
-    >
-      <span @click.prevent="edit">{{ block.data.edit }}</span>
+    <div v-if="block.variants" class="slr2-page-settings__block__edit">
+      <span @click.prevent="edit">{{ $store.state.lang.edit }}</span>
     </div>
   </div>
 </template>
@@ -27,8 +24,9 @@
 export default {
   props: ['block'],
   computed: {
-    blockTemplateTitle() {
-      return this.block.templates.find((t) => t.checked).title;
+    blockVariantTitle() {
+      const variant = this.block.variants.find((t) => t.checked);
+      return variant ? variant.name : '';
     },
   },
   methods: {

@@ -11,12 +11,10 @@ window.BX = {
                 {
                   id: 's1',
                   name: '\u0421\u0430\u0439\u0442 \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e',
-                  sort: '1',
                 },
                 {
                   id: 'st',
                   name: 'Site Test',
-                  sort: '1',
                 },
               ],
               errors: [],
@@ -205,6 +203,7 @@ window.BX = {
             });
           });
           break;
+
         case 'twinpx:seller.api.methods.block':
           result = new Promise((resolve) => {
             resolve({

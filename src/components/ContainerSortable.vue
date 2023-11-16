@@ -3,7 +3,7 @@
     <div v-if="render">
       <div class="slr2-page-settings__sortable" ref="sortable">
         <block-sortable
-          v-for="block in this.$store.getters.activePage.blocks"
+          v-for="block in this.$store.getters.activePage.blocks.other"
           :block="block"
           :key="block.id"
         ></block-sortable>

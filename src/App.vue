@@ -1,5 +1,5 @@
 <template>
-  <div class="slr2-page-settings-grid">
+  <div class="slr2-page-settings-grid" v-if="$store.state.structureLoaded">
     <the-left-menu></the-left-menu>
     <the-main-content></the-main-content>
   </div>
@@ -15,12 +15,11 @@ export default {
     TheLeftMenu,
     TheMainContent,
   },
-  created() {
-    this.$store.dispatch('loadStructure');
-    this.$store.commit('createMemory');
+  async beforeMount() {},
+  async created() {
+    await this.$store.dispatch('loadStructure');
     this.$store.commit('setPageActive', { pageIndex: 0 });
-    this.$store.commit('sortBlocks');
-    this.$store.commit('initTemplateChecked');
+    this.$store.commit('initVariantChecked');
   },
 };
 </script>

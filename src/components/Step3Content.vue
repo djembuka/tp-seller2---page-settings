@@ -3,7 +3,7 @@
   <div class="slr2-page-settings__settings" v-if="$store.state.render">
     <div class="slr2-page-settings__settings-info">
       <div class="slr2-page-settings__settings__title">
-        {{ $store.state.lang.settingsTitle }}: {{ template.title }}
+        {{ $store.state.lang.settingsTitle }}: {{ variant.name }}
       </div>
       <div
         class="slr2-page-settings__settings__text"
@@ -13,11 +13,11 @@
 
     <form action="" method="">
       <component
-        v-for="(control, index) in template.settings"
+        v-for="(control, index) in variant.settings"
         :is="`control-${control.type}`"
         :key="index * Math.floor(Math.random() * 100000)"
         :control="control"
-        :templateId="template.id"
+        :templateId="variant.id"
       >
       </component>
     </form>
@@ -32,8 +32,8 @@ import TheBreadcrumbs from './TheBreadcrumbs.vue';
 export default {
   data() {
     return {
-      template: this.$store.getters.isEditedBlock.templates.find(
-        (t) => t.checked
+      variant: this.$store.getters.isEditedBlock.variants.find(
+        (v) => v.id === this.$store.getters.isEditedBlock.activeVariant
       ),
     };
   },

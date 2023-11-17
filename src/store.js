@@ -12,20 +12,26 @@ const Store = {
         name: 'Сохранить',
       },
     ],
-    onSave: {
-      url: 'response.json',
-      action: 'twinpx:seller.api.methods.save',
-    },
     lang: {
       settingsTitle: 'Настройки блока',
       settingsText: 'Отредактируйте свойства блока.',
       edit: 'Изменить',
+      tune: 'Настроить',
     },
   },
   mutations: {
+    setMemory(state, value) {
+      state.memory = value;
+    },
     setStructure(state, structure) {
       state.data = structure;
       state.structureLoaded = true;
+    },
+    setPageBlocks(state, { pageId, blocks }) {
+      const page = state.data.sites[0].pages.find((p) => p.id === pageId);
+      if (page) {
+        page.blocks = blocks;
+      }
     },
     setPageActive(state, { pageIndex, pageId }) {
       state.data.sites[0].pages.forEach((page, index) => {
@@ -34,51 +40,6 @@ const Store = {
         } else if (pageId !== undefined) {
           page.active = page.id === pageId;
         }
-      });
-    },
-    resetPages(state) {
-      Object.values(state.data.scaffold).forEach((block) => {
-        const memoryBlock = state.memory.scaffold.find(
-          (b) => b.blockId === block.id
-        );
-        block.sort = memoryBlock.sort;
-        block.active = memoryBlock.active;
-        block.templates.forEach((t) => {
-          if (t.id === memoryBlock.templateId) {
-            t.checked = true;
-          } else if (t.checked) {
-            delete t.checked;
-          }
-
-          if (t.settings && memoryBlock.settings) {
-            t.settings.forEach((s, i) => {
-              s.value = memoryBlock.settings[i];
-            });
-          }
-        });
-      });
-      state.data.pages.forEach((page) => {
-        const memoryPage = state.memory.pages.find((p) => p.pageId === page.id);
-        page.blocks.forEach((block) => {
-          const memoryBlock = memoryPage.blocks.find(
-            (b) => b.blockId === block.id
-          );
-          block.sort = memoryBlock.sort;
-          block.active = memoryBlock.active;
-          block.templates.forEach((t) => {
-            if (t.id === memoryBlock.templateId) {
-              t.checked = true;
-            } else if (t.checked) {
-              delete t.checked;
-            }
-
-            if (t.settings) {
-              t.settings.forEach((s, i) => {
-                s.value = memoryBlock.settings[i];
-              });
-            }
-          });
-        });
       });
     },
     setRender(state, render) {
@@ -104,14 +65,15 @@ const Store = {
     },
     changeStep(state, step) {
       state.step = step;
+      delete state.memory;
     },
     setBlockIsEdited(state, { pageId, blockId, isEdited }) {
       let block;
 
-      Object.values(state.data.sites[0].pages).forEach((page) => {
+      state.data.sites[0].pages.forEach((page) => {
         if (page.id === pageId) {
           ['top', 'other', 'bottom'].forEach((type) => {
-            if (!block) {
+            if (!block && page.blocks && page.blocks[type]) {
               block =
                 page.blocks[type].find((block) => block.id === blockId) ||
                 block;
@@ -122,36 +84,35 @@ const Store = {
 
       block.isEdited = isEdited;
     },
-    initVariantChecked(state) {
-      Object.values(state.data.sites[0].pages).forEach((page) => {
+    initActiveVariant(state, { pageId }) {
+      const activePage = state.data.sites[0].pages.find((p) => p.id === pageId);
+      if (activePage && activePage.blocks) {
+        ['top', 'other', 'bottom'].forEach((type) => {
+          activePage.blocks[type].forEach((block) => {
+            const activeVariant = block.variants.find(
+              (v) => v.id === block.activeVariant
+            );
+            if (!activeVariant && block.variants && block.variants.length) {
+              block.activeVariant = block.variants[0].id;
+            }
+          });
+        });
+      }
+    },
+    setActiveVariant(state, { blockId, variantId }) {
+      let block;
+      state.data.sites[0].pages.forEach((page) => {
         if (page.blocks) {
           ['top', 'other', 'bottom'].forEach((type) => {
-            page.blocks[type].forEach((block) => {
-              const checkedVariant = block.variants.find((v) => v.checked);
-              if (!checkedVariant) {
-                block.variants[0].checked = true;
-              }
-            });
+            block =
+              page.blocks[type].find((block) => block.id === blockId) || block;
           });
         }
       });
-    },
-    setTemplateChecked(state, { blockId, templateId }) {
-      let block = Object.values(state.data.scaffold).find(
-        (staticBlock) => staticBlock.id === blockId
-      );
-      if (!block) {
-        Object.values(state.data.pages).forEach((page) => {
-          block = page.blocks.find((block) => block.id === blockId) || block;
-        });
-      }
 
-      block.templates.forEach((template) => delete template.checked);
-      block.templates.find(
-        (template) => template.id === templateId
-      ).checked = true;
+      block.activeVariant = variantId;
     },
-    setControlValue(state, { blockId, templateId, controlId, value }) {
+    setControlValue(state, { blockId, variantId, controlId, value }) {
       let block = Object.values(state.data.scaffold).find(
         (staticBlock) => staticBlock.id === blockId
       );
@@ -162,7 +123,7 @@ const Store = {
       }
 
       const template = block.templates.find(
-        (template) => template.id === templateId
+        (template) => template.id === variantId
       );
 
       const control = template.settings.find((s) => s.id === controlId);
@@ -177,9 +138,9 @@ const Store = {
     isEditedBlock(state) {
       let block;
 
-      Object.values(state.data.sites[0].pages).forEach((page) => {
+      state.data.sites[0].pages.forEach((page) => {
         ['top', 'other', 'bottom'].forEach((type) => {
-          if (!block) {
+          if (!block && page.blocks && page.blocks[type]) {
             block = page.blocks[type].find((block) => block.isEdited) || block;
           }
         });
@@ -189,6 +150,33 @@ const Store = {
     },
   },
   actions: {
+    async submitBlocksOrder({ state }, payload) {
+      const BX = window.BX;
+
+      if (BX && state) {
+        BX.ajax.runAction(`twinpx:seller.api.methods.saveBlocksOrder`, payload);
+      }
+    },
+    async loadPageBlocks({ state, commit }, { pageId }) {
+      let blocks;
+      const BX = window.BX;
+
+      if (BX) {
+        const response = BX.ajax.runAction(`twinpx:seller.api.methods.blocks`, {
+          data: {
+            sid: state.data.sites[0].id,
+            page: pageId,
+          },
+        });
+        await response.then((r) => {
+          if (r.status === 'success' && r.data) {
+            blocks = r.data;
+          }
+        });
+      }
+
+      commit('setPageBlocks', { pageId, blocks });
+    },
     async loadStructure({ commit }) {
       const sites = await bxAjaxRunAction({ type: 'sites' });
       const pages = await bxAjaxRunAction({

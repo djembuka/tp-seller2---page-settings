@@ -31,7 +31,9 @@ export default {
   props: ['block'],
   computed: {
     blockVariantTitle() {
-      const variant = this.block.variants.find((t) => t.checked);
+      const variant = this.block.variants.find(
+        (t) => t.id === this.block.activeVariant
+      );
       return variant ? variant.name : '';
     },
   },

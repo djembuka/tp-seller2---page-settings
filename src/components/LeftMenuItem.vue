@@ -16,7 +16,7 @@
 export default {
   props: ['page'],
   methods: {
-    click() {
+    async click() {
       if (this.page.active) return;
 
       if (this.$store.getters.isEditedBlock) {
@@ -29,6 +29,18 @@ export default {
 
       this.$store.commit('changeStep', 'step1');
       this.$store.commit('setPageActive', { pageId: this.page.id });
+      await this.$store.dispatch('loadPageBlocks', { pageId: this.page.id });
+      this.$store.commit('initActiveVariant', {
+        pageId: this.page.id,
+      });
+
+      //force blocks render
+      if (this.$store.state.step === 'step1') {
+        const event = new CustomEvent('seller2ForceBlocksRender');
+        document
+          .getElementById('seller2PageSettingsContainerSortable')
+          .dispatchEvent(event);
+      }
     },
   },
 };

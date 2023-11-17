@@ -9,38 +9,25 @@ export default {
   methods: {
     click() {
       this.save();
-      this.$store.commit('createMemory');
     },
     async save() {
-      let formData = new FormData(),
-        controller = new AbortController(),
-        response;
-      //result;
-
-      formData.set('action', this.$store.state.onSave.action);
-      formData.set('data', JSON.stringify(this.$store.state.data));
-
-      setTimeout(() => {
-        if (!response) {
-          controller.abort();
-        }
-      }, 20000);
-
-      response = await fetch(this.$store.state.onSave.url, {
-        method: 'POST',
-        body: formData,
-        signal: controller.signal,
-      });
-
-      //   result = await response.json();
-
-      //   if (result && typeof result === 'object') {
-      //     if (result.errors) {
-      //       console.log(result.errors[0].message);
-      //     }
-      //   } else {
-      //     console.log();
-      //   }
+      switch (this.$store.state.step) {
+        case 'step1':
+          await this.$store.dispatch('submitBlocksOrder', {
+            sid: this.$store.state.data.sites[0].id,
+            page: this.$store.getters.activePage.id,
+            section: 'other',
+            blocks:
+              this.$store.state.memory ||
+              this.$store.getters.activePage.blocks.other.map((b) => b.id),
+          });
+          break;
+        case 'step2':
+          break;
+        case 'step3':
+          //saveBlockSettings
+          break;
+      }
     },
   },
 };

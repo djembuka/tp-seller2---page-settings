@@ -8,12 +8,6 @@
 export default {
   methods: {
     click() {
-      this.$store.commit('resetPages');
-      if (this.$store.state.step === 'step1') {
-        this.$store.commit('sortBlocks');
-      } else if (this.$store.state.step === 'step3') {
-        this.forceRender();
-      }
       //force blocks render
       if (this.$store.state.step === 'step1') {
         const event = new CustomEvent('seller2ForceBlocksRender');

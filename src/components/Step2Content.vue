@@ -1,33 +1,29 @@
 <template>
   <the-breadcrumbs></the-breadcrumbs>
-  <div class="slr2-page-settings__templates">
-    <div class="slr2-page-settings__templates-block-info">
-      <div
-        v-if="block.data.icon"
-        class="slr2-page-settings__block__icon"
-        :style="'background-image: url(' + block.data.icon + ');'"
-      ></div>
-      <div v-if="block.data.title" class="slr2-page-settings__block__title">
-        {{ block.data.title }}
+  <div class="slr2-page-settings__variants">
+    <div class="slr2-page-settings__variants-block-info">
+      <div v-if="block.name" class="slr2-page-settings__block__title">
+        {{ block.name }}
       </div>
       <div
-        v-if="block.data.description"
+        v-if="block.description"
         class="slr2-page-settings__block__description"
       >
-        {{ block.data.description['step2'] }}
+        {{ block.description['step2'] }}
       </div>
     </div>
 
-    <block-template
-      v-for="template in block.templates"
-      :key="template.id"
-      :template="template"
-    ></block-template>
+    <block-variant
+      v-for="variant in block.variants"
+      :key="variant.id"
+      :variant="variant"
+      :active="variant.id === block.activeVariant"
+    ></block-variant>
   </div>
 </template>
 
 <script>
-import BlockTemplate from './BlockTemplate.vue';
+import BlockVariant from './BlockVariant.vue';
 import TheBreadcrumbs from './TheBreadcrumbs.vue';
 
 export default {
@@ -38,20 +34,20 @@ export default {
   },
   methods: {},
   components: {
-    BlockTemplate,
+    BlockVariant,
     TheBreadcrumbs,
   },
 };
 </script>
 
 <style>
-.slr2-page-settings__templates {
+.slr2-page-settings__variants {
   background-color: #fff;
   padding: var(--slr2-padding) var(--slr2-padding) 0;
   position: relative;
   border-radius: 8px;
 }
-.slr2-page-settings__templates-block-info {
+.slr2-page-settings__variants-block-info {
   margin-bottom: var(--slr2-gap);
 }
 </style>

@@ -1,21 +1,18 @@
 <template>
   <div
-    class="slr2-page-settings__template"
-    :class="{ 'slr2-page-settings__template--checked': template.checked }"
+    class="slr2-page-settings__variant"
+    :class="{ 'slr2-page-settings__variant--checked': active }"
     @click.prevent="click"
   >
-    <div class="slr2-page-settings__template__title">
-      <div class="slr2-page-settings__template__title-text">
-        {{ template.title }}
+    <div class="slr2-page-settings__variant__title">
+      <div class="slr2-page-settings__variant__title-text">
+        {{ variant.name }}
       </div>
-      <control-radio :checked="template.checked"></control-radio>
+      <control-radio :checked="active"></control-radio>
     </div>
-    <img :src="template.img" class="slr2-page-settings__template__img" />
-    <div
-      class="slr2-page-settings__template__edit"
-      v-if="template.settings && template.edit"
-    >
-      <span @click="edit">{{ template.edit }}</span>
+    <img :src="variant.preview" class="slr2-page-settings__variant__img" />
+    <div class="slr2-page-settings__variant__edit" v-if="variant.settings">
+      <span @click="edit">{{ $store.state.lang.tune }}</span>
     </div>
   </div>
 </template>
@@ -27,13 +24,20 @@ export default {
   data() {
     return {};
   },
-  props: ['template'],
+  props: ['variant'],
+  computed: {
+    active() {
+      return (
+        this.$store.getters.isEditedBlock.activeVariant === this.variant.id
+      );
+    },
+  },
   methods: {
     click() {
-      this.$store.commit('setTemplateChecked', {
+      this.$store.commit('setActiveVariant', {
         pageId: this.$store.getters.activePage.id,
         blockId: this.$store.getters.isEditedBlock.id,
-        templateId: this.template.id,
+        variantId: this.variant.id,
       });
     },
     edit() {
@@ -47,7 +51,7 @@ export default {
 </script>
 
 <style>
-.slr2-page-settings__template {
+.slr2-page-settings__variant {
   position: relative;
   background-color: #fff;
   border: 1px solid #f0f0f0;
@@ -58,45 +62,45 @@ export default {
   transition: all 0.3s ease;
   cursor: pointer;
 }
-.slr2-page-settings__template:hover {
+.slr2-page-settings__variant:hover {
   border-color: #fff;
   box-shadow: 0px 3px 6px #353cb11a;
 }
-.slr2-page-settings__template--checked {
+.slr2-page-settings__variant--checked {
   border-color: #f7f9ff;
   background-color: #f7f9ff;
 }
-.slr2-page-settings__template--checked:hover {
+.slr2-page-settings__variant--checked:hover {
   border-color: #f7f9ff;
   box-shadow: none;
 }
-.slr2-page-settings__template__title {
+.slr2-page-settings__variant__title {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--slr2-gap-middle);
 }
-.slr2-page-settings__template__title-text {
+.slr2-page-settings__variant__title-text {
   font-size: var(--ui-font-size-md);
   font-weight: bold;
   line-height: 1.1;
   margin-right: var(--slr2-gap-middle);
 }
-.slr2-page-settings__template__img {
+.slr2-page-settings__variant__img {
   display: block;
   width: 100%;
   margin-bottom: var(--slr2-gap-middle);
 }
-.slr2-page-settings__template__edit span {
+.slr2-page-settings__variant__edit span {
   font-size: 12px;
   color: #353cb1;
   cursor: pointer;
   -webkit-transition: opacity 0.3s ease;
   transition: opacity 0.3s ease;
 }
-.slr2-page-settings__template__edit span:hover {
+.slr2-page-settings__variant__edit span:hover {
   opacity: 0.7;
 }
-.slr2-page-settings__template .slr2-page-settings__radio {
+.slr2-page-settings__variant .slr2-page-settings__radio {
 }
 </style>

@@ -12,7 +12,7 @@
       v-if="$store.getters.isEditedBlock && $store.state.step !== 'step2'"
       @click.prevent="toStep2"
     >
-      {{ $store.getters.isEditedBlock.data.title }}
+      {{ $store.getters.isEditedBlock.name }}
     </div>
   </div>
 </template>

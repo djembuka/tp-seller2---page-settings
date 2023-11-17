@@ -37,17 +37,13 @@ export default {
 
       Sortable.create(sortableDiv, {
         onSort() {
+          let array = [];
           sortableDiv
             .querySelectorAll('.slr2-page-settings__block')
-            .forEach((block, index) => {
-              const id = block.getAttribute('data-id');
-              commit('setBlockProp', {
-                blockId: id,
-                property: 'sort',
-                value: (index + 1) * 10,
-              });
+            .forEach((block) => {
+              array.push(block.getAttribute('data-id'));
             });
-          commit('sortBlocks');
+          commit('setMemory', array);
         },
       });
     },

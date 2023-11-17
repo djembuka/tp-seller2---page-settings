@@ -157,45 +157,50 @@ const Store = {
         BX.ajax.runAction(`twinpx:seller.api.methods.saveBlocksOrder`, payload);
       }
     },
-    async loadPageBlocks({ state, commit }, { pageId }) {
+    async loadPageBlocks({ state, commit }, { pageId, callback }) {
       let blocks;
       const BX = window.BX;
 
       if (BX) {
-        const response = BX.ajax.runAction(`twinpx:seller.api.methods.blocks`, {
-          data: {
-            sid: state.data.sites[0].id,
-            page: pageId,
-          },
-        });
-        await response.then((r) => {
-          if (r.status === 'success' && r.data) {
-            blocks = r.data;
-          }
-        });
+        BX.ajax
+          .runAction(`twinpx:seller.api.methods.blocks`, {
+            data: {
+              sid: state.data.sites[0].id,
+              page: pageId,
+            },
+          })
+          .then(
+            (r) => {
+              if (r.status === 'success' && r.data) {
+                blocks = r.data;
+                commit('setPageBlocks', { pageId, blocks });
+                callback();
+              }
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
       }
-
-      commit('setPageBlocks', { pageId, blocks });
     },
-    async loadStructure({ commit }) {
-      const sites = await bxAjaxRunAction({ type: 'sites' });
-      const pages = await bxAjaxRunAction({
-        type: 'pages',
-        payload: {
-          data: {
-            sid: sites[0].id,
-          },
-        },
-      });
-      const blocks = await bxAjaxRunAction({
-        type: 'blocks',
-        payload: {
-          data: {
-            sid: sites[0].id,
-            page: pages[0].id,
-          },
-        },
-      });
+    async loadStructure({ commit }, callback) {
+      let sites, pages, blocks;
+
+      await bxAjaxRunAction('sites', {})
+        .then((s) => {
+          sites = s;
+          return bxAjaxRunAction('pages', { data: { sid: sites[0].id } });
+        })
+        .then((p) => {
+          pages = p;
+          return bxAjaxRunAction('blocks', {
+            data: { sid: sites[0].id, page: pages[0].id },
+          });
+        })
+        .then((b) => {
+          blocks = b;
+          console.log(blocks);
+        });
 
       const structure = {
         sites,
@@ -205,24 +210,27 @@ const Store = {
       structure.sites[0].pages[0].blocks = blocks;
 
       commit('setStructure', structure);
+      callback();
 
-      async function bxAjaxRunAction({ type, payload }) {
-        let result;
-        const BX = window.BX;
+      function bxAjaxRunAction(type, payload) {
+        return new Promise((res, rej) => {
+          const BX = window.BX;
 
-        if (BX) {
-          const response = BX.ajax.runAction(
-            `twinpx:seller.api.methods.${type}`,
-            payload
-          );
-          await response.then((r) => {
-            if (r.status === 'success' && r.data) {
-              result = r.data;
-            }
-          });
-        }
-
-        return result;
+          if (BX) {
+            BX.ajax
+              .runAction(`twinpx:seller.api.methods.${type}`, payload)
+              .then(
+                (r) => {
+                  if (r.status === 'success' && r.data) {
+                    res(r.data);
+                  }
+                },
+                (error) => {
+                  rej(error);
+                }
+              );
+          }
+        });
       }
     },
   },

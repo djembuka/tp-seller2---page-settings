@@ -13,7 +13,7 @@ export default {
     async save() {
       switch (this.$store.state.step) {
         case 'step1':
-          await this.$store.dispatch('submitBlocksOrder', {
+          this.$store.dispatch('submitBlocksOrder', {
             sid: this.$store.state.data.sites[0].id,
             page: this.$store.getters.activePage.id,
             section: 'other',

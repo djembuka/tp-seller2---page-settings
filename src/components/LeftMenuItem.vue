@@ -29,9 +29,13 @@ export default {
 
       this.$store.commit('changeStep', 'step1');
       this.$store.commit('setPageActive', { pageId: this.page.id });
-      await this.$store.dispatch('loadPageBlocks', { pageId: this.page.id });
-      this.$store.commit('initActiveVariant', {
+      this.$store.dispatch('loadPageBlocks', {
         pageId: this.page.id,
+        callback() {
+          this.$store.commit('initActiveVariant', {
+            pageId: this.page.id,
+          });
+        },
       });
 
       //force blocks render

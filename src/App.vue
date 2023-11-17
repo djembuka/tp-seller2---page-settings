@@ -17,16 +17,32 @@ export default {
   },
   async beforeMount() {},
   async created() {
-    await this.$store.dispatch('loadStructure');
-    this.$store.commit('setPageActive', { pageIndex: 0 });
-    this.$store.commit('initActiveVariant', {
-      pageId: this.$store.state.data.sites[0].pages[0].id,
+    this.$store.dispatch('loadStructure', () => {
+      this.$store.commit('setPageActive', { pageIndex: 0 });
+      this.$store.commit('initActiveVariant', {
+        pageId: this.$store.state.data.sites[0].pages[0].id,
+      });
     });
   },
 };
 </script>
 
 <style>
+:root {
+  --slr2-background: #fcfcfc;
+  --slr2-buttons: #0a16aa;
+  --slr2-color: #000;
+  --slr2-light: #f7f9ff;
+  --slr2-font-size: 16px;
+  --slr2-gap-big: 30px;
+  --slr2-gap: 24px;
+  --slr2-gap-middle: 16px;
+  --slr2-padding: 16px;
+}
+#seller2PageSettings {
+  background-color: #fff;
+  padding: var(--slr2-padding);
+}
 #seller2PageSettings * {
   box-sizing: border-box;
 }

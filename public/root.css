@@ -1,17 +1,3 @@
-/*Admin vue components*/
-:root {
-  --slr2-background: #fcfcfc;
-  --slr2-buttons: #0A16AA;
-  --slr2-color: #000;
-  --slr2-light: #F7F9FF;
-  --slr2-font-size: 16px;
-  --slr2-gap-big: 30px;
-  --slr2-gap: 24px;
-  --slr2-gap-middle: 16px;
-  --slr2-padding: 16px;
-
-}
-
 /*Bitrix*/
 :root {
   --ui-font-family-open-sans: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;

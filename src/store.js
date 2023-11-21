@@ -84,20 +84,18 @@ const Store = {
 
       block.isEdited = isEdited;
     },
-    initActiveVariant(state, { pageId }) {
-      const activePage = state.data.sites[0].pages.find((p) => p.id === pageId);
-      if (activePage && activePage.blocks) {
-        ['top', 'other', 'bottom'].forEach((type) => {
-          activePage.blocks[type].forEach((block) => {
-            const activeVariant = block.variants.find(
-              (v) => v.id === block.activeVariant
-            );
-            if (!activeVariant && block.variants && block.variants.length) {
-              block.activeVariant = block.variants[0].id;
-            }
+    setPreviousVariant(state, { blockId }) {
+      let block;
+      state.data.sites[0].pages.forEach((page) => {
+        if (page.blocks) {
+          ['top', 'other', 'bottom'].forEach((type) => {
+            block =
+              page.blocks[type].find((block) => block.id === blockId) || block;
           });
-        });
-      }
+        }
+      });
+
+      block.previousVariant = block.activeVariant;
     },
     setActiveVariant(state, { blockId, variantId }) {
       let block;
@@ -150,14 +148,7 @@ const Store = {
     },
   },
   actions: {
-    async submitBlocksOrder({ state }, payload) {
-      const BX = window.BX;
-
-      if (BX && state) {
-        BX.ajax.runAction(`twinpx:seller.api.methods.saveBlocksOrder`, payload);
-      }
-    },
-    async loadPageBlocks({ state, commit }, { pageId, callback }) {
+    async loadPageBlocks({ state, commit }, { pageId }) {
       let blocks;
       const BX = window.BX;
 
@@ -174,7 +165,6 @@ const Store = {
               if (r.status === 'success' && r.data) {
                 blocks = r.data;
                 commit('setPageBlocks', { pageId, blocks });
-                callback();
               }
             },
             (error) => {
@@ -199,7 +189,6 @@ const Store = {
         })
         .then((b) => {
           blocks = b;
-          console.log(blocks);
         });
 
       const structure = {

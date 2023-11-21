@@ -13,14 +13,23 @@ export default {
     async save() {
       switch (this.$store.state.step) {
         case 'step1':
-          this.$store.dispatch('submitBlocksOrder', {
-            sid: this.$store.state.data.sites[0].id,
-            page: this.$store.getters.activePage.id,
-            section: 'other',
-            blocks:
-              this.$store.state.memory ||
-              this.$store.getters.activePage.blocks.other.map((b) => b.id),
-          });
+          if (window.BX) {
+            window.BX.ajax.runAction(
+              `twinpx:seller.api.methods.saveBlocksOrder`,
+              {
+                data: {
+                  sid: this.$store.state.data.sites[0].id,
+                  page: this.$store.getters.activePage.id,
+                  section: 'other',
+                  blocks:
+                    this.$store.state.memory ||
+                    this.$store.getters.activePage.blocks.other.map(
+                      (b) => b.id
+                    ),
+                },
+              }
+            );
+          }
           break;
         case 'step2':
           break;

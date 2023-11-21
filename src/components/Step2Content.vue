@@ -37,6 +37,12 @@ export default {
     BlockVariant,
     TheBreadcrumbs,
   },
+  mounted() {
+    this.$store.commit('setPreviousVariant', {
+      pageId: this.$store.getters.activePage.id,
+      blockId: this.$store.getters.isEditedBlock.id,
+    });
+  },
 };
 </script>
 

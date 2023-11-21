@@ -8,12 +8,24 @@
 export default {
   methods: {
     click() {
-      //force blocks render
-      if (this.$store.state.step === 'step1') {
-        const event = new CustomEvent('seller2ForceBlocksRender');
-        document
-          .getElementById('seller2PageSettingsContainerSortable')
-          .dispatchEvent(event);
+      const step = this.$store.state.step;
+      let event;
+
+      switch (step) {
+        case 'step1':
+          //force blocks render
+          event = new CustomEvent('seller2ForceBlocksRender');
+          document
+            .getElementById('seller2PageSettingsContainerSortable')
+            .dispatchEvent(event);
+          break;
+        case 'step2':
+          this.$store.commit('setActiveVariant', {
+            pageId: this.$store.getters.activePage.id,
+            blockId: this.$store.getters.isEditedBlock.id,
+            variantId: this.$store.getters.isEditedBlock.previousVariant,
+          });
+          break;
       }
     },
     async forceRender() {

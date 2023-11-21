@@ -31,11 +31,6 @@ export default {
       this.$store.commit('setPageActive', { pageId: this.page.id });
       this.$store.dispatch('loadPageBlocks', {
         pageId: this.page.id,
-        callback() {
-          this.$store.commit('initActiveVariant', {
-            pageId: this.page.id,
-          });
-        },
       });
 
       //force blocks render

@@ -19,9 +19,6 @@ export default {
   async created() {
     this.$store.dispatch('loadStructure', () => {
       this.$store.commit('setPageActive', { pageIndex: 0 });
-      this.$store.commit('initActiveVariant', {
-        pageId: this.$store.state.data.sites[0].pages[0].id,
-      });
     });
   },
 };

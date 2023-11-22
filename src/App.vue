@@ -2,18 +2,21 @@
   <div class="slr2-page-settings-grid" v-if="$store.state.structureLoaded">
     <the-left-menu></the-left-menu>
     <the-main-content></the-main-content>
+    <alert-modal></alert-modal>
   </div>
 </template>
 
 <script>
 import TheLeftMenu from './components/TheLeftMenu.vue';
 import TheMainContent from './components/TheMainContent.vue';
+import AlertModal from './components/AlertModal.vue';
 
 export default {
   name: 'seller2PageSettings',
   components: {
     TheLeftMenu,
     TheMainContent,
+    AlertModal,
   },
   async beforeMount() {},
   async created() {

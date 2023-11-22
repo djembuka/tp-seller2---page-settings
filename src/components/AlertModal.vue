@@ -1,12 +1,18 @@
 <template>
-  <div class="slr2-page-settings__modal">
-    <div class="slr2-page-settings__body">
-      <div class="slr2-page-settings__title">Сохранение данных</div>
-      <div class="slr2-page-settings__content">
+  <div
+    class="slr2-page-settings__modal"
+    :class="{
+      'slr2-page-settings__modal--show': show,
+      'slr2-page-settings__modal--z': z,
+    }"
+  >
+    <div class="slr2-page-settings__modal-body">
+      <div class="slr2-page-settings__modal-title">Сохранение данных</div>
+      <div class="slr2-page-settings__modal-content">
         Вы внесли изменения, но не сохранили данные. Если вы хотите сохранить
         данные, подтвердите, нажав Сохранить.
       </div>
-      <div class="slr2-page-settings__footer">
+      <div class="slr2-page-settings__modal-footer">
         <button-cancel></button-cancel>
         <button-save></button-save>
       </div>
@@ -19,6 +25,12 @@ import ButtonCancel from './ButtonCancel.vue';
 import ButtonSave from './ButtonSave.vue';
 
 export default {
+  data() {
+    return {
+      show: true,
+      z: true,
+    };
+  },
   components: {
     ButtonCancel,
     ButtonSave,
@@ -27,13 +39,13 @@ export default {
 </script>
 
 <style>
-.twpx-zd-modal {
+.slr2-page-settings__modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #0000001a;
+  background-color: #646b7744;
   font-size: 16px;
   -webkit-transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -41,56 +53,61 @@ export default {
   opacity: 0;
   z-index: -1;
 }
-.slr2-page-settings__body {
+.slr2-page-settings__modal-body {
   position: absolute;
   top: 50%;
   left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-40%);
   transform: translateX(-50%) translateY(-40%);
   -webkit-transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
-  max-width: 1088px;
-  height: 890px;
+  max-width: 535px;
+  height: 240px;
   max-height: calc(100vh - 40px);
   background-color: #fff;
   border-radius: 8px;
-  display: grid;
-  grid-template-rows: 100px 1fr 150px;
+  padding: calc(var(--slr2-padding) * 2);
   z-index: 10;
 }
 
-.twpx-zd-modal.slr2-page-settings__-show {
+.slr2-page-settings__modal.slr2-page-settings__modal--show {
   pointer-events: auto;
   opacity: 1;
 }
 
-.twpx-zd-modal.slr2-page-settings__-z {
+.slr2-page-settings__modal.slr2-page-settings__modal--z {
   z-index: 10000;
 }
 
-.twpx-zd-modal.slr2-page-settings__-show .slr2-page-settings__body {
+.slr2-page-settings__modal.slr2-page-settings__modal--show
+  .slr2-page-settings__modal-body {
   transform: translateX(-50%) translateY(-50%);
 }
 
-.slr2-page-settings__title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.slr2-page-settings__modal-title {
   font-family: Montserrat, 'Arial', sans-serif;
-  font-size: 32px;
-  color: #232339;
-  padding: 0 50px;
-  position: relative;
-  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: var(--slr2-gap-middle);
 }
 
-.slr2-page-settings__content {
-  display: flex;
+.slr2-page-settings__modal-content {
+  font-size: 14.6px;
+  line-height: 20px;
+  margin-bottom: calc(var(--slr2-gap-middle) * 2);
 }
 
-.slr2-page-settings__footer {
+.slr2-page-settings__modal-footer {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+}
+.slr2-page-settings__modal-footer .slr2-page-settings__button-cancel {
+  width: 175px;
+}
+.slr2-page-settings__modal-footer .slr2-page-settings__button-save {
+  width: 278px;
 }
 </style>

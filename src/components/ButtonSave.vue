@@ -29,6 +29,7 @@ export default {
                 },
               }
             );
+            this.$store.commit('setMemory', null);
           }
           break;
         case 'step2':

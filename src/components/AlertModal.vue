@@ -27,8 +27,8 @@ import ButtonSave from './ButtonSave.vue';
 export default {
   data() {
     return {
-      show: true,
-      z: true,
+      show: this.$store.state.alert,
+      z: this.$store.state.alert,
     };
   },
   components: {

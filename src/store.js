@@ -2,6 +2,7 @@ const Store = {
   state: {
     step: 'step1', //step1 - catalog of pages, step2 - block and its templates, step3 - block's template settings
     render: true,
+    alert: false,
     buttons: [
       {
         code: 'cancel',
@@ -65,7 +66,9 @@ const Store = {
     },
     changeStep(state, step) {
       state.step = step;
-      delete state.memory;
+      if (state.memory) {
+        state.alert = true;
+      }
     },
     setBlockIsEdited(state, { pageId, blockId, isEdited }) {
       let block;

@@ -18,6 +18,7 @@ export default {
           document
             .getElementById('seller2PageSettingsContainerSortable')
             .dispatchEvent(event);
+          this.$store.commit('setMemory', null);
           break;
         case 'step2':
           this.$store.commit('setActiveVariant', {

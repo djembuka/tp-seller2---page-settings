@@ -30,6 +30,7 @@ export default {
               }
             );
             this.$store.commit('setMemory', null);
+            this.$store.commit('setAlert', false);
           }
           break;
         case 'step2':

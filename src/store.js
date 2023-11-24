@@ -21,6 +21,9 @@ const Store = {
     },
   },
   mutations: {
+    setAlert(state, value) {
+      state.alert = value;
+    },
     setMemory(state, value) {
       state.memory = value;
     },

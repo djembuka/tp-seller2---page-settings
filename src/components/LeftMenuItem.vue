@@ -19,6 +19,15 @@ export default {
     async click() {
       if (this.page.active) return;
 
+      //force blocks render
+      const elem = document.getElementById(
+        'seller2PageSettingsContainerSortable'
+      );
+      if (elem) {
+        const event = new CustomEvent('seller2ForceBlocksRender');
+        elem.dispatchEvent(event);
+      }
+
       if (this.$store.getters.isEditedBlock) {
         this.$store.commit('setBlockIsEdited', {
           pageId: this.$store.getters.activePage.id,
@@ -32,14 +41,6 @@ export default {
       this.$store.dispatch('loadPageBlocks', {
         pageId: this.page.id,
       });
-
-      //force blocks render
-      if (this.$store.state.step === 'step1') {
-        const event = new CustomEvent('seller2ForceBlocksRender');
-        document
-          .getElementById('seller2PageSettingsContainerSortable')
-          .dispatchEvent(event);
-      }
     },
   },
 };

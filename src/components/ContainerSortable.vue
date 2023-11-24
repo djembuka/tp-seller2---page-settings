@@ -1,7 +1,10 @@
 <template>
   <div id="seller2PageSettingsContainerSortable">
     <div v-if="render">
-      <div class="slr2-page-settings__sortable" ref="sortable">
+      <div
+        class="slr2-page-settings__sortable"
+        id="seller2PageSettingsSortable"
+      >
         <block-sortable
           v-for="block in this.$store.getters.activePage.blocks.other"
           :block="block"
@@ -32,7 +35,9 @@ export default {
     },
     setSortable() {
       //https://github.com/SortableJS/Sortable
-      const sortableDiv = this.$refs.sortable;
+      const sortableDiv = document.getElementById(
+        'seller2PageSettingsSortable'
+      );
       const commit = this.$store.commit;
 
       Sortable.create(sortableDiv, {

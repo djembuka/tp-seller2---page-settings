@@ -68,9 +68,10 @@ const Store = {
       state.blocksRender = payload;
     },
     changeStep(state, step) {
-      state.step = step;
       if (state.memory) {
-        state.alert = true;
+        state.alert = step;
+      } else {
+        state.step = step;
       }
     },
     setBlockIsEdited(state, { pageId, blockId, isEdited }) {

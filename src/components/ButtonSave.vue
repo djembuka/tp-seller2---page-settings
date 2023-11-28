@@ -11,6 +11,8 @@ export default {
       this.save();
     },
     async save() {
+      //if the button is from the alert modal
+
       switch (this.$store.state.step) {
         case 'step1':
           if (window.BX) {
@@ -29,8 +31,14 @@ export default {
                 },
               }
             );
+
             this.$store.commit('setMemory', null);
-            this.$store.commit('setAlert', false);
+
+            if (this.$store.state.alert) {
+              const step = this.$store.state.alert;
+              this.$store.commit('setAlert', false);
+              this.$store.commit('changeStep', step);
+            }
           }
           break;
         case 'step2':

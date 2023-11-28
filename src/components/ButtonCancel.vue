@@ -8,6 +8,15 @@
 export default {
   methods: {
     click() {
+      this.$store.commit('setMemory', null);
+
+      //if the button is from the alert modal
+      if (this.$store.state.alert) {
+        const step = this.$store.state.alert;
+        this.$store.commit('setAlert', false);
+        this.$store.commit('changeStep', step);
+      }
+
       const step = this.$store.state.step;
       let event;
 
@@ -27,8 +36,6 @@ export default {
           });
           break;
       }
-      this.$store.commit('setMemory', null);
-      this.$store.commit('setAlert', false);
     },
     async forceRender() {
       this.$store.commit('setRender', false);

@@ -2,8 +2,8 @@
   <div
     class="slr2-page-settings__modal"
     :class="{
-      'slr2-page-settings__modal--show': this.$store.state.alert,
-      'slr2-page-settings__modal--z': this.$store.state.alert,
+      'slr2-page-settings__modal--show': show,
+      'slr2-page-settings__modal--z': z,
     }"
   >
     <div class="slr2-page-settings__modal-body">
@@ -26,7 +26,25 @@ import ButtonSave from './ButtonSave.vue';
 
 export default {
   data() {
-    return {};
+    return {
+      z: undefined,
+    };
+  },
+  computed: {
+    show() {
+      return this.$store.state.alert;
+    },
+  },
+  watch: {
+    show(val) {
+      if (val) {
+        this.z = true;
+      } else {
+        setTimeout(() => {
+          this.z = true;
+        }, 500);
+      }
+    },
   },
   components: {
     ButtonCancel,

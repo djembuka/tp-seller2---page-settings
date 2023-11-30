@@ -1,4 +1,5 @@
 <template>
+  <div>{{ block.settingsMemory }}</div>
   <div
     class="slr2-page-settings__switcher"
     :class="{ 'slr2-page-settings__switcher--off': offState }"
@@ -10,16 +11,25 @@
 export default {
   data() {
     return {
-      offState: !this.block.active,
+      offState: !this.block.settings.enabled,
     };
   },
   props: ['block'],
   methods: {
     click() {
       this.offState = !this.offState;
-      this.$store.commit('setBlockProp', {
+
+      //create settingsMemory
+      if (!this.block.settingsMemory) {
+        this.$store.commit('createBlockSettingsMemory', {
+          blockId: this.block.id,
+        });
+      }
+
+      //save to settings
+      this.$store.commit('setBlockSettings', {
         blockId: this.block.id,
-        property: 'active',
+        property: 'enabled',
         value: !this.offState,
       });
     },
@@ -27,7 +37,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .slr2-page-settings__switcher {
   width: 36px;
   height: 24px;

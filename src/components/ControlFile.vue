@@ -74,7 +74,7 @@ export default {
         </g>`,
     };
   },
-  props: ['control', 'templateId'],
+  props: ['control', 'variantId'],
   computed: {
     invalid() {
       return !!this.invalidString;
@@ -130,7 +130,7 @@ export default {
     uploadFile(files) {
       this.$store.commit('setControlValue', {
         blockId: this.$store.getters.isEditedBlock.id,
-        templateId: this.templateId,
+        variantId: this.variantId,
         controlId: this.control.id,
         value: files[0].name,
       });
@@ -144,7 +144,7 @@ export default {
       //set value
       this.$store.commit('setControlValue', {
         blockId: this.$store.getters.isEditedBlock.id,
-        templateId: this.templateId,
+        variantId: this.variantId,
         controlId: this.control.id,
         value: '',
       });
@@ -215,7 +215,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .slr2-page-settings__control {
   position: relative;
   margin-bottom: var(--slr2-gap-middle);

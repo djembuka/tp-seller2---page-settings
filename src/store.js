@@ -21,6 +21,34 @@ const Store = {
     },
   },
   mutations: {
+    createBlockSettingsMemory(state, { blockId }) {
+      const page = state.data.sites[0].pages.find((p) => p.active);
+      if (page) {
+        let block;
+        ['top', 'other', 'bottom'].forEach((type) => {
+          if (!block) {
+            block = page.blocks[type].find((b) => b.id === blockId);
+          }
+        });
+        if (block) {
+          block.settingsMemory = Object.assign({}, block.settings);
+        }
+      }
+    },
+    deleteBlockSettingsMemory(state, { blockId }) {
+      const page = state.data.sites[0].pages.find((p) => p.active);
+      if (page) {
+        let block;
+        ['top', 'other', 'bottom'].forEach((type) => {
+          if (!block) {
+            block = page.blocks[type].find((b) => b.id === blockId);
+          }
+        });
+        if (block) {
+          delete block.settingsMemory;
+        }
+      }
+    },
     setAlert(state, value) {
       state.alert = value;
     },
@@ -49,7 +77,7 @@ const Store = {
     setRender(state, render) {
       state.render = render;
     },
-    setBlockProp(state, { blockId, property, value }) {
+    setBlockSettings(state, { blockId, settings, property, value }) {
       let page = state.data.sites[0].pages.find((page) => page.active);
       page = page || state.data.sites[0].pages[0];
 
@@ -61,7 +89,11 @@ const Store = {
       });
 
       if (block) {
-        block[property] = value;
+        if (property && value) {
+          block.settings[property] = value;
+        } else if (settings) {
+          block.settings = Object.assign({}, settings);
+        }
       }
     },
     changeBlocksRender(state, payload) {
@@ -118,20 +150,25 @@ const Store = {
       block.activeVariant = variantId;
     },
     setControlValue(state, { blockId, variantId, controlId, value }) {
-      let block = Object.values(state.data.scaffold).find(
-        (staticBlock) => staticBlock.id === blockId
-      );
-      if (!block) {
-        Object.values(state.data.pages).forEach((page) => {
-          block = page.blocks.find((block) => block.id === blockId) || block;
+      let block;
+      const page = state.data.sites[0].pages.find((page) => page.active);
+
+      if (page && page.blocks) {
+        ['top', 'other', 'bottom'].forEach((type) => {
+          if (!block) {
+            block = page.blocks[type].find((block) => block.id === blockId);
+          }
         });
       }
 
-      const template = block.templates.find(
-        (template) => template.id === variantId
+      const variant = block.variants.find(
+        (variant) => variant.id === variantId
       );
 
-      const control = template.settings.find((s) => s.id === controlId);
+      const control = variant.settings.properties.find(
+        (s) => s.id === controlId
+      );
+
       control.value = value;
     },
   },

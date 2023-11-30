@@ -32,6 +32,28 @@ export default {
               }
             );
 
+            ['top', 'other', 'bottom'].forEach((type) => {
+              this.$store.getters.activePage.blocks[type].forEach((block) => {
+                if (block.settingsMemory) {
+                  window.BX.ajax.runAction(
+                    `twinpx:seller.api.methods.saveBlocksSettings`,
+                    {
+                      data: {
+                        sid: this.$store.state.data.sites[0].id,
+                        page: this.$store.getters.activePage.id,
+                        block: block.id,
+                        settings: block.settings,
+                      },
+                    }
+                  );
+
+                  this.$store.commit('deleteBlockSettingsMemory', {
+                    blockId: block.id,
+                  });
+                }
+              });
+            });
+
             this.$store.commit('setMemory', null);
 
             if (this.$store.state.alert) {

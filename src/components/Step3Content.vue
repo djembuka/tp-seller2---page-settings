@@ -13,11 +13,11 @@
 
     <form action="" method="">
       <component
-        v-for="(control, index) in variant.settings"
-        :is="`control-${control.type}`"
-        :key="index * Math.floor(Math.random() * 100000)"
+        v-for="(control, index) in variant.settings.properties"
+        :is="`control-${control.property}`"
+        :key="Number(index) * Math.floor(Math.random() * 100000)"
         :control="control"
-        :templateId="variant.id"
+        :variantId="variant.id"
       >
       </component>
     </form>
@@ -26,6 +26,8 @@
 
 <script>
 import ControlText from './ControlText.vue';
+import ControlTextarea from './ControlTextarea.vue';
+import ControlSelect from './ControlSelect.vue';
 import ControlFile from './ControlFile.vue';
 import TheBreadcrumbs from './TheBreadcrumbs.vue';
 
@@ -40,6 +42,8 @@ export default {
   methods: {},
   components: {
     ControlText,
+    ControlTextarea,
+    ControlSelect,
     ControlFile,
     TheBreadcrumbs,
   },

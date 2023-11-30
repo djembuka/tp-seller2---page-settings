@@ -14,7 +14,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 [type='radio']:not(:checked),
 [type='radio']:checked {
   position: absolute;

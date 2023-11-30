@@ -41,6 +41,7 @@ export default {
       });
     },
     edit() {
+      this.click();
       this.$store.commit('changeStep', 'step3');
     },
   },

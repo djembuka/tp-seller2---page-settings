@@ -13,16 +13,19 @@
       v-if="disabled"
     />
     <div class="slr2-page-settings__label">{{ control.label }}</div>
-    <input
-      type="text"
-      :name="name"
-      v-model="value"
+    <div
+      class="slr2-page-settings__control-textarea"
+      contenteditable="true"
+      ref="textarea"
       @focus="focus"
       @blur="blur"
       @input="input"
-      :disabled="disabled"
-      class="slr2-page-settings__control-text"
-    />
+      v-html="value"
+    ></div>
+    <div
+      class="slr2-page-settings__control-hint"
+      v-html="control.hint_external"
+    ></div>
   </div>
 </template>
 
@@ -33,6 +36,7 @@ export default {
       name: this.control.name,
       active: this.control.value.trim() !== '',
       value: this.control.value,
+      val: this.control.value,
       invalid: false,
       disabled: this.control.disabled,
     };
@@ -43,14 +47,16 @@ export default {
       this.active = true;
     },
     blur() {
-      this.active = this.control.value.trim() !== '';
+      this.active = this.val.trim() !== '';
     },
     input() {
+      this.val = this.$refs.textarea.innerHTML;
+
       this.$store.commit('setControlValue', {
         blockId: this.$store.getters.isEditedBlock.id,
         variantId: this.variantId,
         controlId: this.control.id,
-        value: this.value,
+        value: this.val,
       });
     },
   },
@@ -100,16 +106,15 @@ export default {
   color: #2d3142;
   opacity: 0.3;
 }
-.slr2-page-settings__control-text {
+.slr2-page-settings__control-textarea {
   display: block !important;
   width: 100%;
   margin: 0 !important;
-  padding: 0 14px !important;
+  padding: 14px !important;
   background-color: #f5f7f8;
   border: 1px solid #f5f7f8 !important;
   border-radius: 3px;
-  height: 48px !important;
-  line-height: 48px;
+  height: 108px !important;
   border-radius: 3px !important;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px !important;
@@ -118,21 +123,30 @@ export default {
   outline: none !important;
   box-shadow: none !important;
 }
-.slr2-page-settings__control-text:focus,
-.slr2-page-settings__control-text:hover {
+div.slr2-page-settings__control-textarea {
+  overflow: auto;
+}
+.slr2-page-settings__control-textarea:focus,
+.slr2-page-settings__control-textarea:hover {
   outline: none;
   border-color: #2d3142 !important;
 }
-.slr2-page-settings__control--invalid .slr2-page-settings__control-text {
+.slr2-page-settings__control--invalid .slr2-page-settings__control-textarea {
   background-color: #fff5f5;
   border-color: #e38080 !important;
   outline: none;
   color: #ff0000;
 }
-.slr2-page-settings__control--disabled .slr2-page-settings__control-text {
+.slr2-page-settings__control--disabled .slr2-page-settings__control-textarea {
   color: #00000055;
   pointer-events: none;
   background-color: #f5f7f855;
   border: 1px solid #f5f7f855 !important;
+}
+.slr2-page-settings__control-hint {
+  color: #2d3142;
+  font-size: 9px;
+  margin: 8px 0 0 14px;
+  line-height: 1.2;
 }
 </style>

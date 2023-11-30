@@ -27,6 +27,22 @@ export default {
           document
             .getElementById('seller2PageSettingsContainerSortable')
             .dispatchEvent(event);
+
+          ['top', 'other', 'bottom'].forEach((type) => {
+            this.$store.getters.activePage.blocks[type].forEach((block) => {
+              if (block.settingsMemory) {
+                this.$store.commit('setBlockSettings', {
+                  blockId: block.id,
+                  settings: block.settingsMemory,
+                });
+
+                this.$store.commit('deleteBlockSettingsMemory', {
+                  blockId: block.id,
+                });
+              }
+            });
+          });
+
           break;
         case 'step2':
           this.$store.commit('setActiveVariant', {

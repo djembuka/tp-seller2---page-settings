@@ -7,28 +7,30 @@
       'slr2-page-settings__control--disabled': disabled,
     }"
   >
-    <img
-      :src="disabled"
-      class="slr2-page-settings__control__disabled-icon"
-      v-if="disabled"
-    />
-    <div class="slr2-page-settings__label">{{ control.label }}</div>
     <div v-if="control.type === 'dropdown'">
+      <img
+        :src="disabled"
+        class="slr2-page-settings__control__disabled-icon"
+        v-if="disabled"
+      />
+      <div class="slr2-page-settings__label">{{ control.label }}</div>
       <v-select :options="control.options"></v-select>
     </div>
     <div v-else-if="control.type === 'radio'">
-      <label>
-        <input class="with-gap" name="group1" type="radio" />
-        <span>Green</span>
+      <div class="slr2-page-settings__list-label">{{ control.label }}</div>
+      <label
+        class="slr2-page-settings__radio"
+        v-for="radio in control.options"
+        :key="radio.code"
+      >
+        <input
+          class="with-gap"
+          :name="control.id"
+          type="radio"
+          :value="radio.code"
+        />
+        <span>{{ radio.label }}</span>
       </label>
-
-      <br />
-
-      <input type="radio" name="name" value="0" />
-      <input type="radio" name="name" value="1" />
-      <input type="radio" name="name" value="2" />
-      <input type="radio" name="name" value="3" />
-      <input type="radio" name="name" value="4" />
     </div>
     <div
       class="slr2-page-settings__control-hint"
@@ -218,6 +220,17 @@ export default {
 }
 
 /*Radio*/
+.slr2-page-settings__radio {
+  display: block;
+  margin-bottom: 16px;
+}
+.slr2-page-settings__list-label {
+  font-size: 18px;
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 16px;
+}
 [type='radio']:not(:checked),
 [type='radio']:checked {
   position: absolute;
@@ -228,12 +241,13 @@ export default {
 [type='radio']:not(:checked) + span,
 [type='radio']:checked + span {
   position: relative;
-  padding-left: 35px;
+  padding-left: 40px;
   cursor: pointer;
-  display: inline-block;
-  height: 25px;
-  line-height: 25px;
-  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  height: 20px;
+  line-height: 16px;
+  font-size: 14px;
   -webkit-transition: 0.28s ease;
   transition: 0.28s ease;
   -webkit-user-select: none;
@@ -248,7 +262,6 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-  margin: 4px;
   width: 16px;
   height: 16px;
   z-index: 0;
@@ -267,7 +280,13 @@ export default {
 
 [type='radio']:not(:checked) + span:before,
 [type='radio']:not(:checked) + span:after {
-  border: 2px solid #5a5a5a;
+  border: 2px solid #f5f7f8;
+  background-color: #f5f7f8;
+}
+
+[type='radio']:not(:checked):hover + span:before {
+  border-color: #d7dee1;
+  background-color: #d7dee1;
 }
 
 [type='radio']:not(:checked) + span:after {
@@ -280,14 +299,15 @@ export default {
 }
 
 [type='radio']:checked + span:after,
-[type='radio'].with-gap:checked + span:before,
-[type='radio'].with-gap:checked + span:after {
-  border: 2px solid #26a69a;
+[type='radio'].with-gap:checked + span:before {
+  border: 2px solid #d7dee1;
+  background-color: #d7dee1;
 }
 
 [type='radio']:checked + span:after,
 [type='radio'].with-gap:checked + span:after {
-  background-color: #26a69a;
+  border: 2px solid #707070;
+  background-color: #2d3142;
 }
 
 [type='radio']:checked + span:after {
@@ -296,8 +316,8 @@ export default {
 }
 
 [type='radio'].with-gap:checked + span:after {
-  -webkit-transform: scale(0.5);
-  transform: scale(0.5);
+  -webkit-transform: scale(0.7);
+  transform: scale(0.7);
 }
 
 [type='radio'].with-gap:disabled:checked + span:before {

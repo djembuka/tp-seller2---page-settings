@@ -1,5 +1,4 @@
 <template>
-  <div>{{ block.settingsMemory }}</div>
   <div
     class="slr2-page-settings__switcher"
     :class="{ 'slr2-page-settings__switcher--off': offState }"

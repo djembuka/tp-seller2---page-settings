@@ -34,6 +34,7 @@
     </div>
     <div
       class="slr2-page-settings__control-hint"
+      v-if="control.hint_external"
       v-html="control.hint_external"
     ></div>
   </div>
@@ -245,7 +246,7 @@ export default {
   cursor: pointer;
   display: flex;
   align-items: center;
-  height: 20px;
+  min-height: 20px;
   line-height: 16px;
   font-size: 14px;
   -webkit-transition: 0.28s ease;

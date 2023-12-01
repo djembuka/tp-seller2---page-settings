@@ -28,7 +28,10 @@
 import ControlText from './ControlText.vue';
 import ControlTextarea from './ControlTextarea.vue';
 import ControlSelect from './ControlSelect.vue';
+import ControlCheckbox from './ControlCheckbox.vue';
+import ControlMultiselect from './ControlMultiselect.vue';
 import ControlFile from './ControlFile.vue';
+import ControlDate from './ControlDatepicker.vue';
 import TheBreadcrumbs from './TheBreadcrumbs.vue';
 
 export default {
@@ -44,7 +47,10 @@ export default {
     ControlText,
     ControlTextarea,
     ControlSelect,
+    ControlCheckbox,
+    ControlMultiselect,
     ControlFile,
+    ControlDate,
     TheBreadcrumbs,
   },
 };

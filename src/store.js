@@ -149,7 +149,7 @@ const Store = {
 
       block.activeVariant = variantId;
     },
-    setControlValue(state, { blockId, variantId, controlId, value }) {
+    setControlValue(state, { blockId, variantId, controlId, value, checked }) {
       let block;
       const page = state.data.sites[0].pages.find((page) => page.active);
 
@@ -169,7 +169,32 @@ const Store = {
         (s) => s.id === controlId
       );
 
-      control.value = value;
+      switch (control.property) {
+        case 'text':
+        case 'textarea':
+        case 'select':
+          if (value) {
+            control.value = value;
+          }
+          break;
+        case 'checkbox':
+          if (checked) {
+            control.checked = checked;
+          }
+          break;
+        case 'multiselect':
+          if (value !== undefined && checked !== undefined) {
+            if (checked) {
+              const index = control.value.indexOf(value);
+              if (index >= 0) {
+                control.value.splice(index, 1);
+              }
+            } else {
+              control.value.push(value);
+            }
+          }
+          break;
+      }
     },
   },
   getters: {

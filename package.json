@@ -10,6 +10,7 @@
   "dependencies": {
     "@material/top-app-bar": "^14.0.0",
     "@vuepic/vue-datepicker": "^7.3.0",
+    "vuejs3-datepicker": "^1.1.2",
     "core-js": "^3.8.3",
     "sortablejs": "^1.15.0",
     "vue": "^3.2.13",

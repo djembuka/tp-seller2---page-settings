@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import ControlRadio from './ControlRadio.vue';
+import ControlRadio from './controls/ControlRadio.vue';
 
 export default {
   data() {

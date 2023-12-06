@@ -51,6 +51,13 @@ export default {
             variantId: this.$store.getters.isEditedBlock.previousVariant,
           });
           break;
+        case 'step3':
+          this.$store.dispatch('setControlValuesFromMemory', {
+            pageId: this.$store.getters.activePage.id,
+            blockId: this.$store.getters.isEditedBlock.id,
+            variantId: this.$store.getters.isEditedBlock.activeVariant,
+          });
+          break;
       }
     },
     async forceRender() {

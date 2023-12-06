@@ -1,4 +1,9 @@
+import controls from './controls';
+
 const Store = {
+  modules: {
+    controls,
+  },
   state: {
     step: 'step1', //step1 - catalog of pages, step2 - block and its templates, step3 - block's template settings
     render: true,
@@ -148,53 +153,6 @@ const Store = {
       });
 
       block.activeVariant = variantId;
-    },
-    setControlValue(state, { blockId, variantId, controlId, value, checked }) {
-      let block;
-      const page = state.data.sites[0].pages.find((page) => page.active);
-
-      if (page && page.blocks) {
-        ['top', 'other', 'bottom'].forEach((type) => {
-          if (!block) {
-            block = page.blocks[type].find((block) => block.id === blockId);
-          }
-        });
-      }
-
-      const variant = block.variants.find(
-        (variant) => variant.id === variantId
-      );
-
-      const control = variant.settings.properties.find(
-        (s) => s.id === controlId
-      );
-
-      switch (control.property) {
-        case 'text':
-        case 'textarea':
-        case 'select':
-          if (value) {
-            control.value = value;
-          }
-          break;
-        case 'checkbox':
-          if (checked) {
-            control.checked = checked;
-          }
-          break;
-        case 'multiselect':
-          if (value !== undefined && checked !== undefined) {
-            if (checked) {
-              const index = control.value.indexOf(value);
-              if (index >= 0) {
-                control.value.splice(index, 1);
-              }
-            } else {
-              control.value.push(value);
-            }
-          }
-          break;
-      }
     },
   },
   getters: {

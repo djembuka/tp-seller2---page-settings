@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import ControlSwitcher from './ControlSwitcher.vue';
+import ControlSwitcher from './controls/ControlSwitcher.vue';
 
 export default {
   props: ['block'],

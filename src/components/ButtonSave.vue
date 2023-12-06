@@ -66,7 +66,40 @@ export default {
         case 'step2':
           break;
         case 'step3':
-          //saveBlockSettings
+          //delete memory
+          {
+            let block, variant;
+            block = this.$store.getters.isEditedBlock;
+
+            if (!block) return;
+            variant = block.variants.find((v) => v.id === block.activeVariant);
+
+            if (!variant) return;
+            let controlsWithMemory = variant.settings.properties.filter(
+              (p) => p.memory
+            );
+            controlsWithMemory.forEach((p) =>
+              this.$store.commit('changeControlMemory', { control: p })
+            );
+            //saveBlockSettings
+            ['top', 'other', 'bottom'].forEach((type) => {
+              this.$store.getters.activePage.blocks[type].forEach((block) => {
+                window.BX.ajax.runAction(
+                  `twinpx:seller.api.methods.saveBlockSettings`,
+                  {
+                    data: {
+                      sid: this.$store.state.data.sites[0].id,
+                      page: this.$store.getters.activePage.id,
+                      block: block.id,
+                      variant: variant.id,
+                      settings: variant.settings, //filter with no files
+                    },
+                  }
+                );
+                //send files
+              });
+            });
+          }
           break;
       }
     },

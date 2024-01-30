@@ -1,10 +1,15 @@
 <template>
-  <component :is="`control-${control.type}`" :control="control" @input="input">
+  <component
+    :is="`control-${controlProperty}`"
+    :control="control"
+    @input="input"
+  >
   </component>
 </template>
 
 <script>
 import ControlText from './controls/ControlText.vue';
+import ControlCheckboxCheckbox from './controls/ControlCheckboxCheckbox.vue';
 // import ControlTextarea from './controls/ControlTextarea.vue';
 // import ControlSelect from './controls/ControlSelect.vue';
 // import ControlCheckbox from './controls/ControlCheckbox.vue';
@@ -13,7 +18,11 @@ import ControlText from './controls/ControlText.vue';
 
 export default {
   data() {
-    return {};
+    return {
+      controlProperty: `${this.control.property}${
+        this.control.type ? '-' + this.control.type : ''
+      }`,
+    };
   },
   props: ['control', 'variantId'],
   methods: {
@@ -26,6 +35,7 @@ export default {
   },
   components: {
     ControlText,
+    ControlCheckboxCheckbox,
   },
 };
 </script>

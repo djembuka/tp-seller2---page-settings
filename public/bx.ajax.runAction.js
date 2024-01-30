@@ -66,10 +66,59 @@ window.BX = {
                     settings: {
                       enabled: true,
                     },
+                    activeVariant: '1111',
                     variants: [
                       {
                         id: '1111',
-                        name: '\u0411\u0430\u043d\u043d\u0435\u0440',
+                        name: '\u0411\u0430\u043d\u043d\u0435\u0440 1',
+                        description:
+                          '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
+                        preview: '/upload/block.png',
+                        settings: {
+                          properties: [
+                            {
+                              property: 'text',
+                              id: 'id1',
+                              name: 'NAME',
+                              label: 'Текстовое поле',
+                              value: '2',
+                              required: true,
+                              disabled: false,
+                              regexp: '^(0|1|2)$',
+                              regexp_description:
+                                'Значение поля должно быть 0, или 1, или 2',
+                              hint_internal: 'Введите 0, 1 или 2',
+                              hint_external: 'Введите от 0 до 2',
+                              dependency: 'id6',
+                            },
+                            {
+                              property: 'checkbox',
+                              type: 'checkbox',
+                              id: 'id6',
+                              name: 'DEPENDENCY_CHECKBOX',
+                              required: false,
+                              label:
+                                'Checkbox, от которого зависят остальные поля',
+                              value: 'on',
+                              checked: false,
+                              disabled: false,
+                              hint_external:
+                                'Подсказка для checkbox может быть неожиданно очень длинной.',
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        id: '1110',
+                        name: '\u0411\u0430\u043d\u043d\u0435\u0440 2',
+                        description:
+                          '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
+                        preview: '/upload/block.png',
+                        settings: [],
+                      },
+                      {
+                        id: '1119',
+                        name: '\u0411\u0430\u043d\u043d\u0435\u0440 3',
                         description:
                           '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
                         preview: '/upload/block.png',
@@ -84,6 +133,7 @@ window.BX = {
                       '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
                     preview: '/upload/block.png',
                     settings: [],
+                    activeVariant: '1121',
                     variants: [
                       {
                         id: '1121',
@@ -102,6 +152,7 @@ window.BX = {
                       '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
                     preview: '/upload/block.png',
                     settings: [],
+                    activeVariant: '1131',
                     variants: [
                       {
                         id: '1131',
@@ -120,6 +171,7 @@ window.BX = {
                       '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
                     preview: '/upload/block.png',
                     settings: [],
+                    activeVariant: '1141',
                     variants: [
                       {
                         id: '1141',
@@ -138,6 +190,7 @@ window.BX = {
                       '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
                     preview: '/upload/block.png',
                     settings: [],
+                    activeVariant: '1151',
                     variants: [
                       {
                         id: '1151',
@@ -197,60 +250,6 @@ window.BX = {
                             //   hint_external:
                             //     'Введите подсказку для этого блока, которая может быть очень длинная, но мы не будем ее выводить всегда, иногда подсказки не будет совсем.',
                             //   formatted: true,
-                            // },
-                            // {
-                            //   property: 'select',
-                            //   type: 'dropdown',
-                            //   id: '234234234234',
-                            //   label: 'Типы производства',
-                            //   options: [
-                            //     {
-                            //       label: 'Машиностроение',
-                            //       code: '23423423423',
-                            //     },
-                            //     {
-                            //       label: 'Сельское хозяйство',
-                            //       code: '324234324',
-                            //     },
-                            //   ],
-                            //   value: '23423423423',
-                            //   hint_external:
-                            //     'Введите подсказку для этого блока, которая может быть очень длинная, но мы не будем ее выводить всегда, иногда подсказки не будет совсем.',
-                            //   dependency: '345345345345',
-                            // },
-                            // {
-                            //   property: 'select',
-                            //   type: 'radio',
-                            //   id: '234234234238',
-                            //   label: 'Radio',
-                            //   options: [
-                            //     {
-                            //       label: 'Машиностроение',
-                            //       code: '23423423423',
-                            //     },
-                            //     {
-                            //       label: 'Сельское хозяйство',
-                            //       code: '324234324',
-                            //     },
-                            //     {
-                            //       label:
-                            //         'Очень длинный пункт меню, который можно добавить к радио кнопке с переносом строки',
-                            //       code: '324234325',
-                            //     },
-                            //   ],
-                            //   value: '23423423423',
-                            //   hint_external:
-                            //     'Введите подсказку для этого блока, которая может быть очень длинная, но мы не будем ее выводить всегда, иногда подсказки не будет совсем.',
-                            //   dependency: '345345345345',
-                            // },
-                            // {
-                            //   property: 'checkbox',
-                            //   type: 'checkbox',
-                            //   id: '234234234230',
-                            //   label:
-                            //     'Очень длинный пункт меню, который можно добавить к радио кнопке с переносом строки',
-                            //   value: 'value1',
-                            //   dependency: '345345345345',
                             // },
                             // {
                             //   property: 'checkbox',
@@ -403,6 +402,7 @@ window.BX = {
             resolve({ status: 'success', data: true, errors: [] });
           });
           break;
+
         case 'twinpx:seller.api.methods.saveBlocksOrder':
           result = new Promise((resolve) => {
             resolve({ status: 'success', data: true, errors: [] });

@@ -1,16 +1,16 @@
 export default {
   mutations: {
     changeControlValue(_, { control, value, checked }) {
-      switch (control.type) {
+      switch (control.property) {
         case 'text':
         case 'textarea':
         case 'select':
-          if (value) {
+          if (value !== undefined) {
             control.value = value;
           }
           break;
         case 'checkbox':
-          if (checked) {
+          if (checked !== undefined) {
             control.checked = checked;
           }
           break;
@@ -64,7 +64,7 @@ export default {
       if (variant) {
         variant.settings.properties.forEach((p) => {
           if (p.memory) {
-            switch (p.type) {
+            switch (p.property) {
               case 'text':
                 commit('changeControlValue', { control: p, value: p.memory });
                 break;
@@ -74,13 +74,25 @@ export default {
       }
     },
     changeControlValue({ commit }, { control, value }) {
-      switch (control.type) {
+      switch (control.property) {
         case 'text':
           if (!control.memory) {
             commit('changeControlMemory', { control, value: control.value });
           }
 
           commit('changeControlValue', { control, value });
+          break;
+        case 'checkbox':
+          if (!control.memory) {
+            commit('changeControlMemory', {
+              control,
+              checked: control.checked,
+            });
+          }
+
+          commit('changeControlValue', { control, checked: value });
+
+          commit('changeDependentControls', { control }, { root: true });
           break;
       }
     },
@@ -93,9 +105,12 @@ export default {
     disableControl({ commit }, { control, value }) {
       commit('disableControl', { control, value });
     },
-    setControlValue(state, { blockId, variantId, controlId, value, checked }) {
+    setControlValue(
+      { rootState },
+      { blockId, variantId, controlId, value, checked }
+    ) {
       let block;
-      const page = state.data.sites[0].pages.find((page) => page.active);
+      const page = rootState.data.sites[0].pages.find((page) => page.active);
 
       if (page && page.blocks) {
         ['top', 'other', 'bottom'].forEach((type) => {

@@ -154,6 +154,22 @@ const Store = {
 
       block.activeVariant = variantId;
     },
+    changeDependentControls(state, { blockId, control }) {
+      console.log(state.data);
+      console.log(control);
+
+      let block;
+      state.data.sites[0].pages.forEach((page) => {
+        if (page.blocks) {
+          ['top', 'other', 'bottom'].forEach((type) => {
+            block =
+              page.blocks[type].find((block) => block.id === blockId) || block;
+          });
+        }
+      });
+
+      block.variants.
+    },
   },
   getters: {
     activePage(state) {

@@ -26,11 +26,14 @@ import TheBreadcrumbs from './TheBreadcrumbs.vue';
 
 export default {
   data() {
-    return {
-      variant: this.$store.getters.isEditedBlock.variants.find(
+    return {};
+  },
+  computed: {
+    variant() {
+      return this.$store.getters.isEditedBlock.variants.find(
         (v) => v.id === this.$store.getters.isEditedBlock.activeVariant
-      ),
-    };
+      );
+    },
   },
   methods: {},
   components: {

@@ -55,7 +55,7 @@ export default {
         return this.control.value;
       },
       set(value) {
-        this.$emit('input', value);
+        this.$emit('input', { value });
       },
     },
     placeholder() {
@@ -128,7 +128,7 @@ export default {
 <style>
 .twpx-form-control {
   position: relative;
-  margin-bottom: var(--slr2-gap-middle);
+  margin-bottom: calc(var(--slr2-gap-middle) * 2);
   width: 100%;
 }
 .twpx-form-control--active .twpx-form-control__label {

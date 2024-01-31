@@ -40,6 +40,16 @@ export default {
     FormControl,
     TheBreadcrumbs,
   },
+  mounted() {
+    this.variant.settings.properties.forEach((c) => {
+      if (c.dependency) {
+        let checkbox = this.variant.settings.properties.find(
+          (ch) => ch.id === c.dependency
+        );
+        c.disabled = !checkbox.checked;
+      }
+    });
+  },
 };
 </script>
 

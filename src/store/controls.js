@@ -16,7 +16,7 @@ export default {
           break;
         case 'multiselect':
           if (value !== undefined && checked !== undefined) {
-            if (checked) {
+            if (checked === false) {
               const index = control.value.indexOf(value);
               if (index >= 0) {
                 control.value.splice(index, 1);
@@ -43,6 +43,23 @@ export default {
     },
     disableControl(_, { control, value }) {
       control.disabled = value;
+    },
+    changeDependentControls(_, { block, control }) {
+      let variant, dependentArray;
+
+      variant = block.variants.find((v) => v.id === block.activeVariant);
+
+      if (variant) {
+        dependentArray = variant.settings.properties.filter(
+          (p) => p.dependency === control.id
+        );
+      }
+
+      if (dependentArray) {
+        dependentArray.forEach((c) => {
+          c.disabled = !control.checked;
+        });
+      }
     },
   },
   actions: {
@@ -73,9 +90,10 @@ export default {
         });
       }
     },
-    changeControlValue({ commit }, { control, value }) {
+    changeControlValue({ getters, commit }, { control, value, checked }) {
       switch (control.property) {
         case 'text':
+        case 'textarea':
           if (!control.memory) {
             commit('changeControlMemory', { control, value: control.value });
           }
@@ -90,9 +108,23 @@ export default {
             });
           }
 
-          commit('changeControlValue', { control, checked: value });
+          commit('changeControlValue', { control, checked });
 
-          commit('changeDependentControls', { control }, { root: true });
+          commit('changeDependentControls', {
+            block: getters.isEditedBlock,
+            control,
+          });
+          break;
+        case 'multiselect':
+          if (!control.memory) {
+            commit('changeControlMemory', {
+              control,
+              value: control.value,
+              checked: control.checked,
+            });
+          }
+
+          commit('changeControlValue', { control, value, checked });
           break;
       }
     },

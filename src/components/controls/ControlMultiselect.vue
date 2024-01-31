@@ -1,10 +1,17 @@
 <template>
-  <div class="slr2-page-settings__control">
-    <div class="slr2-page-settings__multiselect">
+  <div
+    :class="{
+      'twpx-form-control': true,
+      'twpx-form-control--invalid': invalid,
+      'twpx-form-control--disabled': disabled,
+    }"
+  >
+    <div class="twpx-form-control__title">{{ control.label }}</div>
+    <div class="twpx-form-control__multiselect">
       <div
-        class="slr2-page-settings__multiselect-item"
+        class="twpx-form-control__multiselect-item"
         :class="{
-          'slr2-page-settings__multiselect-item--checked': isChecked(item),
+          'twpx-form-control__multiselect-item--checked': isChecked(item),
         }"
         v-for="item in control.options"
         :value="item.code"
@@ -15,7 +22,7 @@
       </div>
     </div>
     <div
-      class="slr2-page-settings__control-hint"
+      class="twpx-form-control-hint"
       v-if="control.hint_external"
       v-html="control.hint_external"
     ></div>
@@ -25,42 +32,73 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      controlId: this.id || this.control.id || null,
+      controlName: this.name || this.control.name || null,
+      blured: false,
+    };
   },
-  props: ['control', 'variantId'],
+  props: ['control', 'id', 'name'],
+  emits: ['input'],
+  computed: {
+    invalid() {
+      return this.blured && !this.validate();
+    },
+    disabled() {
+      return this.control.disabled;
+    },
+    validateWatcher() {
+      return this.control.validateWatcher;
+    },
+  },
+  watch: {
+    validateWatcher() {
+      this.blured = true;
+    },
+  },
   methods: {
     isChecked(item) {
       return this.control.value.find((v) => v === item.code);
     },
     click(item) {
+      this.blured = true;
       let checked = false;
       if (this.isChecked(item)) {
         checked = true;
       }
-      this.$store.commit('setControlValue', {
-        blockId: this.$store.getters.isEditedBlock.id,
-        variantId: this.variantId,
-        controlId: this.control.id,
-        value: item.code,
-        checked,
-      });
+
+      this.$emit('input', { value: item.code, checked: !checked });
+    },
+    validate() {
+      if (
+        !this.control.required ||
+        (this.control.required && this.control.value.length)
+      ) {
+        return true;
+      }
+      return false;
     },
   },
 };
 </script>
 
 <style>
-.slr2-page-settings__control {
+.twpx-form-control {
   position: relative;
-  margin-bottom: var(--slr2-gap-middle);
+  margin-bottom: calc(var(--slr2-gap-middle) * 2);
 }
-.slr2-page-settings__control-hint {
+.twpx-form-control__title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+.twpx-form-control-hint {
   color: #2d3142;
   font-size: 9px;
   margin: 8px 0 0 14px;
   line-height: 1.2;
 }
-.slr2-page-settings__multiselect-item {
+.twpx-form-control__multiselect-item {
   height: 36px;
   border-radius: 8px;
   display: inline-flex;
@@ -78,12 +116,20 @@ export default {
   user-select: none;
   margin: 0 16px 16px 0;
 }
-.slr2-page-settings__multiselect-item:hover {
+.twpx-form-control__multiselect-item:hover {
   background-color: #d7dee1;
 }
-.slr2-page-settings__multiselect-item.slr2-page-settings__multiselect-item--checked {
+.twpx-form-control__multiselect-item.twpx-form-control__multiselect-item--checked {
   background-color: #2d3142;
   color: #fff;
   font-weight: bold;
+}
+.twpx-form-control--disabled {
+  pointer-events: none;
+  opacity: 0.7;
+}
+.twpx-form-control--invalid .twpx-form-control__multiselect-item {
+  background-color: #ffeeef;
+  color: #ff2322;
 }
 </style>

@@ -92,6 +92,72 @@ window.BX = {
                               dependency: 'id6',
                             },
                             {
+                              property: 'textarea',
+                              id: 'id2',
+                              name: 'TEXT_FORMATTED',
+                              label: 'Textarea с форматированием',
+                              value:
+                                'Lorem ipsum dolor sit <b>amet</b> consectetur adipisicing elit. <a href="">Ab blanditiis</a> molestias <i>velit eaque</i>, ut dolorum dolore aperiam dolorem? Obcaecati <span style="color: pink;">facere magni</span>, eligendi deleniti corrupti totam, temporibus magnam vero reprehenderit veritatis illo ab impedit quibusdam aliquid! Inventore illum, deserunt sunt qui repellat natus soluta? Itaque magnam odit facilis, nemo similique, molestias est atque velit sit unde aliquam quis, quod dolore! Eligendi amet aliquid quis maiores dolore eum minus illo sapiente, reprehenderit optio id non repudiandae voluptas, nisi officiis necessitatibus itaque soluta at voluptate odit quasi porro. Corrupti laudantium cupiditate labore voluptate dolores magnam ea non sunt sint facere velit, harum illum?',
+                              required: true,
+                              disabled: false,
+                              hint_external: 'Подробно опишите задание',
+                              dependency: 'id6',
+                            },
+                            {
+                              property: 'multiselect',
+                              id: 'id4',
+                              name: 'POINTS',
+                              label: 'Пункты для выбора',
+                              options: [
+                                {
+                                  label: 'Машиностроение',
+                                  code: '23423423423',
+                                },
+                                {
+                                  label: 'Сельское хозяйство',
+                                  code: '324234324',
+                                },
+                                {
+                                  label: 'Пункт 2',
+                                  code: '324234325',
+                                },
+                                {
+                                  label: 'Пункт 2',
+                                  code: '324234326',
+                                },
+                                {
+                                  label: 'Пункт 2',
+                                  code: '324234327',
+                                },
+                                {
+                                  label: 'Длинный пункт меню',
+                                  code: '324234328',
+                                },
+                                {
+                                  label: 'Сельское хозяйство',
+                                  code: '324234329',
+                                },
+                                {
+                                  label: 'Длинный пункт меню',
+                                  code: '3242343210',
+                                },
+                                {
+                                  label: 'Пункт 2',
+                                  code: '3242343211',
+                                },
+                                {
+                                  label: 'Пункт 2',
+                                  code: '3242343212',
+                                },
+                              ],
+                              value: ['23423423423', '324234325'],
+                              required: false,
+                              disabled: false,
+                              hint_external:
+                                'Выберите несколько пунктов из списка',
+                              dependency: 'id6',
+                            },
+                            {
                               property: 'checkbox',
                               type: 'checkbox',
                               id: 'id6',
@@ -100,10 +166,10 @@ window.BX = {
                               label:
                                 'Checkbox, от которого зависят остальные поля',
                               value: 'on',
-                              checked: false,
+                              checked: true,
                               disabled: false,
                               hint_external:
-                                'Подсказка для checkbox может быть неожиданно очень длинной.',
+                                'Если нажать, будут активны зависимые поля.',
                             },
                           ],
                         },

@@ -9,11 +9,11 @@
 
 <script>
 import ControlText from './controls/ControlText.vue';
+import ControlTextarea from './controls/ControlTextarea.vue';
 import ControlCheckboxCheckbox from './controls/ControlCheckboxCheckbox.vue';
-// import ControlTextarea from './controls/ControlTextarea.vue';
+import ControlMultiselect from './controls/ControlMultiselect.vue';
 // import ControlSelect from './controls/ControlSelect.vue';
 // import ControlCheckbox from './controls/ControlCheckbox.vue';
-// import ControlMultiselect from './controls/ControlMultiselect.vue';
 // import ControlFile from './controls/ControlFile.vue';
 
 export default {
@@ -26,16 +26,19 @@ export default {
   },
   props: ['control', 'variantId'],
   methods: {
-    input(value) {
+    input({ value, checked }) {
       this.$store.dispatch('changeControlValue', {
         control: this.control,
         value,
+        checked,
       });
     },
   },
   components: {
     ControlText,
+    ControlTextarea,
     ControlCheckboxCheckbox,
+    ControlMultiselect,
   },
 };
 </script>

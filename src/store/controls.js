@@ -126,6 +126,13 @@ export default {
 
           commit('changeControlValue', { control, value, checked });
           break;
+        case 'select':
+          if (!control.memory) {
+            commit('changeControlMemory', { control, value: control.value });
+          }
+
+          commit('changeControlValue', { control, value });
+          break;
       }
     },
     validateControl({ commit }, { control }) {

@@ -12,7 +12,8 @@ import ControlText from './controls/ControlText.vue';
 import ControlTextarea from './controls/ControlTextarea.vue';
 import ControlCheckboxCheckbox from './controls/ControlCheckboxCheckbox.vue';
 import ControlMultiselect from './controls/ControlMultiselect.vue';
-// import ControlSelect from './controls/ControlSelect.vue';
+import ControlSelectRadio from './controls/ControlSelectRadio.vue';
+import ControlHeading from './controls/ControlHeading.vue';
 // import ControlCheckbox from './controls/ControlCheckbox.vue';
 // import ControlFile from './controls/ControlFile.vue';
 
@@ -39,6 +40,8 @@ export default {
     ControlTextarea,
     ControlCheckboxCheckbox,
     ControlMultiselect,
+    ControlSelectRadio,
+    ControlHeading,
   },
 };
 </script>

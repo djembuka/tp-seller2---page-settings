@@ -33,6 +33,7 @@ export default {
   --slr2-buttons: #0a16aa;
   --slr2-color: #000;
   --slr2-light: #f7f9ff;
+  --slr2-font-size-sm: 14px;
   --slr2-font-size: 16px;
   --slr2-gap-big: 30px;
   --slr2-gap: 24px;

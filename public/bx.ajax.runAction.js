@@ -94,8 +94,22 @@ window.BX = {
                             {
                               property: 'textarea',
                               id: 'id2',
+                              type: 'formatted',
                               name: 'TEXT_FORMATTED',
                               label: 'Textarea с форматированием',
+                              value:
+                                'Lorem ipsum dolor sit <b>amet</b> consectetur adipisicing elit. <a href="">Ab blanditiis</a> molestias <i>velit eaque</i>, ut dolorum dolore aperiam dolorem? Obcaecati <span style="color: pink;">facere magni</span>, eligendi deleniti corrupti totam, temporibus magnam vero reprehenderit veritatis illo ab impedit quibusdam aliquid! Inventore illum, deserunt sunt qui repellat natus soluta? Itaque magnam odit facilis, nemo similique, molestias est atque velit sit unde aliquam quis, quod dolore! Eligendi amet aliquid quis maiores dolore eum minus illo sapiente, reprehenderit optio id non repudiandae voluptas, nisi officiis necessitatibus itaque soluta at voluptate odit quasi porro. Corrupti laudantium cupiditate labore voluptate dolores magnam ea non sunt sint facere velit, harum illum?',
+                              required: true,
+                              disabled: false,
+                              hint_external: 'Подробно опишите задание',
+                              dependency: 'id6',
+                            },
+                            {
+                              property: 'textarea',
+                              id: 'id20',
+                              type: 'plain',
+                              name: 'TEXT_PLAIN',
+                              label: 'Textarea без форматирования',
                               value:
                                 'Lorem ipsum dolor sit <b>amet</b> consectetur adipisicing elit. <a href="">Ab blanditiis</a> molestias <i>velit eaque</i>, ut dolorum dolore aperiam dolorem? Obcaecati <span style="color: pink;">facere magni</span>, eligendi deleniti corrupti totam, temporibus magnam vero reprehenderit veritatis illo ab impedit quibusdam aliquid! Inventore illum, deserunt sunt qui repellat natus soluta? Itaque magnam odit facilis, nemo similique, molestias est atque velit sit unde aliquam quis, quod dolore! Eligendi amet aliquid quis maiores dolore eum minus illo sapiente, reprehenderit optio id non repudiandae voluptas, nisi officiis necessitatibus itaque soluta at voluptate odit quasi porro. Corrupti laudantium cupiditate labore voluptate dolores magnam ea non sunt sint facere velit, harum illum?',
                               required: true,
@@ -181,6 +195,61 @@ window.BX = {
                               value: '23423423423',
                               hint_external:
                                 'Введите подсказку для этого блока, которая может быть очень длинная, но мы не будем ее выводить всегда, иногда подсказки не будет совсем.',
+                              dependency: 'id6',
+                            },
+                            {
+                              property: 'checkbox',
+                              type: 'switch',
+                              id: 'id111',
+                              name: 'SWITCH',
+                              required: false,
+                              label:
+                                'labore voluptate dolores magnam ea non sunt sint facere velit, harum illum?',
+                              value: 'on',
+                              checked: true,
+                              disabled: false,
+                              hint_external: '',
+                              dependency: 'id6',
+                            },
+                            {
+                              property: 'checkbox',
+                              type: 'switch',
+                              id: 'id112',
+                              name: 'SWITCH',
+                              required: false,
+                              label:
+                                'molestias est atque velit sit unde aliquam quis, quod dolore! Eligendi amet aliquid quis maiores dolore eum minus illo sapiente, reprehenderit optio id non repudiandae voluptas, nisi officiis necessitatibus itaque soluta at voluptate odit quasi porro. Corrupti laudantium cupiditate labore voluptate dolores magnam ea non sunt sint facere velit, harum illum?',
+                              value: 'on',
+                              checked: true,
+                              disabled: false,
+                              hint_external: '',
+                              dependency: 'id6',
+                            },
+                            {
+                              property: 'checkbox',
+                              type: 'switch',
+                              id: 'id113',
+                              name: 'SWITCH',
+                              required: false,
+                              label: '',
+                              value: 'on',
+                              checked: true,
+                              disabled: false,
+                              hint_external: '',
+                              dependency: 'id6',
+                            },
+                            {
+                              property: 'checkbox',
+                              type: 'switch',
+                              id: 'id114',
+                              name: 'SWITCH',
+                              required: false,
+                              label:
+                                'labore voluptate dolores magnam ea non sunt sint facere velit, harum illum?',
+                              value: 'on',
+                              checked: true,
+                              disabled: false,
+                              hint_external: '',
                               dependency: 'id6',
                             },
                             {
@@ -323,109 +392,6 @@ window.BX = {
                               hint_external: 'Введите от 0 до 2',
                               // dependency: 'id2',
                             },
-                            // {
-                            //   property: 'textarea',
-                            //   id: '123sdfdsf34r13',
-                            //   label: 'Пример textarea',
-                            //   value:
-                            //     'Вот ещё один вариант изображения кассовой стойки в магазине одежды во время зимних распродаж, с прилавками с носками перед стойкой. Этот магазин имеет более праздничную и живую атмосферу. Если вам нужны дополнительные варианты или есть другие запросы, пожалуйста, сообщите мне!',
-                            //   hint_external:
-                            //     'Введите подсказку для этого блока, которая может быть очень длинная, но мы не будем ее выводить всегда, иногда подсказки не будет совсем.',
-                            //   formatted: false,
-                            // },
-                            // {
-                            //   property: 'textarea',
-                            //   id: '123sdfdsf34r13',
-                            //   label: 'Пример textarea с форматированием',
-                            //   value:
-                            //     'Вот ещё один <b>вариант</b> изображения кассовой стойки в магазине одежды во время зимних распродаж, с <span style="color: yellow; text-decoration: underline;">прилавками</span> с носками перед стойкой. Этот магазин имеет более праздничную и живую атмосферу. Если вам нужны дополнительные варианты или есть другие запросы, пожалуйста, сообщите мне!',
-                            //   hint_external:
-                            //     'Введите подсказку для этого блока, которая может быть очень длинная, но мы не будем ее выводить всегда, иногда подсказки не будет совсем.',
-                            //   formatted: true,
-                            // },
-                            // {
-                            //   property: 'checkbox',
-                            //   type: 'checkbox',
-                            //   id: '234234234231',
-                            //   label: 'Очень',
-                            //   value: 'value2',
-                            //   hint_external: '',
-                            //   dependency: '345345345345',
-                            // },
-                            // {
-                            //   property: 'checkbox',
-                            //   type: 'checkbox',
-                            //   id: '234234234232',
-                            //   label: 'Очень длинный пункт меню',
-                            //   value: 'value3',
-                            //   checked: true,
-                            //   hint_external:
-                            //     'Введите подсказку для этого блока, которая может быть очень длинная, но мы не будем ее выводить всегда, иногда подсказки не будет совсем.',
-                            //   dependency: '345345345345',
-                            // },
-                            // {
-                            //   property: 'multiselect',
-                            //   id: '234234234235',
-                            //   label: 'Типы производства',
-                            //   options: [
-                            //     {
-                            //       label: 'Машиностроение',
-                            //       code: '23423423423',
-                            //     },
-                            //     {
-                            //       label: 'Сельское хозяйство',
-                            //       code: '324234324',
-                            //     },
-                            //     {
-                            //       label: 'Пункт 2',
-                            //       code: '324234325',
-                            //     },
-                            //     {
-                            //       label: 'Пункт 2',
-                            //       code: '324234326',
-                            //     },
-                            //     {
-                            //       label: 'Пункт 2',
-                            //       code: '324234327',
-                            //     },
-                            //     {
-                            //       label: 'Длинный пункт меню',
-                            //       code: '324234328',
-                            //     },
-                            //     {
-                            //       label: 'Сельское хозяйство',
-                            //       code: '324234329',
-                            //     },
-                            //     {
-                            //       label: 'Длинный пункт меню',
-                            //       code: '3242343210',
-                            //     },
-                            //     {
-                            //       label: 'Пункт 2',
-                            //       code: '3242343211',
-                            //     },
-                            //     {
-                            //       label: 'Пункт 2',
-                            //       code: '3242343212',
-                            //     },
-                            //   ],
-                            //   value: ['23423423423'],
-                            //   hint_external: 'Подсказка',
-                            //   dependency: '345345345345',
-                            // },
-                            // {
-                            //   property: 'date',
-                            //   id: '345345345348',
-                            //   label: 'Календарь',
-                            //   value: '30.01.2023',
-                            //   dependency: '345345345345',
-                            // },
-                            // {
-                            //   property: 'checkbox',
-                            //   id: '345345345345',
-                            //   label: 'Во весь экран',
-                            //   value: true,
-                            // },
                           ],
                         },
                       },

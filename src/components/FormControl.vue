@@ -9,12 +9,13 @@
 
 <script>
 import ControlText from './controls/ControlText.vue';
-import ControlTextarea from './controls/ControlTextarea.vue';
+import ControlTextareaPlain from './controls/ControlTextareaPlain.vue';
+import ControlTextareaFormatted from './controls/ControlTextareaFormatted.vue';
 import ControlCheckboxCheckbox from './controls/ControlCheckboxCheckbox.vue';
 import ControlMultiselect from './controls/ControlMultiselect.vue';
 import ControlSelectRadio from './controls/ControlSelectRadio.vue';
 import ControlHeading from './controls/ControlHeading.vue';
-// import ControlCheckbox from './controls/ControlCheckbox.vue';
+import ControlCheckboxSwitch from './controls/ControlCheckboxSwitch.vue';
 // import ControlFile from './controls/ControlFile.vue';
 
 export default {
@@ -37,11 +38,13 @@ export default {
   },
   components: {
     ControlText,
-    ControlTextarea,
+    ControlTextareaPlain,
+    ControlTextareaFormatted,
     ControlCheckboxCheckbox,
     ControlMultiselect,
     ControlSelectRadio,
     ControlHeading,
+    ControlCheckboxSwitch,
   },
 };
 </script>

@@ -2,6 +2,7 @@ export default {
   mutations: {
     changeControlValue(_, { control, value, checked }) {
       switch (control.property) {
+        case 'file':
         case 'text':
         case 'textarea':
         case 'select':
@@ -92,6 +93,7 @@ export default {
     },
     changeControlValue({ getters, commit }, { control, value, checked }) {
       switch (control.property) {
+        case 'file':
         case 'text':
         case 'textarea':
           if (!control.memory) {

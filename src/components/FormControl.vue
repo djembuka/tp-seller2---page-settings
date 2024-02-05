@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import ControlFile from './controls/ControlFile.vue';
 import ControlText from './controls/ControlText.vue';
 import ControlTextareaPlain from './controls/ControlTextareaPlain.vue';
 import ControlTextareaFormatted from './controls/ControlTextareaFormatted.vue';
@@ -37,6 +38,7 @@ export default {
     },
   },
   components: {
+    ControlFile,
     ControlText,
     ControlTextareaPlain,
     ControlTextareaFormatted,

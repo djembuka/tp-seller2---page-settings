@@ -77,6 +77,19 @@ window.BX = {
                         settings: {
                           properties: [
                             {
+                              property: 'file',
+                              id: 'id0',
+                              name: 'FILE',
+                              label: 'Картинка превью',
+                              value: '',
+                              required: true,
+                              disabled: false,
+                              accept: ['pdf', 'exe', 'jpg'],
+                              image: true,
+                              maxsize: 10000000,
+                              dependency: 'id6',
+                            },
+                            {
                               property: 'text',
                               id: 'id1',
                               name: 'NAME',

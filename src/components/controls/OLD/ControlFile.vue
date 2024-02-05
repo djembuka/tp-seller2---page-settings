@@ -1,31 +1,32 @@
 <template>
   <div
+    class="slr2-page-settings__control"
     :class="{
-      'twpx-form-control': true,
-      'twpx-form-control--active': active,
-      'twpx-form-control--invalid': invalid,
-      'twpx-form-control--disabled': disabled,
+      'slr2-page-settings__control--invalid': invalid,
+      'slr2-page-settings__control--disabled': disabled,
     }"
   >
     <img
       :src="disabled"
-      class="twpx-form-control__file__disabled-icon"
+      class="slr2-page-settings__control__disabled-icon"
       v-if="disabled"
     />
     <span
-      class="twpx-form-control__file__clear"
+      class="slr2-page-settings__control-file__clear"
       @click.prevent="clearInputFile"
       v-if="isClearable"
     ></span>
     <div
-      class="twpx-form-control__file"
+      class="slr2-page-settings__control-file"
       :class="{
         filled: isFilled,
         clearable: isClearable,
       }"
       ref="controlFile"
     >
-      <span class="twpx-form-control__file__label">{{ control.label }}</span>
+      <span class="slr2-page-settings__control-file__label">{{
+        control.label
+      }}</span>
 
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +50,6 @@
         ref="dropzone"
       ></label>
     </div>
-    <div class="twpx-form-control__hint" v-html="hint" v-if="hint"></div>
   </div>
 </template>
 
@@ -57,9 +57,11 @@
 export default {
   data() {
     return {
-      active: true,
+      disabled: this.control.disabled,
+      loading: false,
+      isFileLoaded: false,
+      isActive: true,
       files: [],
-      default: '<a href="">Выберите файл</a>&nbsp;или перетащите в поле',
       icon: `<g transform="translate(-4.461)">
           <g transform="translate(4.461)">
             <g>
@@ -72,12 +74,8 @@ export default {
         </g>`,
     };
   },
-  props: ['control'],
-  emits: ['input'],
+  props: ['control', 'variantId'],
   computed: {
-    disabled() {
-      return this.control.disabled;
-    },
     invalid() {
       return !!this.invalidString;
     },
@@ -87,21 +85,25 @@ export default {
     isFilled() {
       return !!this.filename;
     },
+    fileid() {
+      return this.control.value;
+    },
     invalidString() {
       if (this.files[0] && this.files[0].size && this.files[0].name) {
-        if (this.files[0].size >= this.control.maxsize) {
+        if (this.files[0].size >= this.control.maxSize) {
           //this.files = [];
           return `Размер файла превышает ${this.formatSize(
-            this.control.maxsize
+            this.control.maxSize
           )}`;
         }
 
         const filename = this.files[0].name;
         const lastIndex = filename.lastIndexOf('.');
-        const regExp = new RegExp(this.control.accept.join('|'));
+        const regExp = new RegExp(this.control.ext.join('|'));
 
         if (!regExp.test(filename.substring(lastIndex + 1).toLowerCase())) {
-          return `Прикладывайте файлы ${this.control.accept
+          //this.files = [];
+          return `Прикладывайте файлы ${this.control.ext
             .map((w) => w.toUpperCase())
             .join(', ')}.`;
         }
@@ -118,7 +120,7 @@ export default {
       if (this.control.value) {
         return this.control.value;
       }
-      return this.default;
+      return this.control.default;
     },
     filename() {
       return this.control.value;
@@ -126,15 +128,26 @@ export default {
   },
   methods: {
     uploadFile(files) {
+      this.$store.commit('setControlValue', {
+        blockId: this.$store.getters.isEditedBlock.id,
+        variantId: this.variantId,
+        controlId: this.control.id,
+        value: files[0].name,
+      });
+
       this.files = files;
-      if (!this.invalidString) {
-        this.$emit('input', { value: files[0].name });
-      }
     },
     clearInputFile() {
+      this.loading = false;
       this.files = [];
       this.$refs.inputFile.value = '';
-      this.$emit('input', { value: '' });
+      //set value
+      this.$store.commit('setControlValue', {
+        blockId: this.$store.getters.isEditedBlock.id,
+        variantId: this.variantId,
+        controlId: this.control.id,
+        value: '',
+      });
     },
     cancelEvent(e) {
       e.preventDefault();
@@ -195,18 +208,19 @@ export default {
 
     dropZone.addEventListener('drop', (e) => {
       controlFile.classList.remove('dragover');
+      controlFile.classList.add('filled');
       this.uploadFile(e.dataTransfer.files);
     });
   },
 };
 </script>
 
-<style>
-.twpx-form-control {
+<style scoped>
+.slr2-page-settings__control {
   position: relative;
   margin-bottom: var(--slr2-gap-middle);
 }
-.twpx-form-control__file__disabled-icon {
+.slr2-page-settings__control__disabled-icon {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -214,31 +228,30 @@ export default {
   height: 16px;
   pointer-events: none;
   z-index: 10;
-  display: none;
 }
-.twpx-form-control__file label span {
+.slr2-page-settings__control-file label span {
   color: #ea4420;
 }
 
 /*File*/
-.twpx-form-control__file {
+.slr2-page-settings__control-file {
   position: relative;
   margin-bottom: 0;
 }
-.twpx-form-control__file.deleting {
+.slr2-page-settings__control-file.deleting {
   pointer-events: none;
 }
-.twpx-form-control__file svg {
+.slr2-page-settings__control-file svg {
   position: absolute;
   top: 12px;
   left: 16px;
   pointer-events: none;
   z-index: 10;
 }
-.twpx-form-control__file.deleting svg {
+.slr2-page-settings__control-file.deleting svg {
   display: none;
 }
-.twpx-form-control__file input {
+.slr2-page-settings__control-file input {
   position: absolute;
   top: 0;
   left: 0;
@@ -248,7 +261,7 @@ export default {
   overflow: hidden;
   z-index: -1;
 }
-.twpx-form-control__file label {
+.slr2-page-settings__control-file label {
   display: block;
   background-color: #f5f7f8;
   font-size: 14px;
@@ -267,128 +280,131 @@ export default {
   transition: background-color 0.3s ease, color 0.3s ease,
     border-color 0.3s ease;
 }
-.twpx-form-control__file.clearable label {
+.slr2-page-settings__control-file.clearable label {
   padding-right: 40px;
 }
-.twpx-form-control__file label a {
+.slr2-page-settings__control-file label a {
   pointer-events: none;
   -webkit-transition: none;
   transition: none;
   color: #0a16aa;
   text-decoration: none;
 }
-.twpx-form-control__file label:hover {
+.slr2-page-settings__control-file label:hover {
   border-color: #2d3142;
 }
-.twpx-form-control__file .a,
-.twpx-form-control__file .b,
-.twpx-form-control__file .c,
-.twpx-form-control__file .d {
+.slr2-page-settings__control-file .a,
+.slr2-page-settings__control-file .b,
+.slr2-page-settings__control-file .c,
+.slr2-page-settings__control-file .d {
   -webkit-transition: fill 0.3s ease;
   transition: fill 0.3s ease;
 }
-.twpx-form-control__file .a {
+.slr2-page-settings__control-file .a {
   fill: #7293a0;
 }
-.twpx-form-control__file .b {
+.slr2-page-settings__control-file .b {
   fill: #3f6676;
 }
-.twpx-form-control__file .c {
+.slr2-page-settings__control-file .c {
   fill: #bbd1d9;
 }
-.twpx-form-control__file .d {
+.slr2-page-settings__control-file .d {
   fill: #fff;
 }
-.twpx-form-control__file:active .a,
-.twpx-form-control__file.dragover .a,
-.twpx-form-control__file.filled .a {
+.slr2-page-settings__control-file:active .a,
+.slr2-page-settings__control-file.dragover .a,
+.slr2-page-settings__control-file.filled .a {
   fill: #fff;
 }
-.twpx-form-control__file:active .b,
-.twpx-form-control__file.dragover .b,
-.twpx-form-control__file.filled .b {
+.slr2-page-settings__control-file:active .b,
+.slr2-page-settings__control-file.dragover .b,
+.slr2-page-settings__control-file.filled .b {
   fill: #a7bde8;
 }
-.twpx-form-control__file:active .c,
-.twpx-form-control__file.dragover .c,
-.twpx-form-control__file.filled .c {
+.slr2-page-settings__control-file:active .c,
+.slr2-page-settings__control-file.dragover .c,
+.slr2-page-settings__control-file.filled .c {
   fill: #d0e0ff;
 }
-.twpx-form-control__file:active .d,
-.twpx-form-control__file.dragover .d,
-.twpx-form-control__file.filled .d {
+.slr2-page-settings__control-file:active .d,
+.slr2-page-settings__control-file.dragover .d,
+.slr2-page-settings__control-file.filled .d {
   fill: #7293a1;
 }
-.twpx-form-control__file:active label,
-.twpx-form-control__file.dragover label,
-.twpx-form-control__file.filled label {
+.slr2-page-settings__control-file:active label,
+.slr2-page-settings__control-file.dragover label,
+.slr2-page-settings__control-file.filled label {
   background-color: #7293a1;
   color: #fff;
 }
-.twpx-form-control__file:active label a,
-.twpx-form-control__file.dragover label a,
-.twpx-form-control__file.filled label a,
-.twpx-form-control__file:active .twpx-form-control__file__label,
-.twpx-form-control__file.dragover .twpx-form-control__file__label,
-.twpx-form-control__file.filled .twpx-form-control__file__label {
+.slr2-page-settings__control-file:active label a,
+.slr2-page-settings__control-file.dragover label a,
+.slr2-page-settings__control-file.filled label a,
+.slr2-page-settings__control-file:active
+  .slr2-page-settings__control-file__label,
+.slr2-page-settings__control-file.dragover
+  .slr2-page-settings__control-file__label,
+.slr2-page-settings__control-file.filled
+  .slr2-page-settings__control-file__label {
   color: #fff;
 }
 /*invalid*/
-.twpx-form-control--invalid .a,
-.twpx-form-control__file--invalid:active .a {
+.slr2-page-settings__control--invalid .a,
+.slr2-page-settings__control-file--invalid:active .a {
   fill: #ff0000;
 }
-.twpx-form-control--invalid .b,
-.twpx-form-control__file--invalid:active .b {
+.slr2-page-settings__control--invalid .b,
+.slr2-page-settings__control-file--invalid:active .b {
   fill: #b10101;
 }
-.twpx-form-control--invalid .c,
-.twpx-form-control__file--invalid:active .c {
+.slr2-page-settings__control--invalid .c,
+.slr2-page-settings__control-file--invalid:active .c {
   fill: #fcc;
 }
-.twpx-form-control--invalid .d,
-.twpx-form-control__file--invalid:active .d {
+.slr2-page-settings__control--invalid .d,
+.slr2-page-settings__control-file--invalid:active .d {
   fill: #fff;
 }
-/*.twpx-form-control--invalid .a,
-.twpx-form-control--invalid .b,
-.twpx-form-control--invalid:active .a,
-.twpx-form-control--invalid:active .b {
+/*.slr2-page-settings__control--invalid .a,
+.slr2-page-settings__control--invalid .b,
+.slr2-page-settings__control--invalid:active .a,
+.slr2-page-settings__control--invalid:active .b {
   stroke: #ff0000;
 }*/
-.twpx-form-control--invalid label,
-.twpx-form-control--ivalid:active label {
+.slr2-page-settings__control--invalid label,
+.slr2-page-settings__control--ivalid:active label {
   background-color: #ffeaea;
   color: #ff0000;
   border-color: #e38080;
 }
-.twpx-form-control--invalid:hover label,
-.twpx-form-control--invalid:hover:active label {
+.slr2-page-settings__control--invalid:hover label,
+.slr2-page-settings__control--invalid:hover:active label {
   border-color: #ff0000;
 }
-.twpx-form-control--invalid label a,
-.twpx-form-control--invalid:active label a {
+.slr2-page-settings__control--invalid label a,
+.slr2-page-settings__control--invalid:active label a {
   color: #ff0000;
 }
-.twpx-form-control--disabled .twpx-form-control__file {
+.slr2-page-settings__control--disabled .slr2-page-settings__control-file {
   pointer-events: none;
 }
-.twpx-form-control--disabled label,
-.twpx-form-control--disabled:active label {
+.slr2-page-settings__control--disabled label,
+.slr2-page-settings__control--disabled:active label {
   color: #00000055;
   pointer-events: none;
   background-color: #f5f7f855;
   border: 1px solid #f5f7f855 !important;
 }
-.twpx-form-control--disabled label a,
-.twpx-form-control--disabled:active label a {
+.slr2-page-settings__control--disabled label a,
+.slr2-page-settings__control--disabled:active label a {
   color: #0a16aa55;
 }
-.twpx-form-control--disabled svg {
+.slr2-page-settings__control--disabled svg {
   opacity: 0.3;
 }
 
-.twpx-form-control__file__label {
+.slr2-page-settings__control-file__label {
   position: absolute;
   top: 5px;
   left: 46px;
@@ -398,14 +414,15 @@ export default {
   line-height: 1.1;
   z-index: 10;
 }
-.twpx-form-control--invalid .twpx-form-control__file__label {
+.slr2-page-settings__control--invalid .slr2-page-settings__control-file__label {
   color: #ff0000;
 }
-.twpx-form-control--disabled .twpx-form-control__file__label {
+.slr2-page-settings__control--disabled
+  .slr2-page-settings__control-file__label {
   color: #2d3142;
   opacity: 0.3;
 }
-.twpx-form-control__file__clear {
+.slr2-page-settings__control-file__clear {
   position: absolute;
   top: calc(50% - 8px);
   right: 16px;
@@ -416,11 +433,11 @@ export default {
   z-index: 10;
 }
 
-.twpx-form-control__file__clear:hover {
+.slr2-page-settings__control-file__clear:hover {
   opacity: 0.7;
 }
 
-.twpx-form-control__file__clear:before {
+.slr2-page-settings__control-file__clear:before {
   content: '';
   display: block;
   height: 20px;
@@ -431,7 +448,7 @@ export default {
   left: 7px;
   z-index: 10;
 }
-.twpx-form-control__file__clear:after {
+.slr2-page-settings__control-file__clear:after {
   content: '';
   display: block;
   height: 20px;
@@ -443,26 +460,17 @@ export default {
   z-index: 10;
 }
 
-.twpx-form-control__file__clear.btn--load-circle {
+.slr2-page-settings__control-file__clear.btn--load-circle {
   position: absolute;
 }
-.twpx-form-control__file__clear.btn--load-circle:after {
+.slr2-page-settings__control-file__clear.btn--load-circle:after {
   width: 20px;
   height: 20px;
   top: calc(50% - 10px);
   right: calc(50% - 10px);
   left: auto;
 }
-.twpx-form-control__file__clear.btn--load-circle:before {
+.slr2-page-settings__control-file__clear.btn--load-circle:before {
   display: none;
-}
-.twpx-form-control__warning,
-.twpx-form-control__hint {
-  font-size: 9pt;
-  margin: 5px;
-  line-height: 1.1;
-}
-.twpx-form-control__warning {
-  color: #ff0000;
 }
 </style>

@@ -1,4 +1,4 @@
-const { defineConfig } = require('@vue/cli-service')
+const { defineConfig } = require('@vue/cli-service');
 module.exports = defineConfig({
   transpileDependencies: true,
   filenameHashing: false,
@@ -8,9 +8,9 @@ module.exports = defineConfig({
       chunkFilename: 'chunk-vendors.js',
     },
   },*/
-  css: {
-    extract: {
-      filename: 'css/app.css',
-    },
-  },
-})
+  // css: {
+  //   extract: {
+  //     filename: 'css/app.css',
+  //   },
+  // },
+});

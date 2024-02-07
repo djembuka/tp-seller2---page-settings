@@ -5,6 +5,7 @@ export default {
         case 'file':
         case 'text':
         case 'textarea':
+        case 'date':
         case 'select':
           if (value !== undefined) {
             control.value = value;
@@ -96,6 +97,7 @@ export default {
         case 'file':
         case 'text':
         case 'textarea':
+        case 'date':
           if (!control.memory) {
             commit('changeControlMemory', { control, value: control.value });
           }

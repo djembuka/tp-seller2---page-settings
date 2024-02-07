@@ -77,6 +77,40 @@ window.BX = {
                         settings: {
                           properties: [
                             {
+                              property: 'heading',
+                              id: 'idH0',
+                              label: 'Datepicker',
+                            },
+                            {
+                              property: 'date',
+                              type: 'single',
+                              id: 'id45',
+                              label: 'Календарь',
+                              name: 'DATE',
+                              required: true,
+                              value: '28.02.2024',
+                              hint_external:
+                                'Подсказка для checkbox может быть неожиданно очень длинной.',
+                              dependency: 'id6',
+                            },
+                            {
+                              property: 'date',
+                              type: 'range',
+                              id: 'id45',
+                              label: 'Календарь',
+                              name: 'DATE',
+                              required: true,
+                              value: ['20.02.2024', '28.02.2024'],
+                              hint_external:
+                                'Подсказка для checkbox может быть неожиданно очень длинной.',
+                              dependency: 'id6',
+                            },
+                            {
+                              property: 'heading',
+                              id: 'idH0',
+                              label: 'File input',
+                            },
+                            {
                               property: 'file',
                               id: 'id0',
                               name: 'FILE',
@@ -88,6 +122,11 @@ window.BX = {
                               image: true,
                               maxsize: 10000000,
                               dependency: 'id6',
+                            },
+                            {
+                              property: 'heading',
+                              id: 'idH0',
+                              label: 'Text input',
                             },
                             {
                               property: 'text',
@@ -103,6 +142,11 @@ window.BX = {
                               hint_internal: 'Введите 0, 1 или 2',
                               hint_external: 'Введите от 0 до 2',
                               dependency: 'id6',
+                            },
+                            {
+                              property: 'heading',
+                              id: 'idH0',
+                              label: 'Textarea',
                             },
                             {
                               property: 'textarea',
@@ -129,6 +173,11 @@ window.BX = {
                               disabled: false,
                               hint_external: 'Подробно опишите задание',
                               dependency: 'id6',
+                            },
+                            {
+                              property: 'heading',
+                              id: 'idH0',
+                              label: 'Multiselect',
                             },
                             {
                               property: 'multiselect',
@@ -185,6 +234,11 @@ window.BX = {
                               dependency: 'id6',
                             },
                             {
+                              property: 'heading',
+                              id: 'idH0',
+                              label: 'Radio buttons',
+                            },
+                            {
                               property: 'select',
                               type: 'radio',
                               id: 'id5',
@@ -209,6 +263,11 @@ window.BX = {
                               hint_external:
                                 'Введите подсказку для этого блока, которая может быть очень длинная, но мы не будем ее выводить всегда, иногда подсказки не будет совсем.',
                               dependency: 'id6',
+                            },
+                            {
+                              property: 'heading',
+                              id: 'idH0',
+                              label: 'Switch',
                             },
                             {
                               property: 'checkbox',

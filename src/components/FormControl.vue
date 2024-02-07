@@ -17,6 +17,8 @@ import ControlMultiselect from './controls/ControlMultiselect.vue';
 import ControlSelectRadio from './controls/ControlSelectRadio.vue';
 import ControlHeading from './controls/ControlHeading.vue';
 import ControlCheckboxSwitch from './controls/ControlCheckboxSwitch.vue';
+import ControlDateSingle from './controls/ControlDateSingle.vue';
+import ControlDateRange from './controls/ControlDateRange.vue';
 // import ControlFile from './controls/ControlFile.vue';
 
 export default {
@@ -47,6 +49,8 @@ export default {
     ControlSelectRadio,
     ControlHeading,
     ControlCheckboxSwitch,
+    ControlDateSingle,
+    ControlDateRange,
   },
 };
 </script>

@@ -6,7 +6,6 @@
       'twpx-form-control--disabled': disabled,
     }"
   >
-    <div class="twpx-form-control__title">{{ control.label }}</div>
     <div class="twpx-form-control__multiselect">
       <div
         class="twpx-form-control__multiselect-item"
@@ -66,7 +65,6 @@ export default {
       if (this.isChecked(item)) {
         checked = true;
       }
-
       this.$emit('input', { value: item.code, checked: !checked });
     },
     validate() {
@@ -85,12 +83,7 @@ export default {
 <style>
 .twpx-form-control {
   position: relative;
-  margin-bottom: calc(var(--slr2-gap-middle) * 2);
-}
-.twpx-form-control__title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 16px;
+  margin-bottom: var(--slr2-gap-middle);
 }
 .twpx-form-control-hint {
   color: #2d3142;

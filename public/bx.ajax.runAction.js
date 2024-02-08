@@ -30,20 +30,20 @@ window.BX = {
                 {
                   id: '11',
                   name: '\u0413\u043b\u0430\u0432\u043d\u0430\u044f \u0441\u0442\u0440\u0430\u043d\u0438\u0446\u0430',
-                  icon: '/upload/document.svg',
-                  preview: '/upload/block.png',
+                  icon: 'upload/document.svg',
+                  preview: 'upload/block.png',
                 },
                 {
                   id: '12',
                   name: '\u041a\u0430\u0442\u0430\u043b\u043e\u0433',
-                  icon: '/upload/catalog.svg',
-                  preview: '/upload/block.png',
+                  icon: 'upload/catalog.svg',
+                  preview: 'upload/block.png',
                 },
                 {
                   id: '13',
                   name: '\u041a\u043e\u0440\u0437\u0438\u043d\u0430',
-                  icon: '/upload/cart.svg',
-                  preview: '/upload/block.png',
+                  icon: 'upload/cart.svg',
+                  preview: 'upload/block.png',
                 },
               ],
               errors: [],
@@ -62,7 +62,7 @@ window.BX = {
                     name: '\u0411\u0430\u043d\u043d\u0435\u0440',
                     description:
                       '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
-                    preview: '/upload/block.png',
+                    preview: 'upload/block.png',
                     settings: {
                       enabled: true,
                     },
@@ -73,9 +73,26 @@ window.BX = {
                         name: '\u0411\u0430\u043d\u043d\u0435\u0440 1',
                         description:
                           '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
-                        preview: '/upload/block.png',
+                        preview: 'upload/block.png',
                         settings: {
                           properties: [
+                            {
+                              property: 'heading',
+                              id: 'idH0',
+                              label: 'Colorpicker',
+                            },
+                            {
+                              property: 'color',
+                              id: 'id45',
+                              label: 'Цвет фона',
+                              name: 'COLOR',
+                              required: true,
+                              value: '#CC3399',
+                              primary: '#ff33bb',
+                              secondary: '#a3ff33',
+                              hint_external: 'Подсказка',
+                              dependency: 'id6',
+                            },
                             {
                               property: 'heading',
                               id: 'idH0',
@@ -346,7 +363,7 @@ window.BX = {
                         name: '\u0411\u0430\u043d\u043d\u0435\u0440 2',
                         description:
                           '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
-                        preview: '/upload/block.png',
+                        preview: 'upload/block.png',
                         settings: [],
                       },
                       {
@@ -354,7 +371,7 @@ window.BX = {
                         name: '\u0411\u0430\u043d\u043d\u0435\u0440 3',
                         description:
                           '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
-                        preview: '/upload/block.png',
+                        preview: 'upload/block.png',
                         settings: [],
                       },
                     ],
@@ -364,7 +381,7 @@ window.BX = {
                     name: '\u0411\u0440\u0435\u043d\u0434\u044b',
                     description:
                       '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
-                    preview: '/upload/block.png',
+                    preview: 'upload/block.png',
                     settings: [],
                     activeVariant: '1121',
                     variants: [
@@ -373,7 +390,7 @@ window.BX = {
                         name: '\u0411\u0440\u0435\u043d\u0434\u044b',
                         description:
                           '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
-                        preview: '/upload/block.png',
+                        preview: 'upload/block.png',
                         settings: [],
                       },
                     ],
@@ -383,7 +400,7 @@ window.BX = {
                     name: '\u041e \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u0438',
                     description:
                       '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
-                    preview: '/upload/block.png',
+                    preview: 'upload/block.png',
                     settings: [],
                     activeVariant: '1131',
                     variants: [
@@ -392,7 +409,7 @@ window.BX = {
                         name: '\u041e \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u0438',
                         description:
                           '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
-                        preview: '/upload/block.png',
+                        preview: 'upload/block.png',
                         settings: [],
                       },
                     ],
@@ -402,7 +419,7 @@ window.BX = {
                     name: '\u041c\u0430\u0433\u0430\u0437\u0438\u043d\u044b',
                     description:
                       '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
-                    preview: '/upload/block.png',
+                    preview: 'upload/block.png',
                     settings: [],
                     activeVariant: '1141',
                     variants: [
@@ -411,7 +428,7 @@ window.BX = {
                         name: '\u041c\u0430\u0433\u0430\u0437\u0438\u043d\u044b',
                         description:
                           '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
-                        preview: '/upload/block.png',
+                        preview: 'upload/block.png',
                         settings: [],
                       },
                     ],
@@ -421,7 +438,7 @@ window.BX = {
                     name: '\u041f\u0440\u0435\u0438\u043c\u0443\u0449\u0435\u0441\u0442\u0432\u0430',
                     description:
                       '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
-                    preview: '/upload/block.png',
+                    preview: 'upload/block.png',
                     settings: [],
                     activeVariant: '1151',
                     variants: [
@@ -430,7 +447,7 @@ window.BX = {
                         name: '\u041f\u0440\u0435\u0438\u043c\u0443\u0449\u0435\u0441\u0442\u0432\u0430',
                         description:
                           '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
-                        preview: '/upload/block.png',
+                        preview: 'upload/block.png',
                         settings: [],
                       },
                     ],
@@ -440,14 +457,14 @@ window.BX = {
                   {
                     id: 't00',
                     name: '\u0428\u0430\u043f\u043a\u0430',
-                    preview: '/upload/block.png',
+                    preview: 'upload/block.png',
                     settings: {},
                     activeVariant: 't002',
                     variants: [
                       {
                         id: 't001',
                         name: '\u0428\u0430\u043f\u043a\u0430 1',
-                        preview: '/upload/block.png',
+                        preview: 'upload/block.png',
                         settings: {
                           properties: [
                             {
@@ -470,13 +487,13 @@ window.BX = {
                       {
                         id: 't002',
                         name: '\u0428\u0430\u043f\u043a\u0430 2 (\u043a\u0430\u0441\u0442\u043e\u043c)',
-                        preview: '/upload/block.png',
+                        preview: 'upload/block.png',
                         settings: [],
                       },
                       {
                         id: 't003',
                         name: '\u0428\u0430\u043f\u043a\u0430 3',
-                        preview: '/upload/block.png',
+                        preview: 'upload/block.png',
                         settings: [],
                       },
                     ],
@@ -486,19 +503,19 @@ window.BX = {
                   {
                     id: 'b99',
                     name: '\u041f\u043e\u0434\u0432\u0430\u043b',
-                    preview: '/upload/block.png',
+                    preview: 'upload/block.png',
                     settings: [],
                     activeVariant: 'b993',
                     variants: [
                       {
                         id: 'b991',
                         name: '\u041f\u043e\u0434\u0432\u0430\u043b 1',
-                        preview: '/upload/block.png',
+                        preview: 'upload/block.png',
                       },
                       {
                         id: 'b993',
                         name: '\u041c\u043e\u0439 \u0444\u0443\u0442\u0435\u0440',
-                        preview: '/upload/block.png',
+                        preview: 'upload/block.png',
                       },
                     ],
                   },
@@ -518,7 +535,7 @@ window.BX = {
                 name: '\u041e \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u0438',
                 description:
                   '\u0412\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432\u044b\u0431\u0440\u0430\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u044d\u0442\u043e\u0433\u043e \u0431\u043b\u043e\u043a\u0430',
-                preview: '/upload/block.png',
+                preview: 'upload/block.png',
                 settings: [],
                 variants: [],
               },

@@ -5,6 +5,12 @@
     @input="input"
   >
   </component>
+  <div
+    style="margin-top: 64px"
+    v-if="
+      controlProperty !== 'heading' && controlProperty !== 'checkbox-switch'
+    "
+  ></div>
 </template>
 
 <script>
@@ -19,6 +25,7 @@ import ControlHeading from './controls/ControlHeading.vue';
 import ControlCheckboxSwitch from './controls/ControlCheckboxSwitch.vue';
 import ControlDateSingle from './controls/ControlDateSingle.vue';
 import ControlDateRange from './controls/ControlDateRange.vue';
+import ControlColor from './controls/ControlColor.vue';
 // import ControlFile from './controls/ControlFile.vue';
 
 export default {
@@ -51,6 +58,7 @@ export default {
     ControlCheckboxSwitch,
     ControlDateSingle,
     ControlDateRange,
+    ControlColor,
   },
 };
 </script>

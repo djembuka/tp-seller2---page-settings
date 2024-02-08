@@ -13,6 +13,7 @@
     "core-js": "^3.8.3",
     "sortablejs": "^1.15.0",
     "vue": "^3.2.13",
+    "vue3-colorpicker": "^2.2.3",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

@@ -7,6 +7,7 @@ export default {
         case 'textarea':
         case 'date':
         case 'select':
+        case 'color':
           if (value !== undefined) {
             control.value = value;
           }
@@ -98,6 +99,7 @@ export default {
         case 'text':
         case 'textarea':
         case 'date':
+        case 'color':
           if (!control.memory) {
             commit('changeControlMemory', { control, value: control.value });
           }
@@ -175,6 +177,7 @@ export default {
         case 'text':
         case 'textarea':
         case 'select':
+        case 'color':
           if (value) {
             control.value = value;
           }

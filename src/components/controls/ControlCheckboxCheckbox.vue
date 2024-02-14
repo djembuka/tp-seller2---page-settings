@@ -13,7 +13,7 @@
           class="filled-in"
           :id="controlId"
           :name="controlName"
-          :value="this.control.value"
+          :value="control.value"
           v-model="checked"
         />
         <span>{{ control.label }}</span>
@@ -42,7 +42,7 @@ export default {
         return this.control.checked;
       },
       set(checked) {
-        this.$emit('input', { checked });
+        this.$emit('input', checked);
       },
     },
     invalid() {
@@ -69,7 +69,7 @@ export default {
 <style>
 .twpx-form-control {
   position: relative;
-  margin-bottom: calc(var(--slr2-gap-middle) * 2);
+  margin-bottom: 16px;
 }
 .twpx-form-control-hint {
   color: #2d3142;
@@ -81,7 +81,7 @@ export default {
 /*Checkbox*/
 .twpx-form-controls__checkbox {
   display: block;
-  margin-bottom: 16px;
+  margin-bottom: var(--slr2-gap-middle);
 }
 .twpx-form-controls__checkbox [type='checkbox']:not(:checked),
 .twpx-form-controls__checkbox [type='checkbox']:checked {
@@ -97,8 +97,8 @@ export default {
   display: inline-flex;
   align-items: center;
   min-height: 24px;
-  line-height: 16px;
-  font-size: 14px;
+  line-height: var(--slr2-font-size-sm);
+  font-size: var(--slr2-font-size-sm);
   -webkit-user-select: none;
   user-select: none;
 }
@@ -199,7 +199,7 @@ export default {
   [type='checkbox'].filled-in:checked
   + span:before {
   top: 2px;
-  left: 3px;
+  left: 4px;
   width: 5px;
   height: 8px;
   border-top: 2px solid transparent;

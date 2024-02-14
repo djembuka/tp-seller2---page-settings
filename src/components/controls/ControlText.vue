@@ -174,9 +174,9 @@ export default {
   width: 100%;
   margin: 0 !important;
   padding: 0 14px !important;
-  background-color: #f5f7f8;
+  background-color: #f5f7f8 !important;
   border: 1px solid #f5f7f8 !important;
-  border-radius: 3px;
+  border-radius: 3px !important;
   height: 48px !important;
   line-height: 48px;
   border-radius: 3px !important;
@@ -186,7 +186,7 @@ export default {
   transition: border-color 0.3s ease;
   outline: none !important;
   box-shadow: none !important;
-  box-sizing: border-box;
+  box-sizing: border-box !important;
 }
 .twpx-form-control__input:focus,
 .twpx-form-control__input:hover {

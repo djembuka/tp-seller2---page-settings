@@ -175,6 +175,9 @@ const Store = {
     },
   },
   actions: {
+    async saveBlocks() {
+      console.log('dispatch save');
+    },
     async loadPageBlocks({ state, commit }, { pageId }) {
       let blocks;
       const BX = window.BX;

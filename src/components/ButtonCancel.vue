@@ -1,72 +1,15 @@
 <template>
-  <div class="slr2-page-settings__button-cancel" @click.prevent="click">
+  <div
+    class="slr2-page-settings__button-cancel"
+    @click.prevent="$emit('clickButton', 'cancel')"
+  >
     Отмена
   </div>
 </template>
 
 <script>
 export default {
-  methods: {
-    click() {
-      this.$store.commit('setMemory', null);
-
-      //if the button is from the alert modal
-      if (this.$store.state.alert) {
-        const step = this.$store.state.alert;
-        this.$store.commit('setAlert', false);
-        this.$store.commit('changeStep', step);
-      }
-
-      const step = this.$store.state.step;
-      let event;
-
-      switch (step) {
-        case 'step1':
-          //force blocks render
-          event = new CustomEvent('seller2ForceBlocksRender');
-          document
-            .getElementById('seller2PageSettingsContainerSortable')
-            .dispatchEvent(event);
-
-          ['top', 'other', 'bottom'].forEach((type) => {
-            this.$store.getters.activePage.blocks[type].forEach((block) => {
-              if (block.settingsMemory) {
-                this.$store.commit('setBlockSettings', {
-                  blockId: block.id,
-                  settings: block.settingsMemory,
-                });
-
-                this.$store.commit('deleteBlockSettingsMemory', {
-                  blockId: block.id,
-                });
-              }
-            });
-          });
-
-          break;
-        case 'step2':
-          this.$store.commit('setActiveVariant', {
-            pageId: this.$store.getters.activePage.id,
-            blockId: this.$store.getters.isEditedBlock.id,
-            variantId: this.$store.getters.isEditedBlock.previousVariant,
-          });
-          break;
-        case 'step3':
-          this.$store.dispatch('setControlValuesFromMemory', {
-            pageId: this.$store.getters.activePage.id,
-            blockId: this.$store.getters.isEditedBlock.id,
-            variantId: this.$store.getters.isEditedBlock.activeVariant,
-          });
-          break;
-      }
-    },
-    async forceRender() {
-      this.$store.commit('setRender', false);
-      await this.$nextTick();
-      this.$store.commit('setRender', true);
-      await this.$nextTick();
-    },
-  },
+  emits: ['clickButton'],
 };
 </script>
 

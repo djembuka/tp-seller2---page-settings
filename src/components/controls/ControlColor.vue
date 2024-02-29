@@ -3,8 +3,6 @@
     :class="{
       'twpx-form-control': true,
       'twpx-form-control--color': true,
-      'twpx-form-control--invalid': invalid,
-      'twpx-form-control--disabled': disabled,
     }"
   >
     <div

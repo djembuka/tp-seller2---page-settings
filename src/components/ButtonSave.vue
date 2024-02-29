@@ -1,109 +1,15 @@
 <template>
-  <div class="slr2-page-settings__button-save" @click.prevent="click">
+  <div
+    class="slr2-page-settings__button-save"
+    @click.prevent="$emit('clickButton', 'save')"
+  >
     Сохранить
   </div>
 </template>
 
 <script>
 export default {
-  methods: {
-    click() {
-      this.save();
-    },
-    async save() {
-      //if the button is from the alert modal
-
-      switch (this.$store.state.step) {
-        case 'step1':
-          if (window.BX) {
-            window.BX.ajax.runAction(
-              `twinpx:seller.api.methods.saveBlocksOrder`,
-              {
-                data: {
-                  sid: this.$store.state.data.sites[0].id,
-                  page: this.$store.getters.activePage.id,
-                  section: 'other',
-                  blocks:
-                    this.$store.state.memory ||
-                    this.$store.getters.activePage.blocks.other.map(
-                      (b) => b.id
-                    ),
-                },
-              }
-            );
-
-            ['top', 'other', 'bottom'].forEach((type) => {
-              this.$store.getters.activePage.blocks[type].forEach((block) => {
-                if (block.settingsMemory) {
-                  window.BX.ajax.runAction(
-                    `twinpx:seller.api.methods.saveBlocksSettings`,
-                    {
-                      data: {
-                        sid: this.$store.state.data.sites[0].id,
-                        page: this.$store.getters.activePage.id,
-                        block: block.id,
-                        settings: block.settings,
-                      },
-                    }
-                  );
-
-                  this.$store.commit('deleteBlockSettingsMemory', {
-                    blockId: block.id,
-                  });
-                }
-              });
-            });
-
-            this.$store.commit('setMemory', null);
-
-            if (this.$store.state.alert) {
-              const step = this.$store.state.alert;
-              this.$store.commit('setAlert', false);
-              this.$store.commit('changeStep', step);
-            }
-          }
-          break;
-        case 'step2':
-          break;
-        case 'step3':
-          //delete memory
-          {
-            let block, variant;
-            block = this.$store.getters.isEditedBlock;
-
-            if (!block) return;
-            variant = block.variants.find((v) => v.id === block.activeVariant);
-
-            if (!variant) return;
-            let controlsWithMemory = variant.settings.properties.filter(
-              (p) => p.memory
-            );
-            controlsWithMemory.forEach((p) =>
-              this.$store.commit('changeControlMemory', { control: p })
-            );
-            //saveBlockSettings
-            ['top', 'other', 'bottom'].forEach((type) => {
-              this.$store.getters.activePage.blocks[type].forEach((block) => {
-                window.BX.ajax.runAction(
-                  `twinpx:seller.api.methods.saveBlockSettings`,
-                  {
-                    data: {
-                      sid: this.$store.state.data.sites[0].id,
-                      page: this.$store.getters.activePage.id,
-                      block: block.id,
-                      variant: variant.id,
-                      settings: variant.settings, //filter with no files
-                    },
-                  }
-                );
-                //send files
-              });
-            });
-          }
-          break;
-      }
-    },
-  },
+  emits: ['clickButton'],
 };
 </script>
 

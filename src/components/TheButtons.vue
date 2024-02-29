@@ -1,13 +1,7 @@
 <template>
   <div class="slr2-page-settings__buttons">
-    <component
-      v-for="button in this.$store.state.buttons"
-      :key="button.code"
-      :is="`button${button.code.substring(0, 1).toUpperCase()}${button.code
-        .substring(1)
-        .toLowerCase()}`"
-      :button="button"
-    ></component>
+    <button-cancel @clickButton="clickButton"></button-cancel>
+    <button-save @clickButton="clickButton"></button-save>
   </div>
 </template>
 
@@ -16,6 +10,24 @@ import ButtonCancel from './ButtonCancel.vue';
 import ButtonSave from './ButtonSave.vue';
 
 export default {
+  methods: {
+    clickButton(type) {
+      switch (type) {
+        case 'save':
+          this.save();
+          break;
+        case 'cancel':
+          this.cancel();
+          break;
+      }
+    },
+    save() {
+      this.$store.dispatch('saveBlocks');
+    },
+    cancel() {
+      console.log('cancel');
+    },
+  },
   components: {
     ButtonCancel,
     ButtonSave,

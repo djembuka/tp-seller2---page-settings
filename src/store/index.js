@@ -24,8 +24,15 @@ const Store = {
       edit: 'Изменить',
       tune: 'Настроить',
     },
+    formDataWatcher: false,
   },
   mutations: {
+    setFormDataWatcher(state) {
+      state.formDataWatcher = !state.formDataWatcher;
+    },
+    setVariantFormData(_, { variant, formData }) {
+      variant.formData = formData;
+    },
     createBlockSettingsMemory(state, { blockId }) {
       const page = state.data.sites[0].pages.find((p) => p.active);
       if (page) {
@@ -175,8 +182,96 @@ const Store = {
     },
   },
   actions: {
-    async saveBlocks() {
-      console.log('dispatch save');
+    async saveBlocks({ state, getters, commit }) {
+      switch (state.step) {
+        case 'step1':
+          if (window.BX) {
+            window.BX.ajax.runAction(
+              `twinpx:seller.api.methods.saveBlocksOrder`,
+              {
+                data: {
+                  sid: state.data.sites[0].id,
+                  page: getters.activePage.id,
+                  section: 'other',
+                  blocks:
+                    state.memory ||
+                    getters.activePage.blocks.other.map((b) => b.id),
+                },
+              }
+            );
+
+            ['top', 'other', 'bottom'].forEach((type) => {
+              getters.activePage.blocks[type].forEach((block) => {
+                if (block.settingsMemory) {
+                  window.BX.ajax.runAction(
+                    `twinpx:seller.api.methods.saveBlocksSettings`,
+                    {
+                      data: {
+                        sid: state.data.sites[0].id,
+                        page: getters.activePage.id,
+                        block: block.id,
+                        settings: block.settings,
+                      },
+                    }
+                  );
+
+                  commit('deleteBlockSettingsMemory', {
+                    blockId: block.id,
+                  });
+                }
+              });
+            });
+
+            commit('setMemory', null);
+
+            if (state.alert) {
+              const step = state.alert;
+              commit('setAlert', false);
+              commit('changeStep', step);
+            }
+          }
+          break;
+        case 'step2':
+          break;
+        case 'step3':
+          {
+            let block, variant;
+            block = getters.isEditedBlock;
+            if (!block) return;
+
+            variant = block.variants.find((v) => v.id === block.activeVariant);
+            if (!variant) return;
+
+            //delete memory
+            let controlsWithMemory = variant.settings.properties.filter(
+              (p) => p.memory
+            );
+            controlsWithMemory.forEach((p) =>
+              commit('changeControlMemory', { control: p })
+            );
+            let formData = variant.formData;
+            console.log(formData);
+
+            if (!formData) {
+              formData = new FormData();
+            }
+
+            formData.append('sid', state.data.sites[0].id);
+            formData.append('page', getters.activePage.id);
+            formData.append('block', block.id);
+            formData.append('variant', variant.id);
+            formData.append('settings', variant.settings);
+
+            //saveBlockSettings
+            window.BX.ajax.runAction(
+              `twinpx:seller.api.methods.saveBlockSettings`,
+              {
+                data: formData,
+              }
+            );
+          }
+          break;
+      }
     },
     async loadPageBlocks({ state, commit }, { pageId }) {
       let blocks;

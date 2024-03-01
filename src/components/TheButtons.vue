@@ -14,15 +14,13 @@ export default {
     clickButton(type) {
       switch (type) {
         case 'save':
-          this.save();
+          this.$store.commit('setFormDataWatcher');
+          this.$store.dispatch('saveBlocks');
           break;
         case 'cancel':
           this.cancel();
           break;
       }
-    },
-    save() {
-      this.$store.dispatch('saveBlocks');
     },
     cancel() {
       console.log('cancel');

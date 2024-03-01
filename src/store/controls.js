@@ -1,5 +1,10 @@
 export default {
   mutations: {
+    changeFileControlFormData(_, { control, formData }) {
+      if (formData !== undefined) {
+        control.formData = formData;
+      }
+    },
     changeControlValue(_, { control, value, checked }) {
       switch (control.property) {
         case 'file':
@@ -92,6 +97,9 @@ export default {
           }
         });
       }
+    },
+    changeFileControlFormData({ commit }, { control, formData }) {
+      commit('changeFileControlFormData', { control, formData });
     },
     changeControlValue({ getters, commit }, { control, value, checked }) {
       switch (control.property) {

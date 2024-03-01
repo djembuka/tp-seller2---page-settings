@@ -15,7 +15,9 @@ export default {
       switch (type) {
         case 'save':
           this.$store.commit('setFormDataWatcher');
-          this.$store.dispatch('saveBlocks');
+          setTimeout(() => {
+            this.$store.dispatch('saveBlocks');
+          }, 0);
           break;
         case 'cancel':
           this.cancel();

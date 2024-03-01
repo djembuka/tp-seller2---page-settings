@@ -250,7 +250,6 @@ const Store = {
               commit('changeControlMemory', { control: p })
             );
             let formData = variant.formData;
-            console.log(formData);
 
             if (!formData) {
               formData = new FormData();
@@ -260,7 +259,7 @@ const Store = {
             formData.append('page', getters.activePage.id);
             formData.append('block', block.id);
             formData.append('variant', variant.id);
-            formData.append('settings', variant.settings);
+            formData.append('settings', JSON.stringify(variant.settings));
 
             //saveBlockSettings
             window.BX.ajax.runAction(

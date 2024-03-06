@@ -40,6 +40,9 @@ export default {
   props: ['control', 'variantId'],
   methods: {
     input({ value, checked }) {
+      this.$store.dispatch('rememberVariantSettings', {
+        control: this.control,
+      });
       this.$store.dispatch('changeControlValue', {
         control: this.control,
         value,

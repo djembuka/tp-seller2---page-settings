@@ -13,8 +13,8 @@
         данные, подтвердите, нажав Сохранить.
       </div>
       <div class="slr2-page-settings__modal-footer">
-        <button-cancel></button-cancel>
-        <button-save></button-save>
+        <button-cancel @clickButton="clickButton"></button-cancel>
+        <button-save @clickButton="clickButton"></button-save>
       </div>
     </div>
   </div>
@@ -43,6 +43,23 @@ export default {
         setTimeout(() => {
           this.z = true;
         }, 500);
+      }
+    },
+  },
+  methods: {
+    clickButton(type) {
+      switch (type) {
+        case 'save':
+          if (this.$store.state.step === 'step3') {
+            this.$store.commit('setFormDataWatcher'); //create FormData of the step3
+          }
+          setTimeout(() => {
+            this.$store.dispatch('saveBlocks'); //send the data of the current step to the server
+          }, 0);
+          break;
+        case 'cancel':
+          this.$store.dispatch('resetBlocks'); // reset data (blocks order, active variant, settings)
+          break;
       }
     },
   },

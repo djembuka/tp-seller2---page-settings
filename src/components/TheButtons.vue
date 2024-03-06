@@ -14,18 +14,17 @@ export default {
     clickButton(type) {
       switch (type) {
         case 'save':
-          this.$store.commit('setFormDataWatcher');
+          if (this.$store.state.step === 'step3') {
+            this.$store.commit('setFormDataWatcher'); //create FormData of the step3
+          }
           setTimeout(() => {
-            this.$store.dispatch('saveBlocks');
+            this.$store.dispatch('saveBlocks'); //send the data of the current step to the server
           }, 0);
           break;
         case 'cancel':
-          this.cancel();
+          this.$store.dispatch('resetBlocks'); // reset data (blocks order, active variant, settings)
           break;
       }
-    },
-    cancel() {
-      console.log('cancel');
     },
   },
   components: {

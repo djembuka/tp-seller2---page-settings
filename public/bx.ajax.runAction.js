@@ -129,7 +129,7 @@ window.BX = {
                             {
                               property: 'date',
                               type: 'single',
-                              id: 'id45',
+                              id: 'id451',
                               label: 'Календарь',
                               name: 'DATE',
                               required: true,
@@ -141,7 +141,7 @@ window.BX = {
                             {
                               property: 'date',
                               type: 'range',
-                              id: 'id45',
+                              id: 'id452',
                               label: 'Календарь',
                               name: 'DATE',
                               required: true,
@@ -160,7 +160,7 @@ window.BX = {
                               id: 'id0',
                               name: 'FILE',
                               label: 'Картинка превью',
-                              value: '',
+                              value: 'file.pdf',
                               required: true,
                               disabled: false,
                               accept: ['pdf', 'exe', 'jpg'],
@@ -579,6 +579,12 @@ window.BX = {
           break;
 
         case 'twinpx:seller.api.methods.saveBlocksOrder':
+          result = new Promise((resolve) => {
+            resolve({ status: 'success', data: true, errors: [] });
+          });
+          break;
+
+        case 'twinpx:seller.api.methods.saveBlocksSettings':
           result = new Promise((resolve) => {
             resolve({ status: 'success', data: true, errors: [] });
           });

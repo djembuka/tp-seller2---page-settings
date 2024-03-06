@@ -23,7 +23,9 @@ export default {
           }
           break;
         case 'multiselect':
-          if (value !== undefined && checked !== undefined) {
+          if (value.forEach) {
+            control.value = value.slice(0);
+          } else if (value !== undefined && checked !== undefined) {
             if (checked === false) {
               const index = control.value.indexOf(value);
               if (index >= 0) {

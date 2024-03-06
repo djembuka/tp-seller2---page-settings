@@ -38,7 +38,7 @@ export default {
       const sortableDiv = document.getElementById(
         'seller2PageSettingsSortable'
       );
-      const commit = this.$store.commit;
+      const store = this.$store;
 
       Sortable.create(sortableDiv, {
         onSort() {
@@ -48,7 +48,7 @@ export default {
             .forEach((block) => {
               array.push(block.getAttribute('data-id'));
             });
-          commit('setMemory', array);
+          store.dispatch('rememberBlocksOrder', array);
         },
       });
     },

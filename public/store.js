@@ -200,7 +200,6 @@ window.seller2PageSettingsStore = {
           {
             id: '457',
             code: 'banners',
-            sort: 20,
             active: true,
             data: {
               title: 'Баннеры',
@@ -272,7 +271,6 @@ window.seller2PageSettingsStore = {
           {
             id: '459',
             code: 'advantages',
-            sort: 25,
             active: true,
             data: {
               title: 'Преимущества',
@@ -344,7 +342,6 @@ window.seller2PageSettingsStore = {
           {
             id: '451',
             code: 'about',
-            sort: 10,
             active: true,
             data: {
               title: 'О компании',
@@ -416,7 +413,6 @@ window.seller2PageSettingsStore = {
           {
             id: '452',
             code: 'brands',
-            sort: 5,
             active: true,
             data: {
               title: 'Бренды',
@@ -488,7 +484,6 @@ window.seller2PageSettingsStore = {
           {
             id: '453',
             code: 'shops',
-            sort: 451,
             active: true,
             data: {
               title: 'Магазины',
@@ -567,7 +562,6 @@ window.seller2PageSettingsStore = {
           {
             id: '157',
             code: 'cart',
-            sort: 1,
             active: true,
             data: {
               title: 'Корзина',
@@ -646,7 +640,6 @@ window.seller2PageSettingsStore = {
           {
             id: '257',
             code: 'catalog',
-            sort: 2,
             active: true,
             data: {
               title: 'Каталог',
@@ -718,7 +711,6 @@ window.seller2PageSettingsStore = {
           {
             id: '258',
             code: 'filter',
-            sort: 1,
             active: true,
             data: {
               title: 'Фильтр',

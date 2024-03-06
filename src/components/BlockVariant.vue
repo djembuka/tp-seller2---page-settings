@@ -34,11 +34,9 @@ export default {
   },
   methods: {
     click() {
-      this.$store.commit('setActiveVariant', {
-        pageId: this.$store.getters.activePage.id,
-        blockId: this.$store.getters.isEditedBlock.id,
-        variantId: this.variant.id,
-      });
+      if (!this.active) {
+        this.$store.dispatch('setActiveVariant', this.variant.id);
+      }
     },
     edit() {
       this.click();

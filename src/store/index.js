@@ -24,9 +24,13 @@ const Store = {
       edit: 'Изменить',
       tune: 'Настроить',
     },
-    formDataWatcher: false,
+    formDataWatcher: false, //to force method of creating new FormData() to sent settings
+    memory: null,
   },
   mutations: {
+    clearInputFile(_, { control }) {
+      control.clearWatcher = !control.clearWatcher;
+    },
     setFormDataWatcher(state) {
       state.formDataWatcher = !state.formDataWatcher;
     },
@@ -64,9 +68,42 @@ const Store = {
     setAlert(state, value) {
       state.alert = value;
     },
-    setMemory(state, value) {
-      state.memory = value;
+    //memory
+    setMemory(state, payload) {
+      state.memory = payload;
     },
+    sortBlocks(_, { sortedArray, page }) {
+      const blocks = [];
+      sortedArray.forEach((id) => {
+        blocks.push(page.blocks.other.find((b) => String(b.id) === String(id)));
+      });
+      page.blocks.other = blocks;
+    },
+    resetBlocksOrder(state, { page }) {
+      if (!state.memory) {
+        return;
+      }
+      const blocks = [];
+      state.memory.forEach((id) => {
+        const b = page.blocks.other.find((b) => String(b.id) === String(id));
+        blocks.push(b);
+      });
+      page.blocks.other = blocks;
+      state.memory = null;
+    },
+    resetBlockVariant(state, orderArray) {
+      console.log('resetBlockVariant');
+      state.memory = orderArray;
+    },
+    rememberVariantSettings(state, orderArray) {
+      console.log('rememberVariantSettings');
+      state.memory = orderArray;
+    },
+    resetVariantSettings(state, orderArray) {
+      console.log('resetVariantSettings');
+      state.memory = orderArray;
+    },
+    //end memory
     setStructure(state, structure) {
       state.data = structure;
       state.structureLoaded = true;
@@ -108,9 +145,6 @@ const Store = {
         }
       }
     },
-    changeBlocksRender(state, payload) {
-      state.blocksRender = payload;
-    },
     changeStep(state, step) {
       if (state.memory) {
         state.alert = step;
@@ -148,17 +182,7 @@ const Store = {
 
       block.previousVariant = block.activeVariant;
     },
-    setActiveVariant(state, { blockId, variantId }) {
-      let block;
-      state.data.sites[0].pages.forEach((page) => {
-        if (page.blocks) {
-          ['top', 'other', 'bottom'].forEach((type) => {
-            block =
-              page.blocks[type].find((block) => block.id === blockId) || block;
-          });
-        }
-      });
-
+    setActiveVariant(_, { block, variantId }) {
       block.activeVariant = variantId;
     },
   },
@@ -182,56 +206,144 @@ const Store = {
     },
   },
   actions: {
+    //memory
+    rememberBlocksOrder({ dispatch }, sortedArray) {
+      dispatch('sortBlocks', sortedArray);
+    },
+    resetBlocksOrder({ commit, getters }) {
+      commit('resetBlocksOrder', { page: getters.activePage });
+    },
+    resetBlockVariant({ state, commit, getters }) {
+      let memory = state.memory;
+
+      if (memory !== null) {
+        commit('setActiveVariant', {
+          block: getters.isEditedBlock,
+          variantId: memory,
+        });
+        state.memory = null;
+      }
+    },
+    rememberVariantSettings({ state, commit }, { control }) {
+      const memory = state.memory === null ? {} : state.memory;
+      if (memory[String(control.id)] === undefined) {
+        let value;
+        if (control.value.forEach) {
+          value = control.value.slice(0);
+        } else {
+          value = control.value;
+        }
+        memory[String(control.id)] =
+          control.checked !== undefined ? control.checked : value;
+      }
+      commit('setMemory', memory);
+    },
+    resetVariantSettings({ state, commit, dispatch }, { variant }) {
+      if (state.memory !== null && typeof state.memory === 'object') {
+        Object.keys(state.memory).forEach((id) => {
+          const property = variant.settings.properties.find(
+            (prop) => String(prop.id) === String(id)
+          );
+
+          if (property.property === 'file') {
+            commit('clearInputFile', { control: property });
+          }
+          setTimeout(() => {
+            const payload = { control: property };
+            payload[
+              `${typeof state.memory[id] === 'boolean' ? 'checked' : 'value'}`
+            ] = state.memory[id];
+
+            dispatch('changeControlValue', payload);
+          }, 0);
+        });
+      }
+      setTimeout(() => {
+        commit('setMemory', null);
+      }, 0);
+    },
+    //end memory
+    sortBlocks({ state, getters, commit }, sortedArray) {
+      //remember initial sort
+      if (state.memory === null) {
+        commit(
+          'setMemory',
+          getters.activePage.blocks.other.map((b) => b.id)
+        );
+      }
+      //sort blocks
+      commit('sortBlocks', { page: getters.activePage, sortedArray });
+    },
+    setActiveVariant({ state, getters, commit }, variantId) {
+      if (state.memory === null) {
+        commit('setMemory', getters.isEditedBlock.activeVariant);
+      }
+      commit('setActiveVariant', {
+        block: getters.isEditedBlock,
+        variantId: variantId,
+      });
+    },
+    //save button
     async saveBlocks({ state, getters, commit }) {
       switch (state.step) {
         case 'step1':
           if (window.BX) {
-            window.BX.ajax.runAction(
-              `twinpx:seller.api.methods.saveBlocksOrder`,
-              {
+            window.BX.ajax
+              .runAction(`twinpx:seller.api.methods.saveBlocksOrder`, {
                 data: {
                   sid: state.data.sites[0].id,
                   page: getters.activePage.id,
                   section: 'other',
-                  blocks:
-                    state.memory ||
-                    getters.activePage.blocks.other.map((b) => b.id),
+                  blocks: getters.activePage.blocks.other.map((b) => b.id),
                 },
-              }
-            );
-
-            ['top', 'other', 'bottom'].forEach((type) => {
-              getters.activePage.blocks[type].forEach((block) => {
-                if (block.settingsMemory) {
-                  window.BX.ajax.runAction(
-                    `twinpx:seller.api.methods.saveBlocksSettings`,
-                    {
-                      data: {
-                        sid: state.data.sites[0].id,
-                        page: getters.activePage.id,
-                        block: block.id,
-                        settings: block.settings,
-                      },
+              })
+              .then(
+                (r) => {
+                  if (r.status === 'success') {
+                    if (state.alert) {
+                      const step = state.alert;
+                      commit('setAlert', false);
+                      commit('changeStep', step);
                     }
-                  );
-
-                  commit('deleteBlockSettingsMemory', {
-                    blockId: block.id,
-                  });
+                  }
+                },
+                (error) => {
+                  console.log(error);
                 }
-              });
-            });
+              );
 
             commit('setMemory', null);
-
-            if (state.alert) {
-              const step = state.alert;
-              commit('setAlert', false);
-              commit('changeStep', step);
-            }
           }
           break;
         case 'step2':
+          //save variant
+          if (window.BX) {
+            window.BX.ajax
+              .runAction(`twinpx:seller.api.methods.saveBlocksSettings`, {
+                data: {
+                  sid: state.data.sites[0].id,
+                  page: getters.activePage.id,
+                  block: getters.isEditedBlock.id,
+                  settings: `{activeVariant: ${getters.isEditedBlock.activeVariant}}`,
+                },
+              })
+              .then(
+                (r) => {
+                  if (r.status === 'success') {
+                    if (state.alert) {
+                      const step = state.alert;
+                      commit('setAlert', false);
+                      commit('changeStep', step);
+                    }
+                  }
+                },
+                (error) => {
+                  console.log(error);
+                }
+              );
+
+            commit('setMemory', null);
+          }
           break;
         case 'step3':
           {
@@ -262,13 +374,45 @@ const Store = {
             formData.append('settings', JSON.stringify(variant.settings));
 
             //saveBlockSettings
-            window.BX.ajax.runAction(
-              `twinpx:seller.api.methods.saveBlockSettings`,
-              {
-                data: formData,
-              }
-            );
+            if (window.BX) {
+              window.BX.ajax
+                .runAction(`twinpx:seller.api.methods.saveBlocksSettings`, {
+                  data: formData,
+                })
+                .then(
+                  (r) => {
+                    if (r.status === 'success') {
+                      if (state.alert) {
+                        const step = state.alert;
+                        commit('setAlert', false);
+                        commit('changeStep', step);
+                      }
+                    }
+                  },
+                  (error) => {
+                    console.log(error);
+                  }
+                );
+            }
           }
+          break;
+      }
+    },
+    //cancel button
+    resetBlocks({ state, getters, commit, dispatch }) {
+      let variant;
+      switch (state.step) {
+        case 'step1':
+          commit('resetBlocksOrder', { page: getters.activePage });
+          break;
+        case 'step2':
+          dispatch('resetBlockVariant');
+          break;
+        case 'step3':
+          variant = getters.isEditedBlock.variants.find(
+            (v) => String(v.id) === String(getters.isEditedBlock.activeVariant)
+          );
+          dispatch('resetVariantSettings', { variant });
           break;
       }
     },

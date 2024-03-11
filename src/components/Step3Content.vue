@@ -71,6 +71,9 @@ export default {
 </script>
 
 <style>
+.twpx-form-control:last-child {
+  margin-bottom: 32px;
+}
 .slr2-page-settings__settings {
   background-color: #fff;
   padding: var(--slr2-padding) var(--slr2-padding) 0;

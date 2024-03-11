@@ -5,12 +5,6 @@
     @input="input"
   >
   </component>
-  <div
-    style="margin-top: 64px"
-    v-if="
-      controlProperty !== 'heading' && controlProperty !== 'checkbox-switch'
-    "
-  ></div>
 </template>
 
 <script>

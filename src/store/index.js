@@ -373,7 +373,7 @@ const Store = {
             formData.append('variant', variant.id);
             formData.append('settings', JSON.stringify(variant.settings));
 
-            //saveBlockSettings
+            //saveBlocksSettings
             if (window.BX) {
               window.BX.ajax
                 .runAction(`twinpx:seller.api.methods.saveBlocksSettings`, {

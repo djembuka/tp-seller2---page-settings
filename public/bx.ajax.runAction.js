@@ -1,6 +1,6 @@
 window.BX = {
   ajax: {
-    runAction(method) {
+    runAction(method, data) {
       let result;
       switch (method) {
         case 'twinpx:seller.api.methods.sites':

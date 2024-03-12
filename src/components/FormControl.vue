@@ -33,7 +33,7 @@ export default {
   },
   props: ['control', 'variantId'],
   methods: {
-    input({ value, checked }) {
+    input({ value, checked, file }) {
       this.$store.dispatch('rememberVariantSettings', {
         control: this.control,
       });
@@ -42,6 +42,13 @@ export default {
         value,
         checked,
       });
+
+      if (this.control.property === 'file') {
+        this.$store.dispatch('changeControlFile', {
+          control: this.control,
+          file, //send undefined if removed
+        });
+      }
     },
   },
   components: {

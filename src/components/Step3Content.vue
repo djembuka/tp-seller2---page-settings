@@ -11,14 +11,12 @@
       ></div>
     </div>
 
-    <form action="" method="" enctype="multipart/form-data" ref="form">
-      <form-control
-        v-for="control in variant.settings.properties"
-        :key="control.id"
-        :control="control"
-        :variantId="variant.id"
-      ></form-control>
-    </form>
+    <form-control
+      v-for="control in variant.settings.properties"
+      :key="control.id"
+      :control="control"
+      :variantId="variant.id"
+    ></form-control>
   </div>
 </template>
 
@@ -36,23 +34,9 @@ export default {
         (v) => v.id === this.$store.getters.isEditedBlock.activeVariant
       );
     },
-    formDataWatcher() {
-      return this.$store.state.formDataWatcher;
-    },
   },
-  watch: {
-    formDataWatcher() {
-      this.setVariantFormData();
-    },
-  },
-  methods: {
-    setVariantFormData() {
-      this.$store.commit('setVariantFormData', {
-        variant: this.variant,
-        formData: new FormData(this.$refs.form),
-      });
-    },
-  },
+  watch: {},
+  methods: {},
   components: {
     FormControl,
     TheBreadcrumbs,

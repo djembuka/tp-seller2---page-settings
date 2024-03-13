@@ -87,18 +87,6 @@ const Store = {
       page.blocks.other = blocks;
       state.memory = null;
     },
-    resetBlockVariant(state, orderArray) {
-      console.log('resetBlockVariant');
-      state.memory = orderArray;
-    },
-    rememberVariantSettings(state, orderArray) {
-      console.log('rememberVariantSettings');
-      state.memory = orderArray;
-    },
-    resetVariantSettings(state, orderArray) {
-      console.log('resetVariantSettings');
-      state.memory = orderArray;
-    },
     //end memory
     setStructure(state, structure) {
       state.data = structure;
@@ -217,7 +205,7 @@ const Store = {
           block: getters.isEditedBlock,
           variantId: memory,
         });
-        state.memory = null;
+        commit('setMemory', null);
       }
     },
     rememberVariantSettings({ state, commit }, { control }) {
@@ -351,12 +339,13 @@ const Store = {
             if (!variant) return;
 
             //delete memory
-            let controlsWithMemory = variant.settings.properties.filter(
-              (p) => p.memory
-            );
-            controlsWithMemory.forEach((p) =>
-              commit('changeControlMemory', { control: p })
-            );
+            // let controlsWithMemory = variant.settings.properties.filter(
+            //   (p) => p.memory
+            // );
+            // controlsWithMemory.forEach((p) =>
+            //   commit('changeControlMemory', { control: p })
+            // );
+            commit('setMemory', null);
 
             const formDataArray = [];
 
@@ -433,25 +422,6 @@ const Store = {
                   console.log(reason);
                 }
               );
-
-              // window.BX.ajax
-              //   .runAction(`twinpx:seller.api.methods.saveBlocksSettings`, {
-              //     data: settingsFormData,
-              //   })
-              //   .then(
-              //     (r) => {
-              //       if (r.status === 'success') {
-              //         if (state.alert) {
-              //           const step = state.alert;
-              //           commit('setAlert', false);
-              //           commit('changeStep', step);
-              //         }
-              //       }
-              //     },
-              //     (error) => {
-              //       console.log(error);
-              //     }
-              //   );
             }
           }
           break;
@@ -463,21 +433,9 @@ const Store = {
       switch (state.step) {
         case 'step1':
           commit('resetBlocksOrder', { page: getters.activePage });
-
-          if (state.alert) {
-            const step = state.alert;
-            commit('setAlert', false);
-            commit('changeStep', step);
-          }
           break;
         case 'step2':
           dispatch('resetBlockVariant');
-
-          if (state.alert) {
-            const step = state.alert;
-            commit('setAlert', false);
-            commit('changeStep', step);
-          }
           break;
         case 'step3':
           variant = getters.isEditedBlock.variants.find(
@@ -486,6 +444,13 @@ const Store = {
           dispatch('resetVariantSettings', { variant });
           break;
       }
+      setTimeout(() => {
+        if (state.alert) {
+          const step = state.alert;
+          commit('setAlert', false);
+          commit('changeStep', step);
+        }
+      }, 0);
     },
     async loadPageBlocks({ state, commit }, { pageId }) {
       let blocks;

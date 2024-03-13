@@ -28,14 +28,6 @@ export default {
         elem.dispatchEvent(event);
       }
 
-      if (this.$store.getters.isEditedBlock) {
-        this.$store.commit('setBlockIsEdited', {
-          pageId: this.$store.getters.activePage.id,
-          blockId: this.$store.getters.isEditedBlock.id,
-          isEdited: false,
-        });
-      }
-
       this.$store.commit('changeStep', 'step1');
       this.$store.commit('setPageActive', { pageId: this.page.id });
       this.$store.dispatch('loadPageBlocks', {

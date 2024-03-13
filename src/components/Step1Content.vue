@@ -32,6 +32,15 @@ export default {
     BlockStatic,
     ContainerSortable,
   },
+  mounted() {
+    if (this.$store.getters.isEditedBlock) {
+      this.$store.commit('setBlockIsEdited', {
+        pageId: this.$store.getters.activePage.id,
+        blockId: this.$store.getters.isEditedBlock.id,
+        isEdited: false,
+      });
+    }
+  },
 };
 </script>
 

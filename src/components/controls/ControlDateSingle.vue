@@ -322,4 +322,43 @@ export default {
 .twpx-form-control--date .dp__input_icon {
   display: none;
 }
+.twpx-form-control--date .dp__clear_icon {
+  padding: 0;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  transition: opacity 0.5s ease;
+  z-index: 10;
+}
+.twpx-form-control--date .dp__clear_icon path {
+  display: none;
+}
+.twpx-form-control--date .dp__clear_icon:hover {
+  opacity: 0.7;
+}
+.twpx-form-control--date .dp__clear_icon:before {
+  content: '';
+  display: block;
+  height: 20px;
+  border-left: 2px solid #000;
+  transform: rotate(45deg);
+  position: absolute;
+  top: -2px;
+  left: 7px;
+  z-index: 10;
+}
+.twpx-form-control--date .dp__clear_icon:after {
+  content: '';
+  display: block;
+  height: 20px;
+  border-left: 2px solid #000;
+  transform: rotate(135deg);
+  position: absolute;
+  top: -2px;
+  left: 7px;
+  z-index: 10;
+}
 </style>

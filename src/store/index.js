@@ -24,11 +24,15 @@ const Store = {
       edit: 'Изменить',
       tune: 'Настроить',
     },
+    formDataWatcher: false, //to force method of creating new FormData() to sent settings
     memory: null,
   },
   mutations: {
     clearInputFile(_, { control }) {
       control.clearWatcher = !control.clearWatcher;
+    },
+    setFormDataWatcher(state) {
+      state.formDataWatcher = !state.formDataWatcher;
     },
     setVariantFormData(_, { variant, formData }) {
       variant.formData = formData;
@@ -338,91 +342,26 @@ const Store = {
             variant = block.variants.find((v) => v.id === block.activeVariant);
             if (!variant) return;
 
-            //delete memory
-            // let controlsWithMemory = variant.settings.properties.filter(
-            //   (p) => p.memory
-            // );
-            // controlsWithMemory.forEach((p) =>
-            //   commit('changeControlMemory', { control: p })
-            // );
             commit('setMemory', null);
 
-            const formDataArray = [];
+            let formData = variant.formData;
 
-            // settings FormData
-            let settingsFormData = new FormData();
-
-            settingsFormData.append('sid', state.data.sites[0].id);
-            settingsFormData.append('page', getters.activePage.id);
-            settingsFormData.append('block', block.id);
-            settingsFormData.append('variant', variant.id);
-            settingsFormData.append(
-              'settings',
-              JSON.stringify(variant.settings)
-            );
-
-            formDataArray.push(settingsFormData);
-
-            // files FormData
-            variant.settings.properties.forEach((p) => {
-              if (p.file) {
-                let formData = new FormData();
-                formData.append('sid', state.data.sites[0].id);
-                formData.append('page', getters.activePage.id);
-                formData.append('block', block.id);
-                formData.append('variant', variant.id);
-                formData.append('name', p.id);
-                formData.append('filename', p.file.name);
-                formData.append('file', p.file);
-
-                formDataArray.push(formData);
-              }
-            });
-
-            //saveBlocksSettings
-            if (window.BX) {
-              //promisesArray
-              const promisesArray = [];
-
-              formDataArray.forEach((formData) => {
-                promisesArray.push(
-                  new Promise((res, rej) => {
-                    window.BX.ajax
-                      .runAction(
-                        `twinpx:seller.api.methods.saveBlocksSettings`,
-                        {
-                          data: formData,
-                        }
-                      )
-                      .then(
-                        (r) => {
-                          if (r.status === 'success') {
-                            res(r);
-                          } else {
-                            rej(r.errors[0]);
-                          }
-                        },
-                        (error) => {
-                          rej(error);
-                        }
-                      );
-                  })
-                );
-              });
-
-              Promise.all(promisesArray).then(
-                (resultArray) => {
-                  if (resultArray && state.alert) {
-                    const step = state.alert;
-                    commit('setAlert', false);
-                    commit('changeStep', step);
-                  }
-                },
-                (reason) => {
-                  console.log(reason);
-                }
-              );
+            if (!formData) {
+              formData = new FormData();
             }
+
+            formData.append('sid', state.data.sites[0].id);
+            formData.append('page', getters.activePage.id);
+            formData.append('block', block.id);
+            formData.append('variant', variant.id);
+            formData.append('settings', JSON.stringify(variant.settings));
+
+            window.BX.ajax.runAction(
+              `twinpx:seller.api.methods.saveBlocksSettings`,
+              {
+                data: formData,
+              }
+            );
           }
           break;
       }

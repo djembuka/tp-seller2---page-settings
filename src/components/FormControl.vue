@@ -43,11 +43,8 @@ export default {
         checked,
       });
 
-      if (this.control.property === 'file') {
-        this.$store.dispatch('changeControlFile', {
-          control: this.control,
-          file, //send undefined if removed
-        });
+      if (file) {
+        this.$store.commit('setFormDataWatcher'); //create FormData
       }
     },
   },

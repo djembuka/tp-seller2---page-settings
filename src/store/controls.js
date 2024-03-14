@@ -38,9 +38,6 @@ export default {
           break;
       }
     },
-    changeControlFile(_, { control, file }) {
-      control.file = file;
-    },
     changeControlMemory(_, { control, value }) {
       if (value !== undefined) {
         control.memory = value;
@@ -153,9 +150,6 @@ export default {
           commit('changeControlValue', { control, value });
           break;
       }
-    },
-    changeControlFile({ commit }, { control, file }) {
-      commit('changeControlFile', { control, file });
     },
     validateControl({ commit }, { control }) {
       commit('validateControl', control);

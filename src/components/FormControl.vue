@@ -65,3 +65,20 @@ export default {
   },
 };
 </script>
+
+<style>
+.twpx-form-control-heading {
+  font-size: 14px;
+  font-weight: normal;
+  margin-bottom: 8px;
+}
+.twpx-form-control {
+  margin-bottom: calc(var(--slr2-gap-middle) * 2) !important;
+}
+.twpx-form-control__hint {
+  margin: calc(var(--slr2-gap-middle) / 2) 0 0 var(--slr2-gap-middle) !important;
+}
+.twpx-form-control--radio .twpx-form-control__radio {
+  margin-bottom: calc(var(--slr2-gap-middle) / 2) !important;
+}
+</style>

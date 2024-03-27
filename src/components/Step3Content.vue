@@ -76,12 +76,12 @@ export default {
 }
 .slr2-page-settings__settings {
   background-color: #fff;
-  padding: var(--slr2-padding) var(--slr2-padding) 0;
+  padding: calc(var(--slr2-padding) * 2) var(--slr2-padding) 0;
   position: relative;
   border-radius: 8px;
 }
 .slr2-page-settings__settings-info {
-  margin-bottom: var(--slr2-gap);
+  margin-bottom: var(--slr2-gap-big);
 }
 .slr2-page-settings__settings__title {
   font-size: 18px;

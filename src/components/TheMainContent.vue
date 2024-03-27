@@ -1,7 +1,7 @@
 <template>
   <div class="slr2-page-settings__content">
     <component :is="currentStepComponent"></component>
-    <the-buttons></the-buttons>
+    <the-buttons v-if="memory"></the-buttons>
   </div>
 </template>
 
@@ -18,6 +18,9 @@ export default {
   computed: {
     currentStepComponent() {
       return `${this.$store.state.step}Content`;
+    },
+    memory() {
+      return this.$store.state.memory;
     },
   },
   components: {

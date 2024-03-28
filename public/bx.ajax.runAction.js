@@ -160,7 +160,8 @@ window.BX = {
                               id: 'id0',
                               name: 'FILE',
                               label: 'Картинка превью',
-                              value: 'file.pdf',
+                              value:
+                                'fileВведите подсказку для этого блока, которая может быть очень длинная, но мы не будем ее выводить всегда, иногда подсказки не будет совсем..pdf',
                               required: true,
                               disabled: false,
                               accept: ['pdf', 'exe', 'jpg'],
@@ -278,6 +279,7 @@ window.BX = {
                                 'Выберите несколько пунктов из списка',
                               dependency: 'id6',
                             },
+
                             {
                               property: 'heading',
                               id: 'idH0',
@@ -690,7 +692,7 @@ window.BX = {
                             {
                               property: 'checkbox',
                               type: 'checkbox',
-                              id: 'id6',
+                              id: 'id86',
                               name: 'DEPENDENCY_CHECKBOX',
                               required: false,
                               label:

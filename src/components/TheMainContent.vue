@@ -40,6 +40,10 @@ export default {
   grid-auto-rows: min-content;
   row-gap: var(--slr2-gap);
 }
+.slr2-page-settings__content > div {
+  width: 100%;
+  overflow: hidden;
+}
 .slr2-page-settings__block {
   background-color: #fff;
   min-height: 96px;

@@ -11,7 +11,7 @@
     <img
       :src="disabled"
       class="twpx-form-control__disabled-icon"
-      v-if="disabled"
+      v-if="false"
     />
     <div class="twpx-form-control__label">{{ control.label }}</div>
     <div
@@ -214,7 +214,7 @@ export default {
   transform: translateY(14px);
   pointer-events: none;
   line-height: 1.1;
-  z-index: 40;
+  z-index: 110;
 }
 .twpx-form-control--select.twpx-form-control--invalid
   .twpx-form-control__label {
@@ -366,7 +366,7 @@ export default {
 }
 .twpx-form-control-select.twpx-form-control-select--animate,
 .twpx-form-control-select.twpx-form-control-select--dropdown {
-  z-index: 30;
+  z-index: 101;
 }
 .twpx-form-control-select.twpx-form-control-select--dropdown
   .twpx-form-control-select__dropdown {

@@ -31,7 +31,7 @@ export default {
       }`,
     };
   },
-  props: ['control', 'variantId'],
+  props: ['control'],
   methods: {
     input({ value, checked, file }) {
       this.$store.dispatch('rememberVariantSettings', {

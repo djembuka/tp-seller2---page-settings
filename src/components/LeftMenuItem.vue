@@ -16,9 +16,20 @@
 export default {
   props: ['page'],
   methods: {
-    async click() {
+    click() {
       if (this.page.active) return;
 
+      if (this.page.id === 'settings') {
+        this.clickSettings();
+      } else {
+        this.clickPage();
+      }
+    },
+    clickSettings() {
+      this.$store.commit('changeStep', 'settings');
+      this.$store.commit('setPageActive', { pageId: this.page.id });
+    },
+    async clickPage() {
       //force blocks render
       const elem = document.getElementById(
         'seller2PageSettingsContainerSortable'

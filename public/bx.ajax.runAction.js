@@ -1128,6 +1128,12 @@ window.BX = {
           });
           break;
 
+        case 'twinpx:seller.api.methods.saveBlocksStates':
+          result = new Promise((resolve) => {
+            resolve({ status: 'success', data: true, errors: [] });
+          });
+          break;
+
         case 'twinpx:seller.api.methods.saveSettings':
           result = new Promise((resolve) => {
             resolve({ status: 'success', data: true, errors: [] });

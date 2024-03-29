@@ -37,34 +37,6 @@ const Store = {
     setVariantFormData(_, { variant, formData }) {
       variant.formData = formData;
     },
-    createBlockSettingsMemory(state, { blockId }) {
-      const page = state.data.sites[0].pages.find((p) => p.active);
-      if (page) {
-        let block;
-        ['top', 'other', 'bottom'].forEach((type) => {
-          if (!block) {
-            block = page.blocks[type].find((b) => b.id === blockId);
-          }
-        });
-        if (block) {
-          block.settingsMemory = Object.assign({}, block.settings);
-        }
-      }
-    },
-    deleteBlockSettingsMemory(state, { blockId }) {
-      const page = state.data.sites[0].pages.find((p) => p.active);
-      if (page) {
-        let block;
-        ['top', 'other', 'bottom'].forEach((type) => {
-          if (!block) {
-            block = page.blocks[type].find((b) => b.id === blockId);
-          }
-        });
-        if (block) {
-          delete block.settingsMemory;
-        }
-      }
-    },
     setAlert(state, value) {
       state.alert = value;
     },
@@ -79,16 +51,28 @@ const Store = {
       });
       page.blocks.other = blocks;
     },
-    resetBlocksOrder(state, { page }) {
+    resetBlocksOrderEnabled(state, { page }) {
       if (!state.memory) {
         return;
       }
-      const blocks = [];
-      state.memory.forEach((id) => {
-        const b = page.blocks.other.find((b) => String(b.id) === String(id));
-        blocks.push(b);
-      });
-      page.blocks.other = blocks;
+
+      if (state.memory.order) {
+        const blocks = [];
+        state.memory.order.forEach((id) => {
+          const b = page.blocks.other.find((b) => String(b.id) === String(id));
+          blocks.push(b);
+        });
+        page.blocks.other = blocks;
+      }
+
+      if (state.memory.enabled) {
+        Object.keys(state.memory.enabled).forEach((id) => {
+          console.log(id, state.memory.enabled[id]);
+          const b = page.blocks.other.find((b) => String(b.id) === String(id));
+          b.settings.enabled = state.memory.enabled[id];
+        });
+      }
+
       state.memory = null;
     },
     //end memory
@@ -198,8 +182,18 @@ const Store = {
     rememberBlocksOrder({ dispatch }, sortedArray) {
       dispatch('sortBlocks', sortedArray);
     },
-    resetBlocksOrder({ commit, getters }) {
-      commit('resetBlocksOrder', { page: getters.activePage });
+    rememberBlocksEnabled({ state, commit }, enabledArray) {
+      //remember initial enabled
+      if (state.memory === null) {
+        commit('setMemory', {
+          enabled: enabledArray,
+        });
+      } else if (!state.memory.enabled) {
+        let memory = state.memory;
+        memory.enabled = enabledArray;
+
+        commit('setMemory', memory);
+      }
     },
     resetBlockVariant({ state, commit, getters }) {
       let memory = state.memory;
@@ -256,10 +250,14 @@ const Store = {
     sortBlocks({ state, getters, commit }, sortedArray) {
       //remember initial sort
       if (state.memory === null) {
-        commit(
-          'setMemory',
-          getters.activePage.blocks.other.map((b) => b.id)
-        );
+        commit('setMemory', {
+          sorted: getters.activePage.blocks.other.map((b) => b.id),
+        });
+      } else if (!state.memory.order) {
+        let memory = state.memory;
+        memory.order = getters.activePage.blocks.other.map((b) => b.id);
+
+        commit('setMemory', memory);
       }
       //sort blocks
       commit('sortBlocks', { page: getters.activePage, sortedArray });
@@ -275,8 +273,12 @@ const Store = {
     },
     //save button
     async saveBlocks({ state, getters, commit }) {
+      let flag;
+
       switch (state.step) {
         case 'step1':
+          flag = false;
+
           if (window.BX) {
             window.BX.ajax
               .runAction(`twinpx:seller.api.methods.saveBlocksOrder`, {
@@ -290,10 +292,43 @@ const Store = {
               .then(
                 (r) => {
                   if (r.status === 'success') {
-                    if (state.alert) {
+                    if (state.alert && flag) {
                       const step = state.alert;
                       commit('setAlert', false);
                       commit('changeStep', step);
+                    } else {
+                      flag = true;
+                    }
+                  }
+                },
+                (error) => {
+                  console.log(error);
+                }
+              );
+
+            window.BX.ajax
+              .runAction(`twinpx:seller.api.methods.saveBlocksStates`, {
+                data: {
+                  sid: state.data.sites[0].id,
+                  page: getters.activePage.id,
+                  section: 'other',
+                  enabledBlocks: getters.activePage.blocks.other
+                    .filter((b) => b.settings.enabled)
+                    .map((b) => b.id),
+                  disabledBlocks: getters.activePage.blocks.other
+                    .filter((b) => !b.settings.enabled)
+                    .map((b) => b.id),
+                },
+              })
+              .then(
+                (r) => {
+                  if (r.status === 'success') {
+                    if (state.alert && flag) {
+                      const step = state.alert;
+                      commit('setAlert', false);
+                      commit('changeStep', step);
+                    } else {
+                      flag = true;
                     }
                   }
                 },
@@ -389,7 +424,7 @@ const Store = {
 
       switch (state.step) {
         case 'step1':
-          commit('resetBlocksOrder', { page: getters.activePage });
+          commit('resetBlocksOrderEnabled', { page: getters.activePage });
           break;
         case 'step2':
           dispatch('resetBlockVariant');

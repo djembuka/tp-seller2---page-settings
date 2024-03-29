@@ -14,14 +14,16 @@ export default {
     clickButton(type) {
       switch (type) {
         case 'save': //send the data of the current step to the server
-          this.$store.getters.isEditedBlock
-            ? this.$store.dispatch('saveBlocks')
-            : this.$store.dispatch('saveSettings');
+          this.$store.state.step === 'step3' &&
+          !this.$store.getters.isEditedBlock
+            ? this.$store.dispatch('saveSettings')
+            : this.$store.dispatch('saveBlocks');
           break;
         case 'cancel': // reset data (blocks order, active variant, settings)
-          this.$store.getters.isEditedBlock
-            ? this.$store.dispatch('resetBlocks')
-            : this.$store.dispatch('resetSettings');
+          this.$store.state.step === 'step3' &&
+          !this.$store.getters.isEditedBlock
+            ? this.$store.dispatch('resetSettings')
+            : this.$store.dispatch('resetBlocks');
           break;
       }
     },

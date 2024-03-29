@@ -2,21 +2,15 @@
   <the-breadcrumbs></the-breadcrumbs>
   <div class="slr2-page-settings__settings" v-if="$store.state.render">
     <div class="slr2-page-settings__settings-info">
-      <div class="slr2-page-settings__settings__title">
-        {{ $store.state.lang.settingsTitle }}: {{ variant.name }}
-      </div>
-      <div
-        class="slr2-page-settings__settings__text"
-        v-html="$store.state.lang.settingsText"
-      ></div>
+      <div class="slr2-page-settings__settings__title">{{ title }}</div>
+      <div class="slr2-page-settings__settings__text" v-html="text"></div>
     </div>
 
     <form action="" method="" enctype="multipart/form-data" ref="form">
       <form-control
-        v-for="control in variant.settings.properties"
+        v-for="control in properties"
         :key="control.id"
         :control="control"
-        :variantId="variant.id"
       ></form-control>
     </form>
   </div>
@@ -28,14 +22,15 @@ import TheBreadcrumbs from './TheBreadcrumbs.vue';
 
 export default {
   data() {
-    return {};
+    return {
+      settingsPage: this.$store.state.data.sites[0].settings,
+      title: '',
+      text: '',
+      variant: {},
+      properties: [],
+    };
   },
   computed: {
-    variant() {
-      return this.$store.getters.isEditedBlock.variants.find(
-        (v) => v.id === this.$store.getters.isEditedBlock.activeVariant
-      );
-    },
     formDataWatcher() {
       return this.$store.state.formDataWatcher;
     },
@@ -58,11 +53,25 @@ export default {
     TheBreadcrumbs,
   },
   mounted() {
-    this.variant.settings.properties.forEach((c) => {
+    if (this.$store.getters.isEditedBlock) {
+      //page -> block -> variant -> settings
+      this.variant = this.$store.getters.isEditedBlock.variants.find(
+        (v) => v.id === this.$store.getters.isEditedBlock.activeVariant
+      );
+      this.title = `${this.$store.state.lang.settingsTitle}: ${this.variant.name}`;
+      this.text = this.$store.state.lang.settingsText;
+      this.properties = this.variant.settings.properties;
+    } else {
+      // settings page
+      this.variant = this.settingsPage;
+      this.title = this.settingsPage.name;
+      this.text = this.settingsPage.text;
+      this.properties = this.settingsPage.properties;
+    }
+
+    this.properties.forEach((c) => {
       if (c.dependency) {
-        let checkbox = this.variant.settings.properties.find(
-          (ch) => ch.id === c.dependency
-        );
+        let checkbox = this.properties.find((ch) => ch.id === c.dependency);
         c.disabled = !checkbox.checked;
       }
     });

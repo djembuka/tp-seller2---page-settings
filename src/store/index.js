@@ -226,10 +226,12 @@ const Store = {
       }
       commit('setMemory', memory);
     },
-    resetVariantSettings({ state, commit, dispatch }, { variant }) {
+    resetVariantSettings({ state, commit, dispatch }, { variant, settings }) {
+      let sett = settings || variant.settings;
+
       if (state.memory !== null && typeof state.memory === 'object') {
         Object.keys(state.memory).forEach((id) => {
-          const property = variant.settings.properties.find(
+          const property = sett.properties.find(
             (prop) => String(prop.id) === String(id)
           );
 
@@ -344,11 +346,7 @@ const Store = {
 
             commit('setMemory', null);
 
-            let formData = variant.formData;
-
-            if (!formData) {
-              formData = new FormData();
-            }
+            let formData = variant.formData || new FormData();
 
             formData.append('sid', state.data.sites[0].id);
             formData.append('page', getters.activePage.id);
@@ -366,9 +364,29 @@ const Store = {
           break;
       }
     },
+    async saveSettings({ state, commit }) {
+      let settings = state.data.sites[0].settings;
+
+      if (!settings) return;
+
+      commit('setMemory', null);
+
+      let formData = settings.formData || new FormData();
+
+      formData.append('sid', state.data.sites[0].id);
+      formData.append(
+        'settings',
+        JSON.stringify({ properties: settings.properties })
+      );
+
+      window.BX.ajax.runAction(`twinpx:seller.api.methods.saveSettings`, {
+        data: formData,
+      });
+    },
     //cancel button
     resetBlocks({ state, getters, commit, dispatch }) {
       let variant;
+
       switch (state.step) {
         case 'step1':
           commit('resetBlocksOrder', { page: getters.activePage });
@@ -383,6 +401,19 @@ const Store = {
           dispatch('resetVariantSettings', { variant });
           break;
       }
+      setTimeout(() => {
+        if (state.alert) {
+          const step = state.alert;
+          commit('setAlert', false);
+          commit('changeStep', step);
+        }
+      }, 0);
+    },
+    resetSettings({ state, commit, dispatch }) {
+      dispatch('resetVariantSettings', {
+        settings: state.data.sites[0].settings,
+      });
+
       setTimeout(() => {
         if (state.alert) {
           const step = state.alert;

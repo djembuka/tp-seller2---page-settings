@@ -127,7 +127,12 @@ window.BX = {
                         code: '2',
                       },
                     ],
-                    value: '2',
+                    value: '1',
+                  },
+                  {
+                    property: 'heading',
+                    id: 'id_primary_heading',
+                    label: 'Цвет один',
                   },
                   {
                     property: 'color',
@@ -138,12 +143,22 @@ window.BX = {
                     value: '#CC33CC',
                   },
                   {
+                    property: 'heading',
+                    id: 'id_secondary_heading',
+                    label: 'Цвет два',
+                  },
+                  {
                     property: 'color',
                     id: 'id_color_secondary',
                     label: 'Цвет два',
                     name: 'COLOR_SECONDARY',
                     required: true,
                     value: '#CC33CC',
+                  },
+                  {
+                    property: 'heading',
+                    id: 'id_tertiary_heading',
+                    label: 'Цвет три',
                   },
                   {
                     property: 'color',
@@ -167,22 +182,22 @@ window.BX = {
                     options: [
                       {
                         label: '1 200 px',
-                        code: '1',
-                      },
-                      {
-                        label: '1 355 px',
-                        code: '2',
-                      },
-                      {
-                        label: '1 500 px',
                         code: '3',
                       },
                       {
-                        label: '1 700 px',
+                        label: '1 355 px',
                         code: '4',
                       },
+                      {
+                        label: '1 500 px',
+                        code: '5',
+                      },
+                      {
+                        label: '1 700 px',
+                        code: '6',
+                      },
                     ],
-                    value: '3',
+                    value: '5',
                   },
                   {
                     property: 'text',
@@ -197,6 +212,34 @@ window.BX = {
                     hint_internal: 'Введите число',
                     hint_external:
                       'Введите подсказку для этого блока, которая может быть очень длинная, но мы не будем ее выводить всегда, иногда подсказки не будет совсем.',
+                  },
+                  {
+                    property: 'textarea',
+                    id: 'id_textarea_counters',
+                    type: 'plain',
+                    name: 'TEXTAREA_COUNTERS',
+                    label: 'Код счетчиков',
+                    value: '',
+                    required: true,
+                    disabled: false,
+                  },
+                  {
+                    property: 'text',
+                    id: 'id_text_ymaps',
+                    name: 'TEXT_YMAPS',
+                    label: 'Ключ Яндекс карт',
+                    value: '',
+                    required: true,
+                    disabled: false,
+                  },
+                  {
+                    property: 'text',
+                    id: 'id_text_gmaps',
+                    name: 'TEXT_GMAPS',
+                    label: 'Ключ Google Карт',
+                    value: '',
+                    required: true,
+                    disabled: false,
                   },
                 ],
               },
@@ -1080,6 +1123,12 @@ window.BX = {
           break;
 
         case 'twinpx:seller.api.methods.saveBlocksSettings':
+          result = new Promise((resolve) => {
+            resolve({ status: 'success', data: true, errors: [] });
+          });
+          break;
+
+        case 'twinpx:seller.api.methods.saveSettings':
           result = new Promise((resolve) => {
             resolve({ status: 'success', data: true, errors: [] });
           });

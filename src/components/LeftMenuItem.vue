@@ -26,7 +26,7 @@ export default {
       }
     },
     clickSettings() {
-      this.$store.commit('changeStep', 'settings');
+      this.$store.commit('changeStep', 'step3');
       this.$store.commit('setPageActive', { pageId: this.page.id });
     },
     async clickPage() {

@@ -9,7 +9,6 @@
 import Step1Content from './Step1Content.vue';
 import Step2Content from './Step2Content.vue';
 import Step3Content from './Step3Content.vue';
-import SettingsContent from './SettingsContent.vue';
 import TheButtons from './TheButtons.vue';
 
 export default {
@@ -28,7 +27,6 @@ export default {
     Step1Content,
     Step2Content,
     Step3Content,
-    SettingsContent,
     TheButtons,
   },
 };

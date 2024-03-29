@@ -49,11 +49,15 @@ export default {
   methods: {
     clickButton(type) {
       switch (type) {
-        case 'save':
-          this.$store.dispatch('saveBlocks'); //send the data of the current step to the server
+        case 'save': //send the data of the current step to the server
+          this.$store.getters.isEditedBlock
+            ? this.$store.dispatch('saveBlocks')
+            : this.$store.dispatch('saveSettings');
           break;
-        case 'cancel':
-          this.$store.dispatch('resetBlocks'); // reset data (blocks order, active variant, settings)
+        case 'cancel': // reset data (blocks order, active variant, settings)
+          this.$store.getters.isEditedBlock
+            ? this.$store.dispatch('resetBlocks')
+            : this.$store.dispatch('resetSettings');
           break;
       }
     },

@@ -67,7 +67,6 @@ const Store = {
 
       if (state.memory.enabled) {
         Object.keys(state.memory.enabled).forEach((id) => {
-          console.log(id, state.memory.enabled[id]);
           const b = page.blocks.other.find((b) => String(b.id) === String(id));
           b.settings.enabled = state.memory.enabled[id];
         });
@@ -110,18 +109,22 @@ const Store = {
       });
 
       if (block) {
-        if (property && value) {
+        if (property && value !== undefined) {
           block.settings[property] = value;
         } else if (settings) {
           block.settings = Object.assign({}, settings);
         }
       }
     },
-    changeStep(state, step) {
+    changeStep(state, payload) {
       if (state.memory) {
-        state.alert = step;
+        if (payload.indexOf('step') >= 0 || payload.indexOf('settings') >= 0) {
+          state.alert = { step: payload };
+        } else {
+          state.alert = { page: payload };
+        }
       } else {
-        state.step = step;
+        state.step = payload;
       }
     },
     setBlockIsEdited(state, { pageId, blockId, isEdited }) {
@@ -178,6 +181,15 @@ const Store = {
     },
   },
   actions: {
+    changeStepFromAlert({ state, commit }) {
+      let step, pageId;
+      step = state.alert.step || 'step1';
+      pageId = state.alert.page;
+
+      commit('setAlert', null);
+      commit('changeStep', step);
+      commit('setPageActive', { pageId });
+    },
     //memory
     rememberBlocksOrder({ dispatch }, sortedArray) {
       dispatch('sortBlocks', sortedArray);
@@ -251,7 +263,7 @@ const Store = {
       //remember initial sort
       if (state.memory === null) {
         commit('setMemory', {
-          sorted: getters.activePage.blocks.other.map((b) => b.id),
+          order: getters.activePage.blocks.other.map((b) => b.id),
         });
       } else if (!state.memory.order) {
         let memory = state.memory;
@@ -272,8 +284,8 @@ const Store = {
       });
     },
     //save button
-    async saveBlocks({ state, getters, commit }) {
-      let flag;
+    async saveBlocks({ state, getters, commit, dispatch }) {
+      let flag; //to be sure both methods have worked
 
       switch (state.step) {
         case 'step1':
@@ -293,9 +305,7 @@ const Store = {
                 (r) => {
                   if (r.status === 'success') {
                     if (state.alert && flag) {
-                      const step = state.alert;
-                      commit('setAlert', false);
-                      commit('changeStep', step);
+                      dispatch('changeStepFromAlert');
                     } else {
                       flag = true;
                     }
@@ -324,9 +334,7 @@ const Store = {
                 (r) => {
                   if (r.status === 'success') {
                     if (state.alert && flag) {
-                      const step = state.alert;
-                      commit('setAlert', false);
-                      commit('changeStep', step);
+                      dispatch('changeStepFromAlert');
                     } else {
                       flag = true;
                     }
@@ -356,9 +364,7 @@ const Store = {
                 (r) => {
                   if (r.status === 'success') {
                     if (state.alert) {
-                      const step = state.alert;
-                      commit('setAlert', false);
-                      commit('changeStep', step);
+                      dispatch('changeStepFromAlert');
                     }
                   }
                 },
@@ -373,6 +379,7 @@ const Store = {
         case 'step3':
           {
             let block, variant;
+
             block = getters.isEditedBlock;
             if (!block) return;
 
@@ -389,12 +396,22 @@ const Store = {
             formData.append('variant', variant.id);
             formData.append('settings', JSON.stringify(variant.settings));
 
-            window.BX.ajax.runAction(
-              `twinpx:seller.api.methods.saveBlocksSettings`,
-              {
+            window.BX.ajax
+              .runAction(`twinpx:seller.api.methods.saveBlocksSettings`, {
                 data: formData,
-              }
-            );
+              })
+              .then(
+                (r) => {
+                  if (r.status === 'success') {
+                    if (state.alert) {
+                      dispatch('changeStepFromAlert');
+                    }
+                  }
+                },
+                (error) => {
+                  console.log(error);
+                }
+              );
           }
           break;
       }
@@ -438,22 +455,18 @@ const Store = {
       }
       setTimeout(() => {
         if (state.alert) {
-          const step = state.alert;
-          commit('setAlert', false);
-          commit('changeStep', step);
+          dispatch('changeStepFromAlert');
         }
       }, 0);
     },
-    resetSettings({ state, commit, dispatch }) {
+    resetSettings({ state, dispatch }) {
       dispatch('resetVariantSettings', {
         settings: state.data.sites[0].settings,
       });
 
       setTimeout(() => {
         if (state.alert) {
-          const step = state.alert;
-          commit('setAlert', false);
-          commit('changeStep', step);
+          dispatch('changeStepFromAlert');
         }
       }, 0);
     },

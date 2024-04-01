@@ -39,11 +39,18 @@ export default {
         elem.dispatchEvent(event);
       }
 
-      this.$store.commit('changeStep', 'step1');
-      this.$store.commit('setPageActive', { pageId: this.page.id });
-      this.$store.dispatch('loadPageBlocks', {
-        pageId: this.page.id,
-      });
+      if (this.$store.state.memory) {
+        this.$store.commit('changeStep', this.page.id);
+        this.$store.dispatch('loadPageBlocks', {
+          pageId: this.page.id,
+        });
+      } else {
+        this.$store.commit('changeStep', 'step1');
+        this.$store.commit('setPageActive', { pageId: this.page.id });
+        this.$store.dispatch('loadPageBlocks', {
+          pageId: this.page.id,
+        });
+      }
     },
   },
 };

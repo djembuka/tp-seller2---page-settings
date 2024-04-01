@@ -62,7 +62,6 @@ export default {
   },
   methods: {
     changeChecked() {
-      console.log('sdf' + this.block.id, this.block.settings.enabled);
       this.control.checked = this.block.settings.enabled;
     },
     edit() {

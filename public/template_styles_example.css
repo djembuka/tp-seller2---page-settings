@@ -395,6 +395,11 @@ h4 {
   font-size: var(--slr2-h4-size);
 }
 
+.slr2-container {
+  width: 100%;
+  max-width: var(--slr2-content-width);
+}
+
 .slr2-btn {
   /* button-fill заливка */
   background-color: var(--slr2-color-primary);

@@ -247,7 +247,7 @@ window.BX = {
                         code: '2',
                       },
                       {
-                        label: 'ЗАГЛАВНЫМИ',
+                        label: 'ЗАГЛАВНЫМИ (непонятно)',
                         code: '3',
                       },
                     ],
@@ -256,8 +256,8 @@ window.BX = {
                   {
                     property: 'select',
                     type: 'dropdown',
-                    id: 'id_font',
-                    name: 'SELECT_FONT',
+                    id: 'id_font_family',
+                    name: 'SELECT_FONT_FAMILY',
                     label: 'Шрифт',
                     options: [
                       {
@@ -280,8 +280,8 @@ window.BX = {
                   },
                   {
                     property: 'text',
-                    id: 'id_custom_font',
-                    name: 'TEXT_CUSTOM_FONT',
+                    id: 'id_custom_font_family',
+                    name: 'TEXT_CUSTOM_FONT_FAMILY',
                     label: 'Пользовательский шрифт (<link … >):',
                     value: '',
                     disabled: false,

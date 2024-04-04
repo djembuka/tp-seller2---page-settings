@@ -8,6 +8,7 @@ const Store = {
     step: 'step1', //step1 - catalog of pages, step2 - block and its templates, step3 - block's template settings
     render: true,
     alert: false,
+    preloader: false,
     buttons: [
       {
         code: 'cancel',
@@ -39,6 +40,9 @@ const Store = {
     },
     setAlert(state, value) {
       state.alert = value;
+    },
+    setPreloader(state, value) {
+      state.preloader = value;
     },
     //memory
     setMemory(state, payload) {
@@ -292,6 +296,8 @@ const Store = {
           flag = false;
 
           if (window.BX) {
+            commit('setPreloader', true);
+
             window.BX.ajax
               .runAction(`twinpx:seller.api.methods.saveBlocksOrder`, {
                 data: {
@@ -303,6 +309,9 @@ const Store = {
               })
               .then(
                 (r) => {
+                  if (flag) {
+                    commit('setPreloader', false);
+                  }
                   if (r.status === 'success') {
                     if (state.alert && flag) {
                       dispatch('changeStepFromAlert');
@@ -312,6 +321,7 @@ const Store = {
                   }
                 },
                 (error) => {
+                  commit('setPreloader', false);
                   console.log(error);
                 }
               );
@@ -332,6 +342,9 @@ const Store = {
               })
               .then(
                 (r) => {
+                  if (flag) {
+                    commit('setPreloader', false);
+                  }
                   if (r.status === 'success') {
                     if (state.alert && flag) {
                       dispatch('changeStepFromAlert');
@@ -341,6 +354,7 @@ const Store = {
                   }
                 },
                 (error) => {
+                  commit('setPreloader', false);
                   console.log(error);
                 }
               );
@@ -351,6 +365,8 @@ const Store = {
         case 'step2':
           //save variant
           if (window.BX) {
+            commit('setPreloader', true);
+
             window.BX.ajax
               .runAction(`twinpx:seller.api.methods.saveBlocksSettings`, {
                 data: {
@@ -362,6 +378,7 @@ const Store = {
               })
               .then(
                 (r) => {
+                  commit('setPreloader', false);
                   if (r.status === 'success') {
                     if (state.alert) {
                       dispatch('changeStepFromAlert');
@@ -369,6 +386,7 @@ const Store = {
                   }
                 },
                 (error) => {
+                  commit('setPreloader', false);
                   console.log(error);
                 }
               );
@@ -396,22 +414,28 @@ const Store = {
             formData.append('variant', variant.id);
             formData.append('settings', JSON.stringify(variant.settings));
 
-            window.BX.ajax
-              .runAction(`twinpx:seller.api.methods.saveBlocksSettings`, {
-                data: formData,
-              })
-              .then(
-                (r) => {
-                  if (r.status === 'success') {
-                    if (state.alert) {
-                      dispatch('changeStepFromAlert');
+            if (window.BX) {
+              commit('setPreloader', true);
+
+              window.BX.ajax
+                .runAction(`twinpx:seller.api.methods.saveBlocksSettings`, {
+                  data: formData,
+                })
+                .then(
+                  (r) => {
+                    commit('setPreloader', false);
+                    if (r.status === 'success') {
+                      if (state.alert) {
+                        dispatch('changeStepFromAlert');
+                      }
                     }
+                  },
+                  (error) => {
+                    commit('setPreloader', false);
+                    console.log(error);
                   }
-                },
-                (error) => {
-                  console.log(error);
-                }
-              );
+                );
+            }
           }
           break;
       }
@@ -431,9 +455,22 @@ const Store = {
         JSON.stringify({ properties: settings.properties })
       );
 
-      window.BX.ajax.runAction(`twinpx:seller.api.methods.saveSettings`, {
-        data: formData,
-      });
+      if (window.BX) {
+        commit('setPreloader', true);
+        window.BX.ajax
+          .runAction(`twinpx:seller.api.methods.saveSettings`, {
+            data: formData,
+          })
+          .then(
+            () => {
+              commit('setPreloader', false);
+            },
+            (error) => {
+              commit('setPreloader', false);
+              console.log(error);
+            }
+          );
+      }
     },
     //cancel button
     resetBlocks({ state, getters, commit, dispatch }) {
@@ -475,6 +512,8 @@ const Store = {
       const BX = window.BX;
 
       if (BX) {
+        commit('setPreloader', true);
+
         BX.ajax
           .runAction(`twinpx:seller.api.methods.blocks`, {
             data: {
@@ -484,12 +523,14 @@ const Store = {
           })
           .then(
             (r) => {
+              commit('setPreloader', false);
               if (r.status === 'success' && r.data) {
                 blocks = r.data;
                 commit('setPageBlocks', { pageId, blocks });
               }
             },
             (error) => {
+              commit('setPreloader', false);
               console.log(error);
             }
           );
@@ -542,15 +583,18 @@ const Store = {
           const BX = window.BX;
 
           if (BX) {
+            commit('setPreloader', true);
             BX.ajax
               .runAction(`twinpx:seller.api.methods.${type}`, payload)
               .then(
                 (r) => {
+                  commit('setPreloader', false);
                   if (r.status === 'success' && r.data) {
                     res(r.data);
                   }
                 },
                 (error) => {
+                  commit('setPreloader', false);
                   rej(error);
                 }
               );

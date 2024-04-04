@@ -2,6 +2,7 @@
   <div class="slr2-page-settings__content">
     <component :is="currentStepComponent"></component>
     <the-buttons v-if="memory"></the-buttons>
+    <the-preloader></the-preloader>
   </div>
 </template>
 
@@ -10,6 +11,7 @@ import Step1Content from './Step1Content.vue';
 import Step2Content from './Step2Content.vue';
 import Step3Content from './Step3Content.vue';
 import TheButtons from './TheButtons.vue';
+import ThePreloader from './ThePreloader.vue';
 
 export default {
   data() {
@@ -28,12 +30,14 @@ export default {
     Step2Content,
     Step3Content,
     TheButtons,
+    ThePreloader,
   },
 };
 </script>
 
 <style>
 .slr2-page-settings__content {
+  position: relative;
   background-color: var(--slr2-background);
   padding: var(--ui-space-inset-xl);
   display: grid;

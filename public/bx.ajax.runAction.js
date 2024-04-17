@@ -214,6 +214,20 @@ window.BX = {
                       'Введите подсказку для этого блока, которая может быть очень длинная, но мы не будем ее выводить всегда, иногда подсказки не будет совсем.',
                   },
                   {
+                    property: 'text',
+                    id: 'id_blocks_radius',
+                    name: 'TEXT_BLOCKS_RADIUS',
+                    label: 'Радиус скругления блоков на сайте',
+                    value: '8',
+                    required: true,
+                    disabled: false,
+                    regexp: 'd+',
+                    regexp_description: 'Значение поля должно быть числом',
+                    hint_internal: 'Введите число',
+                    hint_external:
+                      'Введите подсказку для этого блока, которая может быть очень длинная, но мы не будем ее выводить всегда, иногда подсказки не будет совсем.',
+                  },
+                  {
                     property: 'select',
                     type: 'radio',
                     id: 'id_button_fill',

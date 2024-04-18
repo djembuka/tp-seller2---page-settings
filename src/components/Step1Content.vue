@@ -34,7 +34,7 @@ export default {
   },
   mounted() {
     if (this.$store.getters.isEditedBlock) {
-      this.$store.commit('setBlockIsEdited', {
+      this.$store.dispatch('setBlockIsEdited', {
         pageId: this.$store.getters.activePage.id,
         blockId: this.$store.getters.isEditedBlock.id,
         isEdited: false,

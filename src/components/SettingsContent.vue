@@ -1,19 +1,18 @@
 <template>
-  <the-breadcrumbs></the-breadcrumbs>
   <div class="slr2-page-settings__settings" v-if="$store.state.render">
     <div class="slr2-page-settings__settings-info">
       <div class="slr2-page-settings__settings__title">
-        {{ $store.state.lang.settingsTitle + ':' + variant.name }}
+        {{ settingsPage.name }}
       </div>
       <div
         class="slr2-page-settings__settings__text"
-        v-html="$store.state.lang.settingsText"
+        v-html="settingsPage.text"
       ></div>
     </div>
 
     <form action="" method="" enctype="multipart/form-data" ref="form">
       <form-control
-        v-for="control in properties"
+        v-for="control in settingsPage.properties"
         :key="control.id"
         :control="control"
       ></form-control>
@@ -23,20 +22,14 @@
 
 <script>
 import FormControl from './FormControl.vue';
-import TheBreadcrumbs from './TheBreadcrumbs.vue';
 
 export default {
   data() {
     return {
-      variant: this.$store.getters.isEditedBlock.variants.find(
-        (v) => v.id === this.$store.getters.isEditedBlock.activeVariant
-      ),
+      settingsPage: this.$store.state.data.sites[0].settings,
     };
   },
   computed: {
-    properties() {
-      return this.variant.settings.properties;
-    },
     formDataWatcher() {
       return this.$store.state.formDataWatcher;
     },
@@ -49,17 +42,16 @@ export default {
   methods: {
     setVariantFormData() {
       this.$store.commit('setVariantFormData', {
-        variant: this.variant,
+        variant: this.settingsPage,
         formData: new FormData(this.$refs.form),
       });
     },
   },
   components: {
     FormControl,
-    TheBreadcrumbs,
   },
   mounted() {
-    this.properties.forEach((c) => {
+    this.settingsPage.properties.forEach((c) => {
       if (c.dependency) {
         let checkbox = this.properties.find((ch) => ch.id === c.dependency);
         c.disabled = !checkbox.checked;

@@ -1,7 +1,10 @@
 <template>
   <div
     class="slr2-page-settings__left-menu__item"
-    :class="{ 'slr2-page-settings__left-menu__item--active': page.active }"
+    :class="{
+      'slr2-page-settings__left-menu__item--active':
+        $store.getters.activePage.id === page.id,
+    }"
     @click.prevent="click"
     :data-id="page.id"
   >
@@ -26,7 +29,15 @@ export default {
       }
     },
     clickSettings() {
-      this.$store.commit('changeStep', 'step3');
+      //remove isEdited block
+      if (this.$store.getters.isEditedBlock) {
+        this.$store.dispatch('setBlockIsEdited', {
+          pageId: this.$store.getters.activePage.id,
+          blockId: this.$store.getters.isEditedBlock.id,
+          isEdited: false,
+        });
+      }
+      this.$store.commit('changeStep', 'settings');
       this.$store.commit('setPageActive', { pageId: this.page.id });
     },
     async clickPage() {

@@ -5,7 +5,7 @@ const Store = {
     controls,
   },
   state: {
-    step: 'step1', //step1 - catalog of pages, step2 - block and its templates, step3 - block's template settings
+    step: 'settings', //step1 - catalog of pages, step2 - block and its templates, step3 - block's template settings, settings - main site settings
     render: true,
     alert: false,
     preloader: false,
@@ -131,21 +131,7 @@ const Store = {
         state.step = payload;
       }
     },
-    setBlockIsEdited(state, { pageId, blockId, isEdited }) {
-      let block;
-
-      state.data.sites[0].pages.forEach((page) => {
-        if (page.id === pageId) {
-          ['top', 'other', 'bottom'].forEach((type) => {
-            if (!block && page.blocks && page.blocks[type]) {
-              block =
-                page.blocks[type].find((block) => block.id === blockId) ||
-                block;
-            }
-          });
-        }
-      });
-
+    setBlockIsEdited(_, { block, isEdited }) {
       block.isEdited = isEdited;
     },
     setPreviousVariant(state, { blockId }) {
@@ -168,7 +154,7 @@ const Store = {
   getters: {
     activePage(state) {
       const activePage = state.data.sites[0].pages.find((page) => page.active);
-      return activePage || state.data.sites[0].pages[0];
+      return activePage || state.data.sites[0].settings;
     },
     isEditedBlock(state) {
       let block;
@@ -185,6 +171,30 @@ const Store = {
     },
   },
   actions: {
+    setBlockIsEdited(
+      { state, getters, commit },
+      { pageId, blockId, isEdited }
+    ) {
+      if (isEdited === false) {
+        getters.isEditedBlock.isEdited = isEdited;
+      } else {
+        let block;
+
+        state.data.sites[0].pages.forEach((page) => {
+          if (page.id === pageId) {
+            ['top', 'other', 'bottom'].forEach((type) => {
+              if (!block && page.blocks && page.blocks[type]) {
+                block =
+                  page.blocks[type].find((block) => block.id === blockId) ||
+                  block;
+              }
+            });
+          }
+        });
+
+        commit('setBlockIsEdited', { block, isEdited });
+      }
+    },
     changeStepFromAlert({ state, commit }) {
       let step, pageId;
       step = state.alert.step || 'step1';
@@ -440,7 +450,7 @@ const Store = {
           break;
       }
     },
-    async saveSettings({ state, commit }) {
+    async saveSettings({ state, commit, dispatch }) {
       let settings = state.data.sites[0].settings;
 
       if (!settings) return;
@@ -464,6 +474,7 @@ const Store = {
           .then(
             () => {
               commit('setPreloader', false);
+              dispatch('changeStepFromAlert');
             },
             (error) => {
               commit('setPreloader', false);
@@ -536,7 +547,7 @@ const Store = {
           );
       }
     },
-    async loadStructure({ commit }, callback) {
+    async loadStructure({ commit }) {
       let sites, settings, pages, blocks;
 
       await bxAjaxRunAction('sites', {})
@@ -576,7 +587,6 @@ const Store = {
       structure.sites[0].pages[0].blocks = blocks;
 
       commit('setStructure', structure);
-      callback();
 
       function bxAjaxRunAction(type, payload) {
         return new Promise((res, rej) => {

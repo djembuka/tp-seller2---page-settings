@@ -1,7 +1,5 @@
 <template>
-  <!--
-  <pre>{{ $store.state }}</pre>
-  -->
+  <!-- <pre>{{ $store.state.data.sites[0].pages[0].blocks.other }}</pre> -->
   <div class="slr2-page-settings-grid" v-if="$store.state.structureLoaded">
     <the-left-menu></the-left-menu>
     <the-main-content></the-main-content>
@@ -23,9 +21,7 @@ export default {
   },
   async beforeMount() {},
   async created() {
-    this.$store.dispatch('loadStructure', () => {
-      this.$store.commit('setPageActive', { pageIndex: 0 });
-    });
+    this.$store.dispatch('loadStructure');
   },
 };
 </script>

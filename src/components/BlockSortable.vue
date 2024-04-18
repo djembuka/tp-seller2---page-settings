@@ -66,7 +66,7 @@ export default {
     },
     edit() {
       this.$store.commit('changeStep', 'step2');
-      this.$store.commit('setBlockIsEdited', {
+      this.$store.dispatch('setBlockIsEdited', {
         pageId: this.$store.getters.activePage.id,
         blockId: this.block.id,
         isEdited: true,

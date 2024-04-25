@@ -15,7 +15,7 @@
       v-if="block.description"
       class="slr2-page-settings__block__description"
     >
-      {{ block.description['step1'] }}
+      {{ block.description }}
     </div>
     <div v-if="block.variants" class="slr2-page-settings__block__edit">
       <span @click.prevent="edit">{{ $store.state.lang.edit }}</span>

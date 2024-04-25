@@ -9,7 +9,7 @@
         v-if="block.description"
         class="slr2-page-settings__block__description"
       >
-        {{ block.description['step2'] }}
+        {{ block.description }}
       </div>
     </div>
 

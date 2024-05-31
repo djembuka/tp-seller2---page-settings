@@ -1,7 +1,7 @@
 <template>
   <div class="slr2-page-settings__content">
-    {{ stepData }}
-    <component :is="currentStepComponent" :data="stepData"></component>
+    {{ currentStepComponent }}
+    <component :is="currentStepComponent"></component>
     <the-buttons v-if="memory"></the-buttons>
     <the-preloader></the-preloader>
   </div>
@@ -24,29 +24,6 @@ export default {
   computed: {
     currentStepComponent() {
       return `${this.$store.state.step}Content`;
-    },
-    stepData() {
-      let result;
-      switch (this.$store.state.step) {
-        case 'step1':
-          break;
-        case 'step2':
-          break;
-        case 'step3':
-          result = {
-            variant: this.$store.getters.isEditedBlock.variants.find(
-              (v) => v.id === this.$store.getters.isEditedBlock.activeVariant
-            ),
-          };
-          break;
-        case 'settings':
-          break;
-        case 'colors':
-          break;
-        case 'colors-settings':
-          break;
-      }
-      return result;
     },
     memory() {
       return this.$store.state.memory;

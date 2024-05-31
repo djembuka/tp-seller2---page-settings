@@ -1,13 +1,12 @@
 <template>
-  <the-breadcrumbs></the-breadcrumbs>
   <div class="slr2-page-settings__settings" v-if="$store.state.render">
     <div class="slr2-page-settings__settings-info">
       <div class="slr2-page-settings__settings__title">
-        {{ $store.state.lang.settingsTitle + ': ' + variant.name }}
+        {{ variant.name }}
       </div>
       <div
         class="slr2-page-settings__settings__text"
-        v-html="$store.state.lang.settingsText"
+        v-html="variant.text"
       ></div>
     </div>
 
@@ -23,22 +22,16 @@
 
 <script>
 import FormControl from './FormControl.vue';
-import TheBreadcrumbs from './TheBreadcrumbs.vue';
 
 export default {
-  props: {
-    stepData: {
-      type: Object,
-      required: true,
-      default() {
-        return { variant: {} };
-      },
-    },
+  data() {
+    return {
+      variant: this.$store.state.data.sites[0].colors.variants.find(
+        (v) => v.id === this.$store.state.data.sites[0].colors.activeVariant
+      ),
+    };
   },
   computed: {
-    variant() {
-      return this.stepData.variant;
-    },
     properties() {
       return this.variant.settings.properties;
     },
@@ -61,7 +54,6 @@ export default {
   },
   components: {
     FormControl,
-    TheBreadcrumbs,
   },
   mounted() {
     this.properties.forEach((c) => {

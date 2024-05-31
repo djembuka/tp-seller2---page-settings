@@ -26,19 +26,14 @@ import FormControl from './FormControl.vue';
 import TheBreadcrumbs from './TheBreadcrumbs.vue';
 
 export default {
-  props: {
-    stepData: {
-      type: Object,
-      required: true,
-      default() {
-        return { variant: {} };
-      },
-    },
+  data() {
+    return {
+      variant: this.$store.getters.isEditedBlock.variants.find(
+        (v) => v.id === this.$store.getters.isEditedBlock.activeVariant
+      ),
+    };
   },
   computed: {
-    variant() {
-      return this.stepData.variant;
-    },
     properties() {
       return this.variant.settings.properties;
     },

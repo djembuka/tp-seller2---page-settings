@@ -22,7 +22,7 @@ export default {
     click() {
       if (this.page.active) return;
 
-      if (this.page.id === 'settings') {
+      if (this.page.id === 'settings' || this.page.id === 'colors') {
         this.clickSettings();
       } else {
         this.clickPage();
@@ -37,8 +37,12 @@ export default {
           isEdited: false,
         });
       }
-      this.$store.commit('changeStep', 'settings');
+      this.$store.commit(
+        'changeStep',
+        this.page.id === 'settings' ? 'settings' : 'step2'
+      );
       this.$store.commit('setPageActive', { pageId: this.page.id });
+      console.log(this.$store.getters.activePage.id);
     },
     async clickPage() {
       //force blocks render

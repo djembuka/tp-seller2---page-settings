@@ -276,18 +276,6 @@ window.BX = {
                     hint_external: 'Например 14 или 32',
                   },
                   {
-                    property: 'heading',
-                    id: 'id_font_color_heading',
-                    label: 'Цвет шрифта',
-                  },
-                  {
-                    property: 'color',
-                    id: 'id_font_heading',
-                    label: 'Цвет шрифта',
-                    name: 'COLOR_FONT_HEADING',
-                    value: '#CC33CC',
-                  },
-                  {
                     property: 'text',
                     id: 'id_h1_size',
                     name: 'TEXT_H1_SIZE',
@@ -380,6 +368,13 @@ window.BX = {
             resolve({
               status: 'success',
               data: {
+                id: '111',
+                name: 'Цветовая схема',
+                description: '',
+                preview: 'upload/block.png',
+                settings: {
+                  enabled: true,
+                },
                 activeVariant: '1111',
                 variants: [
                   {

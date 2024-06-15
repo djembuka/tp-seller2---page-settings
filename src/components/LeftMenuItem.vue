@@ -37,7 +37,7 @@ export default {
           isEdited: false,
         });
       }
-      this.$store.commit('changeStep', id);
+      this.$store.commit('changeStep', id === 'colors' ? 'step2' : 'step3');
       this.$store.commit('setPageActive', { pageId: id });
     },
     async clickPage() {

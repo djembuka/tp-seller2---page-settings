@@ -1,20 +1,19 @@
 <template>
-  <div
-    v-if="this.$store.getters.activePage.blocks"
-    class="slr2-page-settings__blocks-grid"
-  >
+  <div v-if="stepData.page.blocks" class="slr2-page-settings__blocks-grid">
     <div
-      v-for="block in this.$store.getters.activePage.blocks.top"
+      v-for="block in stepData.page.blocks.top"
       :key="block.id"
       class="slr2-page-settings__blocks-grid"
     >
       <block-static :block="block"></block-static>
     </div>
 
-    <container-sortable></container-sortable>
+    <container-sortable
+      :blocks="stepData.page.blocks.other"
+    ></container-sortable>
 
     <div
-      v-for="block in this.$store.getters.activePage.blocks.bottom"
+      v-for="block in stepData.page.blocks.bottom"
       :key="block.id"
       class="slr2-page-settings__blocks-grid"
     >
@@ -28,6 +27,7 @@ import BlockStatic from './BlockStatic.vue';
 import ContainerSortable from './ContainerSortable.vue';
 
 export default {
+  props: ['stepData'],
   components: {
     BlockStatic,
     ContainerSortable,

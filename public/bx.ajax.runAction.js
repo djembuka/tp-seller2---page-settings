@@ -368,10 +368,10 @@ window.BX = {
             resolve({
               status: 'success',
               data: {
-                id: '111',
-                name: 'Цветовая схема',
-                description: '',
-                preview: 'upload/block.png',
+                id: 'colors',
+                name: 'Цветовые настройки',
+                // description: 'Используйте данный раздел, чтобы настроить базовые цвета вашего сайта.',
+                preview: '',
                 settings: {
                   enabled: true,
                 },
@@ -1379,6 +1379,18 @@ window.BX = {
           break;
 
         case 'twinpx:seller.api.methods.saveSettings':
+          result = new Promise((resolve) => {
+            resolve({ status: 'success', data: true, errors: [] });
+          });
+          break;
+
+        case 'twinpx:seller.api.methods.saveTheme':
+          result = new Promise((resolve) => {
+            resolve({ status: 'success', data: true, errors: [] });
+          });
+          break;
+
+        case 'twinpx:seller.api.methods.saveColors':
           result = new Promise((resolve) => {
             resolve({ status: 'success', data: true, errors: [] });
           });

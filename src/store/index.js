@@ -5,7 +5,7 @@ const Store = {
     controls,
   },
   state: {
-    step: 'settings', //step1 - catalog of pages, step2 - block and its templates, step3 - block's template settings, settings - main site settings, colors - colors settings
+    step: 'step3', //step1 - catalog of pages, step2 - block and its templates, step3 - block's template settings, settings - main site settings, colors - colors settings
     render: true,
     alert: false,
     preloader: false,
@@ -90,10 +90,10 @@ const Store = {
       }
     },
     setPageActive(state, { pageIndex, pageId }) {
-      if (pageId === 'settings' || pageId === 'colors') {
-        state.data.sites[0].settings.active = false;
-        state.data.sites[0].colors.active = false;
+      state.data.sites[0].settings.active = false;
+      state.data.sites[0].colors.active = false;
 
+      if (pageId === 'settings' || pageId === 'colors') {
         state.data.sites[0].pages.forEach((page) => {
           page.active = false;
         });
@@ -103,7 +103,7 @@ const Store = {
         state.data.sites[0].pages.forEach((page, index) => {
           if (pageIndex !== undefined) {
             page.active = index === pageIndex;
-          } else if (pageId !== undefined) {
+          } else if (pageId !== undefined && pageId !== null) {
             page.active = page.id === pageId;
           }
         });
@@ -221,13 +221,18 @@ const Store = {
       }
     },
     changeStepFromAlert({ state, commit }) {
+      if (!state.alert) return;
+
       let step, pageId;
+
       step = state.alert.step || 'step1';
       pageId = state.alert.page;
 
       commit('setAlert', null);
       commit('changeStep', step);
-      commit('setPageActive', { pageId });
+      if (pageId) {
+        commit('setPageActive', { pageId });
+      }
     },
     //memory
     rememberBlocksOrder({ dispatch }, sortedArray) {
@@ -316,18 +321,18 @@ const Store = {
       //sort blocks
       commit('sortBlocks', { page: getters.activePage, sortedArray });
     },
-    setActiveVariant({ state, getters, commit }, variantId) {
+    setActiveVariant({ state, getters, commit }, { variantId }) {
       if (state.memory === null) {
         commit(
           'setMemory',
-          state.step === 'colors'
+          getters.activePage.id === 'colors'
             ? state.data.sites[0].colors.activeVariant
             : getters.isEditedBlock.activeVariant
         );
       }
       commit('setActiveVariant', {
         block:
-          state.step === 'colors'
+          getters.activePage.id === 'colors'
             ? state.data.sites[0].colors
             : getters.isEditedBlock,
         variantId: variantId,
@@ -519,6 +524,84 @@ const Store = {
           );
       }
     },
+    async saveColors({ state, getters, commit, dispatch }) {
+      switch (state.step) {
+        case 'step2':
+          //save variant
+          if (window.BX) {
+            commit('setPreloader', true);
+
+            window.BX.ajax
+              .runAction(`twinpx:seller.api.methods.saveColors`, {
+                data: {
+                  sid: state.data.sites[0].id,
+                  settings: JSON.stringify({
+                    activeVariant: getters.activePage.activeVariant,
+                  }),
+                },
+              })
+              .then(
+                (r) => {
+                  commit('setPreloader', false);
+                  if (r.status === 'success') {
+                    if (state.alert) {
+                      dispatch('changeStepFromAlert');
+                    }
+                  }
+                },
+                (error) => {
+                  commit('setPreloader', false);
+                  console.log(error);
+                }
+              );
+
+            commit('setMemory', null);
+          }
+          break;
+        case 'step3':
+          {
+            let block, variant;
+
+            block = getters.activePage;
+            if (!block) return;
+
+            variant = block.variants.find((v) => v.id === block.activeVariant);
+            if (!variant) return;
+
+            commit('setMemory', null);
+
+            let formData = variant.formData || new FormData();
+
+            formData.append('sid', state.data.sites[0].id);
+            formData.append('variant', variant.id);
+            formData.append('settings', JSON.stringify(variant.settings));
+
+            if (window.BX) {
+              commit('setPreloader', true);
+
+              window.BX.ajax
+                .runAction(`twinpx:seller.api.methods.saveColors`, {
+                  data: formData,
+                })
+                .then(
+                  (r) => {
+                    commit('setPreloader', false);
+                    if (r.status === 'success') {
+                      if (state.alert) {
+                        dispatch('changeStepFromAlert');
+                      }
+                    }
+                  },
+                  (error) => {
+                    commit('setPreloader', false);
+                    console.log(error);
+                  }
+                );
+            }
+          }
+          break;
+      }
+    },
     //cancel button
     resetBlocks({ state, getters, commit, dispatch }) {
       let variant;
@@ -618,20 +701,17 @@ const Store = {
       };
 
       // settings
-      structure.sites[0].settings = settings;
+      structure.sites[0].settings = {};
+      structure.sites[0].settings.settings = settings;
       structure.sites[0].settings.id = 'settings';
       structure.sites[0].settings.name = 'Общие настройки';
       structure.sites[0].settings.text =
         'Используйте данный раздел, чтобы загрузить или отредактировать базовые элементы вашего сайта.';
-      structure.sites[0].settings.icon = structure.sites[0].colors.icon =
+      structure.sites[0].settings.icon =
         'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8ZyBpZD0iSWNvbiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEwOCAtMTg4KSI+CiAgICA8cGF0aCBpZD0iVmVjdG9yIiBkPSJNMyw4SDVBMi42NTIsMi42NTIsMCwwLDAsOCw1VjNBMi42NTIsMi42NTIsMCwwLDAsNSwwSDNBMi42NTIsMi42NTIsMCwwLDAsMCwzVjVBMi42NTIsMi42NTIsMCwwLDAsMyw4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEwIDE5MCkiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBhMTZhYSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIvPgogICAgPHBhdGggaWQ9IlZlY3Rvci0yIiBkYXRhLW5hbWU9IlZlY3RvciIgZD0iTTMsOEg1QTIuNjUyLDIuNjUyLDAsMCwwLDgsNVYzQTIuNjUyLDIuNjUyLDAsMCwwLDUsMEgzQTIuNjUyLDIuNjUyLDAsMCwwLDAsM1Y1QTIuNjUyLDIuNjUyLDAsMCwwLDMsOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyMiAxOTApIiBmaWxsPSJub25lIiBzdHJva2U9IiMwYTE2YWEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICAgIDxwYXRoIGlkPSJWZWN0b3ItMyIgZGF0YS1uYW1lPSJWZWN0b3IiIGQ9Ik0zLDhINUEyLjY1MiwyLjY1MiwwLDAsMCw4LDVWM0EyLjY1MiwyLjY1MiwwLDAsMCw1LDBIM0EyLjY1MiwyLjY1MiwwLDAsMCwwLDNWNUEyLjY1MiwyLjY1MiwwLDAsMCwzLDhaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMjIgMjAyKSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMGExNmFhIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgICA8cGF0aCBpZD0iVmVjdG9yLTQiIGRhdGEtbmFtZT0iVmVjdG9yIiBkPSJNMyw4SDVBMi42NTIsMi42NTIsMCwwLDAsOCw1VjNBMi42NTIsMi42NTIsMCwwLDAsNSwwSDNBMi42NTIsMi42NTIsMCwwLDAsMCwzVjVBMi42NTIsMi42NTIsMCwwLDAsMyw4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEwIDIwMikiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBhMTZhYSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIvPgogICAgPGcgaWQ9IlZlY3Rvci01IiBkYXRhLW5hbWU9IlZlY3RvciIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTA4IDE4OCkiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAiPgogICAgICA8cGF0aCBkPSJNMCwwSDI0VjI0SDBaIiBzdHJva2U9Im5vbmUiLz4KICAgICAgPHBhdGggZD0iTSAxIDEgTCAxIDIzIEwgMjMgMjMgTCAyMyAxIEwgMSAxIE0gMCAwIEwgMjQgMCBMIDI0IDI0IEwgMCAyNCBMIDAgMCBaIiBzdHJva2U9Im5vbmUiIGZpbGw9IiMwYTE2YWEiLz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=';
 
       // colors
       structure.sites[0].colors = colors;
-      structure.sites[0].colors.id = 'colors';
-      structure.sites[0].colors.name = 'Цветовые настройки';
-      structure.sites[0].colors.text =
-        'Используйте данный раздел, чтобы настроить базовые цвета вашего сайта.';
       structure.sites[0].colors.icon =
         'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8ZyBpZD0iSWNvbiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEwOCAtMTg4KSI+CiAgICA8cGF0aCBpZD0iVmVjdG9yIiBkPSJNMyw4SDVBMi42NTIsMi42NTIsMCwwLDAsOCw1VjNBMi42NTIsMi42NTIsMCwwLDAsNSwwSDNBMi42NTIsMi42NTIsMCwwLDAsMCwzVjVBMi42NTIsMi42NTIsMCwwLDAsMyw4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEwIDE5MCkiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBhMTZhYSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIvPgogICAgPHBhdGggaWQ9IlZlY3Rvci0yIiBkYXRhLW5hbWU9IlZlY3RvciIgZD0iTTMsOEg1QTIuNjUyLDIuNjUyLDAsMCwwLDgsNVYzQTIuNjUyLDIuNjUyLDAsMCwwLDUsMEgzQTIuNjUyLDIuNjUyLDAsMCwwLDAsM1Y1QTIuNjUyLDIuNjUyLDAsMCwwLDMsOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyMiAxOTApIiBmaWxsPSJub25lIiBzdHJva2U9IiMwYTE2YWEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICAgIDxwYXRoIGlkPSJWZWN0b3ItMyIgZGF0YS1uYW1lPSJWZWN0b3IiIGQ9Ik0zLDhINUEyLjY1MiwyLjY1MiwwLDAsMCw4LDVWM0EyLjY1MiwyLjY1MiwwLDAsMCw1LDBIM0EyLjY1MiwyLjY1MiwwLDAsMCwwLDNWNUEyLjY1MiwyLjY1MiwwLDAsMCwzLDhaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMjIgMjAyKSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMGExNmFhIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgICA8cGF0aCBpZD0iVmVjdG9yLTQiIGRhdGEtbmFtZT0iVmVjdG9yIiBkPSJNMyw4SDVBMi42NTIsMi42NTIsMCwwLDAsOCw1VjNBMi42NTIsMi42NTIsMCwwLDAsNSwwSDNBMi42NTIsMi42NTIsMCwwLDAsMCwzVjVBMi42NTIsMi42NTIsMCwwLDAsMyw4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEwIDIwMikiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBhMTZhYSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIvPgogICAgPGcgaWQ9IlZlY3Rvci01IiBkYXRhLW5hbWU9IlZlY3RvciIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTA4IDE4OCkiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAiPgogICAgICA8cGF0aCBkPSJNMCwwSDI0VjI0SDBaIiBzdHJva2U9Im5vbmUiLz4KICAgICAgPHBhdGggZD0iTSAxIDEgTCAxIDIzIEwgMjMgMjMgTCAyMyAxIEwgMSAxIE0gMCAwIEwgMjQgMCBMIDI0IDI0IEwgMCAyNCBMIDAgMCBaIiBzdHJva2U9Im5vbmUiIGZpbGw9IiMwYTE2YWEiLz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=';
 

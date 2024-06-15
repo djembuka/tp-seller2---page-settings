@@ -6,7 +6,7 @@
         id="seller2PageSettingsSortable"
       >
         <block-sortable
-          v-for="block in this.$store.getters.activePage.blocks.other"
+          v-for="block in blocks"
           :block="block"
           :key="block.id"
         ></block-sortable>
@@ -25,6 +25,7 @@ export default {
       render: true,
     };
   },
+  props: ['blocks'],
   methods: {
     async forceRender() {
       this.render = false;

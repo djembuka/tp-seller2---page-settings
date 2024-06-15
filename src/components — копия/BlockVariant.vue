@@ -45,7 +45,9 @@ export default {
   methods: {
     click() {
       if (!this.active) {
-        this.$store.dispatch('setActiveVariant', this.variant.id);
+        this.$store.dispatch('setActiveVariant', {
+          variantId: this.variant.id,
+        });
       }
     },
     edit() {

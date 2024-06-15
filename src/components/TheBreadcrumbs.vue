@@ -1,30 +1,43 @@
 <template>
-  <div class="slr2-page-settings__breadcrumbs">
+  <div class="slr2-page-settings__breadcrumbs" v-if="Object.keys(items).length">
     <div
       class="slr2-page-settings__breadcrumbs__item"
-      v-if="$store.getters.activePage && $store.state.step !== 'step1'"
+      v-if="items.step1"
       @click.prevent="toStep1"
     >
-      {{ $store.getters.activePage.name }}
+      {{ items.step1 }}
     </div>
     <div
       class="slr2-page-settings__breadcrumbs__item"
-      v-if="$store.getters.isEditedBlock && $store.state.step !== 'step2'"
+      v-if="items.step2"
       @click.prevent="toStep2"
     >
-      {{ $store.getters.isEditedBlock.name }}
+      {{ items.step2 }}
+    </div>
+    <div
+      class="slr2-page-settings__breadcrumbs__item"
+      v-if="items.step3"
+      @click.prevent="toStep3"
+    >
+      {{ items.step3 }}
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    items: Object,
+  },
   methods: {
     toStep1() {
       this.$store.commit('changeStep', 'step1');
     },
     toStep2() {
       this.$store.commit('changeStep', 'step2');
+    },
+    toStep3() {
+      this.$store.commit('changeStep', 'step3');
     },
   },
 };

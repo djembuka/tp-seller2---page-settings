@@ -1,7 +1,6 @@
 <template>
   <div class="slr2-page-settings__content">
-    {{ stepData }}
-    <component :is="currentStepComponent" :data="stepData"></component>
+    <component :is="currentStepComponent" :stepData="stepData"></component>
     <the-buttons v-if="memory"></the-buttons>
     <the-preloader></the-preloader>
   </div>
@@ -29,21 +28,34 @@ export default {
       let result;
       switch (this.$store.state.step) {
         case 'step1':
+          //only for pages
+          result = { page: this.$store.getters.activePage };
           break;
         case 'step2':
+          //for colors and pages
+          if (this.$store.getters.activePage.id === 'colors') {
+            result = { block: this.$store.getters.activePage };
+          } else {
+            result = { block: this.$store.getters.isEditedBlock };
+          }
           break;
         case 'step3':
-          result = {
-            variant: this.$store.getters.isEditedBlock.variants.find(
-              (v) => v.id === this.$store.getters.isEditedBlock.activeVariant
-            ),
-          };
-          break;
-        case 'settings':
-          break;
-        case 'colors':
-          break;
-        case 'colors-settings':
+          //for settings, colors and pages
+          if (this.$store.getters.activePage.id === 'settings') {
+            result = { variant: this.$store.getters.activePage };
+          } else if (this.$store.getters.activePage.id === 'colors') {
+            result = {
+              variant: this.$store.getters.activePage.variants.find(
+                (v) => v.id === this.$store.getters.activePage.activeVariant
+              ),
+            };
+          } else {
+            result = {
+              variant: this.$store.getters.isEditedBlock.variants.find(
+                (v) => v.id === this.$store.getters.isEditedBlock.activeVariant
+              ),
+            };
+          }
           break;
       }
       return result;

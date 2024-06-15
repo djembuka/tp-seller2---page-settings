@@ -1,5 +1,5 @@
 <template>
-  <the-breadcrumbs></the-breadcrumbs>
+  <the-breadcrumbs :items="breadcrumbs"></the-breadcrumbs>
   <div class="slr2-page-settings__variants">
     <div class="slr2-page-settings__variants-block-info">
       <div v-if="block.name" class="slr2-page-settings__block__title">
@@ -28,9 +28,20 @@ import TheBreadcrumbs from './TheBreadcrumbs.vue';
 
 export default {
   data() {
-    return {
-      block: this.$store.getters.isEditedBlock,
-    };
+    return {};
+  },
+  props: ['stepData'],
+  computed: {
+    block() {
+      return this.stepData.block;
+    },
+    breadcrumbs() {
+      if (this.$store.getters.activePage.id === 'colors') {
+        return {};
+      } else {
+        return { step1: this.$store.getters.activePage.name };
+      }
+    },
   },
   methods: {},
   components: {
@@ -40,7 +51,7 @@ export default {
   mounted() {
     this.$store.commit('setPreviousVariant', {
       pageId: this.$store.getters.activePage.id,
-      blockId: this.$store.getters.isEditedBlock.id,
+      blockId: this.stepData.block.id,
     });
   },
 };

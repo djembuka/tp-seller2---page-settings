@@ -24,37 +24,18 @@ export default {
   data() {
     return {};
   },
-  props: ['variant'],
-  computed: {
-    active() {
-      if (
-        this.$store.state.step === 'colors' ||
-        this.$store.state.step === 'colorsSettings'
-      ) {
-        return (
-          this.$store.state.data.sites[0].colors.activeVariant ===
-          this.variant.id
-        );
-      } else {
-        return (
-          this.$store.getters.isEditedBlock.activeVariant === this.variant.id
-        );
-      }
-    },
-  },
+  props: ['variant', 'active'],
   methods: {
     click() {
       if (!this.active) {
-        this.$store.dispatch('setActiveVariant', this.variant.id);
+        this.$store.dispatch('setActiveVariant', {
+          variantId: this.variant.id,
+        });
       }
     },
     edit() {
       this.click();
-      if (this.$store.state.step === 'colors') {
-        this.$store.commit('changeStep', 'colorsSettings');
-      } else {
-        this.$store.commit('changeStep', 'step3');
-      }
+      this.$store.commit('changeStep', 'step3');
     },
   },
   components: {

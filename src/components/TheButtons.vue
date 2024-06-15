@@ -12,19 +12,30 @@ import ButtonSave from './ButtonSave.vue';
 export default {
   methods: {
     clickButton(type) {
-      switch (type) {
-        case 'save': //send the data of the current step to the server
-          this.$store.state.step === 'step3' &&
-          !this.$store.getters.isEditedBlock
-            ? this.$store.dispatch('saveSettings')
-            : this.$store.dispatch('saveBlocks');
-          break;
-        case 'cancel': // reset data (blocks order, active variant, settings)
-          this.$store.state.step === 'step3' &&
-          !this.$store.getters.isEditedBlock
-            ? this.$store.dispatch('resetSettings')
-            : this.$store.dispatch('resetBlocks');
-          break;
+      if (type === 'save') {
+        switch (this.$store.getters.activePage.id) {
+          case 'settings':
+            this.$store.dispatch('saveSettings');
+            break;
+          case 'colors':
+            this.$store.dispatch('saveColors');
+            break;
+          default:
+            this.$store.dispatch('saveBlocks');
+            break;
+        }
+      } else if (type === 'cancel') {
+        switch (this.$store.getters.activePage.id) {
+          case 'settings':
+            this.$store.dispatch('resetSettings');
+            break;
+          case 'colors':
+            this.$store.dispatch('resetColors');
+            break;
+          default:
+            this.$store.dispatch('resetBlocks');
+            break;
+        }
       }
     },
   },

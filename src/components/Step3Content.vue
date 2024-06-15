@@ -1,5 +1,5 @@
 <template>
-  <the-breadcrumbs></the-breadcrumbs>
+  <the-breadcrumbs :items="breadcrumbs"></the-breadcrumbs>
   <div class="slr2-page-settings__settings" v-if="$store.state.render">
     <div class="slr2-page-settings__settings-info">
       <div class="slr2-page-settings__settings__title">
@@ -44,6 +44,20 @@ export default {
     },
     formDataWatcher() {
       return this.$store.state.formDataWatcher;
+    },
+    breadcrumbs() {
+      if (this.$store.getters.activePage.id === 'settings') {
+        return {};
+      } else if (this.$store.getters.activePage.id === 'colors') {
+        return {
+          step2: this.$store.getters.activePage.name,
+        };
+      } else {
+        return {
+          step1: this.$store.getters.activePage.name,
+          step2: this.$store.getters.isEditedBlock.name,
+        };
+      }
     },
   },
   watch: {

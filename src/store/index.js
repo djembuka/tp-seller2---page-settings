@@ -133,7 +133,7 @@ const Store = {
     },
     changeStep(state, payload) {
       if (state.memory) {
-        if (payload.indexOf('step') >= 0 || payload.indexOf('settings') >= 0) {
+        if (payload.indexOf('step') >= 0) {
           state.alert = { step: payload };
         } else {
           state.alert = { page: payload };
@@ -225,7 +225,14 @@ const Store = {
 
       let step, pageId;
 
-      step = state.alert.step || 'step1';
+      if (state.alert.page === 'settings') {
+        step = 'step3';
+      } else if (state.alert.page === 'colors') {
+        step = 'step2';
+      } else {
+        step = state.alert.step || 'step1';
+      }
+
       pageId = state.alert.page;
 
       commit('setAlert', null);
@@ -257,7 +264,7 @@ const Store = {
       if (memory !== null) {
         commit('setActiveVariant', {
           block:
-            state.step === 'colors'
+            getters.activePage.id === 'colors'
               ? state.data.sites[0].colors
               : getters.isEditedBlock,
           variantId: memory,
@@ -279,12 +286,12 @@ const Store = {
       }
       commit('setMemory', memory);
     },
-    resetVariantSettings({ state, commit, dispatch }, { variant, settings }) {
-      let sett = settings || variant.settings;
+    resetVariantSettings({ state, commit, dispatch }, { variant }) {
+      let settings = variant.settings;
 
       if (state.memory !== null && typeof state.memory === 'object') {
         Object.keys(state.memory).forEach((id) => {
-          const property = sett.properties.find(
+          const property = settings.properties.find(
             (prop) => String(prop.id) === String(id)
           );
 
@@ -501,9 +508,10 @@ const Store = {
       let formData = settings.formData || new FormData();
 
       formData.append('sid', state.data.sites[0].id);
+
       formData.append(
         'settings',
-        JSON.stringify({ properties: settings.properties })
+        JSON.stringify({ properties: settings.settings.properties })
       );
 
       if (window.BX) {
@@ -627,10 +635,30 @@ const Store = {
       }, 0);
     },
     resetSettings({ state, dispatch }) {
-      dispatch('resetVariantSettings', {
-        settings: state.data.sites[0].settings,
-      });
+      const variant = state.data.sites[0].settings;
+      dispatch('resetVariantSettings', { variant });
 
+      setTimeout(() => {
+        if (state.alert) {
+          dispatch('changeStepFromAlert');
+        }
+      }, 0);
+    },
+    resetColors({ state, dispatch }) {
+      let variant;
+
+      switch (state.step) {
+        case 'step2':
+          dispatch('resetBlockVariant');
+          break;
+        case 'step3':
+          variant = state.data.sites[0].colors.variants.find(
+            (v) =>
+              String(v.id) === String(state.data.sites[0].colors.activeVariant)
+          );
+          dispatch('resetVariantSettings', { variant });
+          break;
+      }
       setTimeout(() => {
         if (state.alert) {
           dispatch('changeStepFromAlert');
@@ -701,12 +729,7 @@ const Store = {
       };
 
       // settings
-      structure.sites[0].settings = {};
-      structure.sites[0].settings.settings = settings;
-      structure.sites[0].settings.id = 'settings';
-      structure.sites[0].settings.name = 'Общие настройки';
-      structure.sites[0].settings.text =
-        'Используйте данный раздел, чтобы загрузить или отредактировать базовые элементы вашего сайта.';
+      structure.sites[0].settings = settings;
       structure.sites[0].settings.icon =
         'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8ZyBpZD0iSWNvbiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEwOCAtMTg4KSI+CiAgICA8cGF0aCBpZD0iVmVjdG9yIiBkPSJNMyw4SDVBMi42NTIsMi42NTIsMCwwLDAsOCw1VjNBMi42NTIsMi42NTIsMCwwLDAsNSwwSDNBMi42NTIsMi42NTIsMCwwLDAsMCwzVjVBMi42NTIsMi42NTIsMCwwLDAsMyw4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEwIDE5MCkiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBhMTZhYSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIvPgogICAgPHBhdGggaWQ9IlZlY3Rvci0yIiBkYXRhLW5hbWU9IlZlY3RvciIgZD0iTTMsOEg1QTIuNjUyLDIuNjUyLDAsMCwwLDgsNVYzQTIuNjUyLDIuNjUyLDAsMCwwLDUsMEgzQTIuNjUyLDIuNjUyLDAsMCwwLDAsM1Y1QTIuNjUyLDIuNjUyLDAsMCwwLDMsOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyMiAxOTApIiBmaWxsPSJub25lIiBzdHJva2U9IiMwYTE2YWEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICAgIDxwYXRoIGlkPSJWZWN0b3ItMyIgZGF0YS1uYW1lPSJWZWN0b3IiIGQ9Ik0zLDhINUEyLjY1MiwyLjY1MiwwLDAsMCw4LDVWM0EyLjY1MiwyLjY1MiwwLDAsMCw1LDBIM0EyLjY1MiwyLjY1MiwwLDAsMCwwLDNWNUEyLjY1MiwyLjY1MiwwLDAsMCwzLDhaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMjIgMjAyKSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMGExNmFhIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgICA8cGF0aCBpZD0iVmVjdG9yLTQiIGRhdGEtbmFtZT0iVmVjdG9yIiBkPSJNMyw4SDVBMi42NTIsMi42NTIsMCwwLDAsOCw1VjNBMi42NTIsMi42NTIsMCwwLDAsNSwwSDNBMi42NTIsMi42NTIsMCwwLDAsMCwzVjVBMi42NTIsMi42NTIsMCwwLDAsMyw4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEwIDIwMikiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBhMTZhYSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIvPgogICAgPGcgaWQ9IlZlY3Rvci01IiBkYXRhLW5hbWU9IlZlY3RvciIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTA4IDE4OCkiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAiPgogICAgICA8cGF0aCBkPSJNMCwwSDI0VjI0SDBaIiBzdHJva2U9Im5vbmUiLz4KICAgICAgPHBhdGggZD0iTSAxIDEgTCAxIDIzIEwgMjMgMjMgTCAyMyAxIEwgMSAxIE0gMCAwIEwgMjQgMCBMIDI0IDI0IEwgMCAyNCBMIDAgMCBaIiBzdHJva2U9Im5vbmUiIGZpbGw9IiMwYTE2YWEiLz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=';
 

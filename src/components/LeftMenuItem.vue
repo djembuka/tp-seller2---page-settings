@@ -23,12 +23,12 @@ export default {
       if (this.page.active) return;
 
       if (this.page.id === 'settings' || this.page.id === 'colors') {
-        this.clickSettings(this.page.id);
+        this.clickSettings();
       } else {
         this.clickPage();
       }
     },
-    clickSettings(id) {
+    clickSettings() {
       //remove isEdited block
       if (this.$store.getters.isEditedBlock) {
         this.$store.dispatch('setBlockIsEdited', {
@@ -37,8 +37,16 @@ export default {
           isEdited: false,
         });
       }
-      this.$store.commit('changeStep', id === 'colors' ? 'step2' : 'step3');
-      this.$store.commit('setPageActive', { pageId: id });
+
+      if (this.$store.state.memory) {
+        this.$store.commit('changeStep', this.page.id);
+      } else {
+        this.$store.commit(
+          'changeStep',
+          this.page.id === 'colors' ? 'step2' : 'step3'
+        );
+        this.$store.commit('setPageActive', { pageId: this.page.id });
+      }
     },
     async clickPage() {
       //force blocks render

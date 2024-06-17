@@ -3,11 +3,11 @@
   <div class="slr2-page-settings__settings" v-if="$store.state.render">
     <div class="slr2-page-settings__settings-info">
       <div class="slr2-page-settings__settings__title">
-        {{ $store.state.lang.settingsTitle + ': ' + variant.name }}
+        {{ title }}
       </div>
       <div
         class="slr2-page-settings__settings__text"
-        v-html="$store.state.lang.settingsText"
+        v-html="description"
       ></div>
     </div>
 
@@ -41,6 +41,18 @@ export default {
     },
     properties() {
       return this.variant.settings.properties;
+    },
+    title() {
+      return this.$store.getters.activePage.id !== 'settings' &&
+        this.$store.getters.activePage.id !== 'colors'
+        ? this.$store.state.lang.settingsTitle + ': ' + this.variant.name
+        : this.variant.name;
+    },
+    description() {
+      return this.$store.getters.activePage.id !== 'settings' &&
+        this.$store.getters.activePage.id !== 'colors'
+        ? this.$store.state.lang.settingsText
+        : '';
     },
     formDataWatcher() {
       return this.$store.state.formDataWatcher;

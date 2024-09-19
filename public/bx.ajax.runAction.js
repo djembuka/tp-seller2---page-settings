@@ -4,9 +4,9 @@ window.BX = {
       let result;
       switch (method) {
         case 'twinpx:seller.api.methods.sites':
-          result = new Promise((resolve) => {
+          result = new Promise((resolve, reject) => {
             resolve({
-              status: 'success',
+              status: 'error',
               data: [
                 {
                   id: 's1',
@@ -17,7 +17,12 @@ window.BX = {
                   name: 'Site Test',
                 },
               ],
-              errors: [],
+              errors: [
+                {
+                  message: 'message',
+                  code: 'sdf',
+                },
+              ],
             });
           });
           break;

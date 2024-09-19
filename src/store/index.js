@@ -29,6 +29,57 @@ const Store = {
     memory: null,
   },
   mutations: {
+    showError(state, { error, method }) {
+      console.log(error);
+      if (typeof error === 'boolean') {
+        state.error = error;
+      } else if (typeof error === 'object') {
+        if (
+          error.errors &&
+          typeof error.errors === 'object' &&
+          error.errors[0] &&
+          error.errors[0].code !== undefined
+        ) {
+          if (error.errors[0].code === 'NETWORK_ERROR') {
+            if (error.data && error.data.ajaxRejectData) {
+              if (error.data.ajaxRejectData.data) {
+                state.error = `${window.BX.message('ERROR_SUPPORT')}
+                  <br>
+                  <br>
+                  Метод: ${method}. Код ошибки: ${
+                  error.data.ajaxRejectData.data
+                }. Описание: ${
+                  window.BX.message(
+                    'ERROR_' + error.data.ajaxRejectData.data
+                  ) || window.BX.message('ERROR_SERVER')
+                }.`;
+              }
+            } else if (window.BX.message) {
+              (state.error = 'error'),
+                `${window.BX.message('ERROR_SUPPORT')}
+                <br>
+                <br>
+                Метод: ${method}. Код ошибки: NETWORK_ERROR. Описание: ${window.BX.message(
+                  'ERROR_OFFLINE'
+                )}.`;
+            }
+          } else {
+            state.error = `${window.BX.message('ERROR_SUPPORT')}
+              <br>
+              <br>
+              Метод: ${method}.${
+              error.errors[0].code
+                ? ' Код ошибки: ' + error.errors[0].code + '.'
+                : ''
+            } ${
+              error.errors[0].message
+                ? ' Описание: ' + error.errors[0].message + '.'
+                : ''
+            }`;
+          }
+        }
+      }
+    },
     clearInputFile(_, { control }) {
       control.clearWatcher = !control.clearWatcher;
     },
@@ -380,7 +431,7 @@ const Store = {
                 },
                 (error) => {
                   commit('setPreloader', false);
-                  console.log(error);
+                  commit('showError', { error });
                 }
               );
 
@@ -413,7 +464,7 @@ const Store = {
                 },
                 (error) => {
                   commit('setPreloader', false);
-                  console.log(error);
+                  commit('showError', { error });
                 }
               );
 
@@ -445,7 +496,7 @@ const Store = {
                 },
                 (error) => {
                   commit('setPreloader', false);
-                  console.log(error);
+                  commit('showError', { error });
                 }
               );
 
@@ -490,7 +541,7 @@ const Store = {
                   },
                   (error) => {
                     commit('setPreloader', false);
-                    console.log(error);
+                    commit('showError', { error });
                   }
                 );
             }
@@ -527,7 +578,7 @@ const Store = {
             },
             (error) => {
               commit('setPreloader', false);
-              console.log(error);
+              commit('showError', { error });
             }
           );
       }
@@ -559,7 +610,7 @@ const Store = {
                 },
                 (error) => {
                   commit('setPreloader', false);
-                  console.log(error);
+                  commit('showError', { error });
                 }
               );
 
@@ -602,7 +653,7 @@ const Store = {
                   },
                   (error) => {
                     commit('setPreloader', false);
-                    console.log(error);
+                    commit('showError', { error });
                   }
                 );
             }
@@ -689,7 +740,7 @@ const Store = {
             },
             (error) => {
               commit('setPreloader', false);
-              console.log(error);
+              commit('showError', { error });
             }
           );
       }
@@ -697,30 +748,53 @@ const Store = {
     async loadStructure({ commit }) {
       let sites, settings, colors, pages, blocks;
 
-      await bxAjaxRunAction('sites', {})
-        .then((s) => {
+      await bxAjaxRunAction('sites', {}).then(
+        (s) => {
           sites = s;
-          return bxAjaxRunAction('pages', { data: { sid: sites[0].id } });
-        })
-        .then((p) => {
-          pages = p;
-          return bxAjaxRunAction('blocks', {
-            data: { sid: sites[0].id, page: pages[0].id },
-          });
-        })
-        .then((b) => {
-          blocks = b;
-        });
+        },
+        (error) => {
+          commit('showError', { error });
+        }
+      );
+      // .then(
+      //   (p) => {
+      //     pages = p;
+      //     return bxAjaxRunAction('blocks', {
+      //       data: { sid: sites[0].id, page: pages[0].id },
+      //     });
+      //   },
+      //   (error) => {
+      //     commit('showError', { error });
+      //   }
+      // )
+      // .then(
+      //   (b) => {
+      //     blocks = b;
+      //   },
+      //   (error) => {
+      //     commit('showError', { error });
+      //   }
+      // );
+
+      if (!sites) {
+        return;
+      }
 
       await bxAjaxRunAction('settings', { data: { sid: sites[0].id } }).then(
         (s) => {
           settings = s;
+        },
+        (error) => {
+          commit('showError', { error });
         }
       );
 
       await bxAjaxRunAction('colors', { data: { sid: sites[0].id } }).then(
         (c) => {
           colors = c;
+        },
+        (error) => {
+          commit('showError', { error });
         }
       );
 
@@ -758,6 +832,8 @@ const Store = {
                   commit('setPreloader', false);
                   if (r.status === 'success' && r.data) {
                     res(r.data);
+                  } else if (r.status === 'error') {
+                    rej(r.errors[0]);
                   }
                 },
                 (error) => {

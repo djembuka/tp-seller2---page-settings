@@ -3,6 +3,7 @@
     <the-left-menu></the-left-menu>
     <the-main-content></the-main-content>
     <alert-modal></alert-modal>
+    <the-error-message></the-error-message>
   </div>
 </template>
 
@@ -10,6 +11,7 @@
 import TheLeftMenu from './components/TheLeftMenu.vue';
 import TheMainContent from './components/TheMainContent.vue';
 import AlertModal from './components/AlertModal.vue';
+import TheErrorMessage from './components/TheErrorMessage.vue';
 
 export default {
   name: 'seller2PageSettings',
@@ -17,6 +19,7 @@ export default {
     TheLeftMenu,
     TheMainContent,
     AlertModal,
+    TheErrorMessage,
   },
   async beforeMount() {},
   async created() {

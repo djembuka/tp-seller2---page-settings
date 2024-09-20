@@ -29,8 +29,7 @@ const Store = {
     memory: null,
   },
   mutations: {
-    showError(state, { error, method }) {
-      console.log(error);
+    showError(state, { error }) {
       if (typeof error === 'boolean') {
         state.error = error;
       } else if (typeof error === 'object') {
@@ -43,39 +42,13 @@ const Store = {
           if (error.errors[0].code === 'NETWORK_ERROR') {
             if (error.data && error.data.ajaxRejectData) {
               if (error.data.ajaxRejectData.data) {
-                state.error = `${window.BX.message('ERROR_SUPPORT')}
-                  <br>
-                  <br>
-                  Метод: ${method}. Код ошибки: ${
-                  error.data.ajaxRejectData.data
-                }. Описание: ${
-                  window.BX.message(
-                    'ERROR_' + error.data.ajaxRejectData.data
-                  ) || window.BX.message('ERROR_SERVER')
-                }.`;
+                state.error = window.BX.message('ERROR_SUPPORT');
               }
             } else if (window.BX.message) {
-              (state.error = 'error'),
-                `${window.BX.message('ERROR_SUPPORT')}
-                <br>
-                <br>
-                Метод: ${method}. Код ошибки: NETWORK_ERROR. Описание: ${window.BX.message(
-                  'ERROR_OFFLINE'
-                )}.`;
+              state.error = window.BX.message('ERROR_SUPPORT');
             }
           } else {
-            state.error = `${window.BX.message('ERROR_SUPPORT')}
-              <br>
-              <br>
-              Метод: ${method}.${
-              error.errors[0].code
-                ? ' Код ошибки: ' + error.errors[0].code + '.'
-                : ''
-            } ${
-              error.errors[0].message
-                ? ' Описание: ' + error.errors[0].message + '.'
-                : ''
-            }`;
+            state.error = error.errors[0].message;
           }
         }
       }
@@ -427,6 +400,9 @@ const Store = {
                     } else {
                       flag = true;
                     }
+                  } else {
+                    commit('setPreloader', false);
+                    commit('showError', { error: r });
                   }
                 },
                 (error) => {
@@ -460,6 +436,9 @@ const Store = {
                     } else {
                       flag = true;
                     }
+                  } else {
+                    commit('setPreloader', false);
+                    commit('showError', { error: r });
                   }
                 },
                 (error) => {
@@ -492,6 +471,9 @@ const Store = {
                     if (state.alert) {
                       dispatch('changeStepFromAlert');
                     }
+                  } else {
+                    commit('setPreloader', false);
+                    commit('showError', { error: r });
                   }
                 },
                 (error) => {
@@ -537,6 +519,9 @@ const Store = {
                       if (state.alert) {
                         dispatch('changeStepFromAlert');
                       }
+                    } else {
+                      commit('setPreloader', false);
+                      commit('showError', { error: r });
                     }
                   },
                   (error) => {
@@ -572,9 +557,14 @@ const Store = {
             data: formData,
           })
           .then(
-            () => {
-              commit('setPreloader', false);
-              dispatch('changeStepFromAlert');
+            (r) => {
+              if (r.status === 'success') {
+                commit('setPreloader', false);
+                dispatch('changeStepFromAlert');
+              } else {
+                commit('setPreloader', false);
+                commit('showError', { error: r });
+              }
             },
             (error) => {
               commit('setPreloader', false);
@@ -606,6 +596,9 @@ const Store = {
                     if (state.alert) {
                       dispatch('changeStepFromAlert');
                     }
+                  } else {
+                    commit('setPreloader', false);
+                    commit('showError', { error: r });
                   }
                 },
                 (error) => {
@@ -649,6 +642,9 @@ const Store = {
                       if (state.alert) {
                         dispatch('changeStepFromAlert');
                       }
+                    } else {
+                      commit('setPreloader', false);
+                      commit('showError', { error: r });
                     }
                   },
                   (error) => {
@@ -748,33 +744,36 @@ const Store = {
     async loadStructure({ commit }) {
       let sites, settings, colors, pages, blocks;
 
-      await bxAjaxRunAction('sites', {}).then(
-        (s) => {
-          sites = s;
-        },
-        (error) => {
-          commit('showError', { error });
-        }
-      );
-      // .then(
-      //   (p) => {
-      //     pages = p;
-      //     return bxAjaxRunAction('blocks', {
-      //       data: { sid: sites[0].id, page: pages[0].id },
-      //     });
-      //   },
-      //   (error) => {
-      //     commit('showError', { error });
-      //   }
-      // )
-      // .then(
-      //   (b) => {
-      //     blocks = b;
-      //   },
-      //   (error) => {
-      //     commit('showError', { error });
-      //   }
-      // );
+      await bxAjaxRunAction('sites', {})
+        .then(
+          (s) => {
+            sites = s;
+            return bxAjaxRunAction('pages', { data: { sid: sites[0].id } });
+          },
+          (error) => {
+            commit('showError', { error });
+          }
+        )
+        .then(
+          (p) => {
+            if (!sites) return;
+            pages = p;
+            return bxAjaxRunAction('blocks', {
+              data: { sid: sites[0].id, page: pages[0].id },
+            });
+          },
+          (error) => {
+            commit('showError', { error });
+          }
+        )
+        .then(
+          (b) => {
+            blocks = b;
+          },
+          (error) => {
+            commit('showError', { error });
+          }
+        );
 
       if (!sites) {
         return;
@@ -798,22 +797,26 @@ const Store = {
         }
       );
 
+      if (!sites || !settings || !colors || !pages || !blocks) {
+        return;
+      }
+
       const structure = {
         sites,
       };
 
       // settings
-      structure.sites[0].settings = settings;
+      structure.sites[0].settings = settings || {};
       structure.sites[0].settings.icon =
         'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8ZyBpZD0iSWNvbiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEwOCAtMTg4KSI+CiAgICA8cGF0aCBpZD0iVmVjdG9yIiBkPSJNMyw4SDVBMi42NTIsMi42NTIsMCwwLDAsOCw1VjNBMi42NTIsMi42NTIsMCwwLDAsNSwwSDNBMi42NTIsMi42NTIsMCwwLDAsMCwzVjVBMi42NTIsMi42NTIsMCwwLDAsMyw4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEwIDE5MCkiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBhMTZhYSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIvPgogICAgPHBhdGggaWQ9IlZlY3Rvci0yIiBkYXRhLW5hbWU9IlZlY3RvciIgZD0iTTMsOEg1QTIuNjUyLDIuNjUyLDAsMCwwLDgsNVYzQTIuNjUyLDIuNjUyLDAsMCwwLDUsMEgzQTIuNjUyLDIuNjUyLDAsMCwwLDAsM1Y1QTIuNjUyLDIuNjUyLDAsMCwwLDMsOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyMiAxOTApIiBmaWxsPSJub25lIiBzdHJva2U9IiMwYTE2YWEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICAgIDxwYXRoIGlkPSJWZWN0b3ItMyIgZGF0YS1uYW1lPSJWZWN0b3IiIGQ9Ik0zLDhINUEyLjY1MiwyLjY1MiwwLDAsMCw4LDVWM0EyLjY1MiwyLjY1MiwwLDAsMCw1LDBIM0EyLjY1MiwyLjY1MiwwLDAsMCwwLDNWNUEyLjY1MiwyLjY1MiwwLDAsMCwzLDhaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMjIgMjAyKSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMGExNmFhIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgICA8cGF0aCBpZD0iVmVjdG9yLTQiIGRhdGEtbmFtZT0iVmVjdG9yIiBkPSJNMyw4SDVBMi42NTIsMi42NTIsMCwwLDAsOCw1VjNBMi42NTIsMi42NTIsMCwwLDAsNSwwSDNBMi42NTIsMi42NTIsMCwwLDAsMCwzVjVBMi42NTIsMi42NTIsMCwwLDAsMyw4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEwIDIwMikiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBhMTZhYSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIvPgogICAgPGcgaWQ9IlZlY3Rvci01IiBkYXRhLW5hbWU9IlZlY3RvciIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTA4IDE4OCkiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAiPgogICAgICA8cGF0aCBkPSJNMCwwSDI0VjI0SDBaIiBzdHJva2U9Im5vbmUiLz4KICAgICAgPHBhdGggZD0iTSAxIDEgTCAxIDIzIEwgMjMgMjMgTCAyMyAxIEwgMSAxIE0gMCAwIEwgMjQgMCBMIDI0IDI0IEwgMCAyNCBMIDAgMCBaIiBzdHJva2U9Im5vbmUiIGZpbGw9IiMwYTE2YWEiLz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=';
 
       // colors
-      structure.sites[0].colors = colors;
+      structure.sites[0].colors = colors || {};
       structure.sites[0].colors.icon =
         'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8ZyBpZD0iSWNvbiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEwOCAtMTg4KSI+CiAgICA8cGF0aCBpZD0iVmVjdG9yIiBkPSJNMyw4SDVBMi42NTIsMi42NTIsMCwwLDAsOCw1VjNBMi42NTIsMi42NTIsMCwwLDAsNSwwSDNBMi42NTIsMi42NTIsMCwwLDAsMCwzVjVBMi42NTIsMi42NTIsMCwwLDAsMyw4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEwIDE5MCkiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBhMTZhYSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIvPgogICAgPHBhdGggaWQ9IlZlY3Rvci0yIiBkYXRhLW5hbWU9IlZlY3RvciIgZD0iTTMsOEg1QTIuNjUyLDIuNjUyLDAsMCwwLDgsNVYzQTIuNjUyLDIuNjUyLDAsMCwwLDUsMEgzQTIuNjUyLDIuNjUyLDAsMCwwLDAsM1Y1QTIuNjUyLDIuNjUyLDAsMCwwLDMsOFoiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyMiAxOTApIiBmaWxsPSJub25lIiBzdHJva2U9IiMwYTE2YWEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KICAgIDxwYXRoIGlkPSJWZWN0b3ItMyIgZGF0YS1uYW1lPSJWZWN0b3IiIGQ9Ik0zLDhINUEyLjY1MiwyLjY1MiwwLDAsMCw4LDVWM0EyLjY1MiwyLjY1MiwwLDAsMCw1LDBIM0EyLjY1MiwyLjY1MiwwLDAsMCwwLDNWNUEyLjY1MiwyLjY1MiwwLDAsMCwzLDhaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMjIgMjAyKSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMGExNmFhIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgICA8cGF0aCBpZD0iVmVjdG9yLTQiIGRhdGEtbmFtZT0iVmVjdG9yIiBkPSJNMyw4SDVBMi42NTIsMi42NTIsMCwwLDAsOCw1VjNBMi42NTIsMi42NTIsMCwwLDAsNSwwSDNBMi42NTIsMi42NTIsMCwwLDAsMCwzVjVBMi42NTIsMi42NTIsMCwwLDAsMyw4WiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTEwIDIwMikiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzBhMTZhYSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIvPgogICAgPGcgaWQ9IlZlY3Rvci01IiBkYXRhLW5hbWU9IlZlY3RvciIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTA4IDE4OCkiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAiPgogICAgICA8cGF0aCBkPSJNMCwwSDI0VjI0SDBaIiBzdHJva2U9Im5vbmUiLz4KICAgICAgPHBhdGggZD0iTSAxIDEgTCAxIDIzIEwgMjMgMjMgTCAyMyAxIEwgMSAxIE0gMCAwIEwgMjQgMCBMIDI0IDI0IEwgMCAyNCBMIDAgMCBaIiBzdHJva2U9Im5vbmUiIGZpbGw9IiMwYTE2YWEiLz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=';
 
       // pages
-      structure.sites[0].pages = pages;
+      structure.sites[0].pages = pages || [{}];
       structure.sites[0].pages[0].blocks = blocks;
 
       commit('setStructure', structure);
@@ -833,7 +836,7 @@ const Store = {
                   if (r.status === 'success' && r.data) {
                     res(r.data);
                   } else if (r.status === 'error') {
-                    rej(r.errors[0]);
+                    rej(r);
                   }
                 },
                 (error) => {

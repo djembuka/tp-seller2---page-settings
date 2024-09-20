@@ -1,4 +1,7 @@
 window.BX = {
+  message() {
+    return 'MESSAGE';
+  },
   ajax: {
     runAction(method, data) {
       let result;
@@ -6,7 +9,7 @@ window.BX = {
         case 'twinpx:seller.api.methods.sites':
           result = new Promise((resolve, reject) => {
             resolve({
-              status: 'error',
+              status: 'success',
               data: [
                 {
                   id: 's1',
@@ -19,7 +22,7 @@ window.BX = {
               ],
               errors: [
                 {
-                  message: 'message',
+                  message: 'message sites',
                   code: 'sdf',
                 },
               ],
@@ -369,7 +372,12 @@ window.BX = {
                   ],
                 },
               },
-              errors: [],
+              errors: [
+                {
+                  message: 'message settings',
+                  code: 'sdf',
+                },
+              ],
             });
           });
           break;
@@ -498,7 +506,12 @@ window.BX = {
                   },
                 ],
               },
-              errors: [],
+              errors: [
+                {
+                  message: 'message colors',
+                  code: 'sdf',
+                },
+              ],
             });
           });
           break;
@@ -527,7 +540,12 @@ window.BX = {
                   preview: 'upload/block.png',
                 },
               ],
-              errors: [],
+              errors: [
+                {
+                  message: 'message pages',
+                  code: 'sdf',
+                },
+              ],
             });
           });
           break;
@@ -1342,7 +1360,12 @@ window.BX = {
                   },
                 ],
               },
-              errors: [],
+              errors: [
+                {
+                  message: 'message blocks',
+                  code: 'sdf',
+                },
+              ],
             });
           });
           break;
@@ -1360,50 +1383,118 @@ window.BX = {
                 settings: [],
                 variants: [],
               },
-              errors: [],
+              errors: [
+                {
+                  message: 'message block',
+                  code: 'sdf',
+                },
+              ],
             });
           });
           break;
 
         case 'twinpx:seller.api.methods.savePagesOrder':
           result = new Promise((resolve) => {
-            resolve({ status: 'success', data: true, errors: [] });
+            resolve({
+              status: 'success',
+              data: true,
+              errors: [
+                {
+                  message: 'message savePagesOrder',
+                  code: 'sdf',
+                },
+              ],
+            });
           });
           break;
 
         case 'twinpx:seller.api.methods.saveBlocksOrder':
           result = new Promise((resolve) => {
-            resolve({ status: 'success', data: true, errors: [] });
+            resolve({
+              status: 'success',
+              data: true,
+              errors: [
+                {
+                  message: 'message saveBlocksOrder',
+                  code: 'sdf',
+                },
+              ],
+            });
           });
           break;
 
         case 'twinpx:seller.api.methods.saveBlocksSettings':
           result = new Promise((resolve) => {
-            resolve({ status: 'success', data: true, errors: [] });
+            resolve({
+              status: 'success',
+              data: true,
+              errors: [
+                {
+                  message: 'message saveBlocksSettings',
+                  code: 'sdf',
+                },
+              ],
+            });
           });
           break;
 
         case 'twinpx:seller.api.methods.saveBlocksStates':
           result = new Promise((resolve) => {
-            resolve({ status: 'success', data: true, errors: [] });
+            resolve({
+              status: 'success',
+              data: true,
+              errors: [
+                {
+                  message: 'message saveBlocksStates',
+                  code: 'sdf',
+                },
+              ],
+            });
           });
           break;
 
         case 'twinpx:seller.api.methods.saveSettings':
           result = new Promise((resolve) => {
-            resolve({ status: 'success', data: true, errors: [] });
+            resolve({
+              status: 'success',
+              data: true,
+              errors: [
+                {
+                  message: 'message saveSettings',
+                  code: 'sdf',
+                },
+              ],
+            });
           });
           break;
 
         case 'twinpx:seller.api.methods.saveTheme':
           result = new Promise((resolve) => {
-            resolve({ status: 'success', data: true, errors: [] });
+            resolve({
+              status: 'success',
+              data: true,
+              errors: [
+                {
+                  message: 'message saveTheme',
+                  code: 'sdf',
+                },
+              ],
+            });
           });
           break;
 
         case 'twinpx:seller.api.methods.saveColors':
           result = new Promise((resolve) => {
-            resolve({ status: 'success', data: true, errors: [] });
+            resolve({
+              status: 'success',
+              data: true,
+              errors: [
+                {
+                  message: 'message saveColors',
+                  code: 'sdf',
+                },
+              ],
+            });
           });
           break;
       }

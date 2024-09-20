@@ -3,8 +3,8 @@
     <the-left-menu></the-left-menu>
     <the-main-content></the-main-content>
     <alert-modal></alert-modal>
-    <the-error-message></the-error-message>
   </div>
+  <the-error-message></the-error-message>
 </template>
 
 <script>

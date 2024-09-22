@@ -67,7 +67,7 @@ export default {
   background-color: rgba(255, 255, 255, 0.733);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   text-align: left;
   z-index: 1000;
 }

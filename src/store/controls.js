@@ -74,8 +74,9 @@ export default {
   },
   actions: {
     setControlValuesFromMemory({ rootState, commit }, { blockId, variantId }) {
+      const chosenSite = rootState.data.sites.find((s) => s.chosen);
       let block, variant;
-      rootState.data.sites[0].pages.forEach((page) => {
+      chosenSite.pages.forEach((page) => {
         if (page.blocks) {
           ['top', 'other', 'bottom'].forEach((type) => {
             block =
@@ -165,7 +166,8 @@ export default {
       { blockId, variantId, controlId, value, checked }
     ) {
       let block;
-      const page = rootState.data.sites[0].pages.find((page) => page.active);
+      const chosenSite = rootState.data.sites.find((s) => s.chosen);
+      const page = chosenSite.pages.find((page) => page.active);
 
       if (page && page.blocks) {
         ['top', 'other', 'bottom'].forEach((type) => {

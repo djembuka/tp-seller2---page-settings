@@ -3,7 +3,7 @@
     <left-menu-item :page="settingsPage"></left-menu-item>
     <left-menu-item :page="colorsPage"></left-menu-item>
     <left-menu-item
-      v-for="page in this.$store.state.data.sites[0].pages"
+      v-for="page in this.$store.getters.chosenSite.pages"
       :page="page"
       :key="page.id"
     ></left-menu-item>
@@ -16,10 +16,10 @@ import LeftMenuItem from './LeftMenuItem.vue';
 export default {
   computed: {
     settingsPage() {
-      return this.$store.state.data.sites[0].settings;
+      return this.$store.getters.chosenSite.settings;
     },
     colorsPage() {
-      return this.$store.state.data.sites[0].colors;
+      return this.$store.getters.chosenSite.colors;
     },
   },
   components: {

@@ -4,6 +4,7 @@
     <the-main-content></the-main-content>
     <alert-modal></alert-modal>
   </div>
+  <the-sites v-else :sites="$store.state.data.sites"></the-sites>
   <the-error-message></the-error-message>
 </template>
 
@@ -11,6 +12,7 @@
 import TheLeftMenu from './components/TheLeftMenu.vue';
 import TheMainContent from './components/TheMainContent.vue';
 import AlertModal from './components/AlertModal.vue';
+import TheSites from './components/TheSites.vue';
 import TheErrorMessage from './components/TheErrorMessage.vue';
 
 export default {
@@ -19,11 +21,13 @@ export default {
     TheLeftMenu,
     TheMainContent,
     AlertModal,
+    TheSites,
     TheErrorMessage,
   },
   async beforeMount() {},
   async created() {
-    this.$store.dispatch('loadStructure');
+    this.$store.dispatch('runSites');
+    // this.$store.dispatch('loadStructure');
   },
 };
 </script>

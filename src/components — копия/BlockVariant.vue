@@ -32,7 +32,7 @@ export default {
         this.$store.state.step === 'colorsSettings'
       ) {
         return (
-          this.$store.state.data.sites[0].colors.activeVariant ===
+          this.$store.getters.chosenSite.colors.activeVariant ===
           this.variant.id
         );
       } else {

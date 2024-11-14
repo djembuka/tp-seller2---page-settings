@@ -31,7 +31,7 @@ export default {
         case 'step2':
           //for colors and pages
           if (this.$store.getters.activePage.id === 'colors') {
-            result = { block: this.$store.state.data.sites[0].colors };
+            result = { block: this.$store.getters.chosenSite.colors };
           } else {
             result = { block: this.$store.getters.isEditedBlock };
           }
@@ -39,12 +39,12 @@ export default {
         case 'step3':
           //for settings, colors and pages
           if (this.$store.getters.activePage.id === 'settings') {
-            result = { variant: this.$store.state.data.sites[0].settings };
+            result = { variant: this.$store.getters.chosenSite.settings };
           } else if (this.$store.getters.activePage.id === 'colors') {
             result = {
               variant: this.$store.getters.activePage.variants.find(
                 (v) =>
-                  v.id === this.$store.state.data.sites[0].colors.activeVariant
+                  v.id === this.$store.getters.chosenSite.colors.activeVariant
               ),
             };
           } else {
